@@ -4,9 +4,9 @@ namespace Application
 {
     public interface IUnitOfWork
     {
-        public IOrderRepository ChemicalRepository { get; }
 
         public IUserRepository UserRepository { get; }
+        public IOrderRepository OrderRepository { get; }
 
         public Task<int> SaveChangeAsync();
     }

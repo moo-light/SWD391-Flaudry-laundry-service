@@ -14,7 +14,7 @@ namespace Infrastructures.Tests
         {
             _unitOfWork = new UnitOfWork(
                 _dbContext,
-                _chemicalRepositoryMock.Object,
+                _orderRepositoryMock.Object,
                 _userRepository.Object
                 );
         }
@@ -25,7 +25,7 @@ namespace Infrastructures.Tests
             // arrange
             var mockData = _fixture.Build<Order>().CreateMany(10).ToList();
 
-            _chemicalRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(mockData);
+            _orderRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(mockData);
 
             // act
             var items = await _unitOfWork.ChemicalRepository.GetAllAsync();

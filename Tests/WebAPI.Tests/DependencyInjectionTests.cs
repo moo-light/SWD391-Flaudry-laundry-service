@@ -34,7 +34,7 @@ namespace WebAPI.Tests
             var exceptionMiddlewareResolved = _serviceProvider.GetRequiredService<GlobalExceptionMiddleware>();
             var performanceMiddleware = _serviceProvider.GetRequiredService<PerformanceMiddleware>();
             var stopwatchResolved = _serviceProvider.GetRequiredService<Stopwatch>();
-            var chemicalServiceResolved = _serviceProvider.GetRequiredService<IChemicalService>();
+            var chemicalServiceResolved = _serviceProvider.GetRequiredService<IOrderService>();
             var chemicalRepositoryResolved = _serviceProvider.GetRequiredService<IOrderRepository>();
 
             currentTimeServiceResolved.GetType().Should().Be(typeof(CurrentTime));
@@ -42,7 +42,7 @@ namespace WebAPI.Tests
             exceptionMiddlewareResolved.GetType().Should().Be(typeof(GlobalExceptionMiddleware));
             performanceMiddleware.GetType().Should().Be(typeof(PerformanceMiddleware));
             stopwatchResolved.GetType().Should().Be(typeof(Stopwatch));
-            chemicalServiceResolved.GetType().Should().Be(typeof(ChemicalService));
+            chemicalServiceResolved.GetType().Should().Be(typeof(OrderService));
             chemicalRepositoryResolved.GetType().Should().Be(typeof(OrderRepository));
         }
     }

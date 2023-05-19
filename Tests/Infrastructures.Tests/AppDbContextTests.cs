@@ -13,18 +13,17 @@ namespace Infrastructures.Tests
         {
 
             var mockData = _fixture.Build<Order>().CreateMany(10).ToList();
-            await _dbContext.Chemicals.AddRangeAsync(mockData);
+            await _dbContext.Orders.AddRangeAsync(mockData);
             
             await _dbContext.SaveChangesAsync();
-
-            var result = await _dbContext.Chemicals.ToListAsync();
+            var result = await _dbContext.Orders.ToListAsync();
             result.Should().BeEquivalentTo(mockData);
         }
 
         [Fact]
         public async Task AppDbContext_ChemicalsDbSetShouldReturnEmptyListWhenNotHavingData()
         {
-            var result = await _dbContext.Chemicals.ToListAsync();
+            var result = await _dbContext.Orders.ToListAsync();
             result.Should().BeEmpty();
         }
     }

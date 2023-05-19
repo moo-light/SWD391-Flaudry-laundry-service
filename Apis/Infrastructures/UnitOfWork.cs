@@ -6,20 +6,20 @@ namespace Infrastructures
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _dbContext;
-        private readonly IOrderRepository _chemicalRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
 
         public UnitOfWork(AppDbContext dbContext,
-            IOrderRepository chemicalRepository,
+            IOrderRepository orderRepository,
             IUserRepository userRepository)
         {
             _dbContext = dbContext;
-            _chemicalRepository = chemicalRepository;
+            _orderRepository = orderRepository;
             _userRepository = userRepository;
         }
-        public IOrderRepository ChemicalRepository => _chemicalRepository;
 
         public IUserRepository UserRepository => _userRepository;
+        public IOrderRepository OrderRepository => _orderRepository;
 
         public async Task<int> SaveChangeAsync()
         {
