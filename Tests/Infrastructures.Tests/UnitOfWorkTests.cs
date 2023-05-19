@@ -28,7 +28,7 @@ namespace Infrastructures.Tests
             _orderRepositoryMock.Setup(x => x.GetAllAsync()).ReturnsAsync(mockData);
 
             // act
-            var items = await _unitOfWork.ChemicalRepository.GetAllAsync();
+            var items = await _unitOfWork.OrderRepository.GetAllAsync();
 
             // assert
             items.Should().BeEquivalentTo(mockData);

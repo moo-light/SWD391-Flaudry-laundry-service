@@ -1,7 +1,6 @@
-﻿namespace Domain.Entities
+﻿namespace Domain.Entities;
+
+public class Batch : BaseEntity
 {
-    public class Batch : BaseEntity
-    {
-        
-    }
+    
 }

@@ -17,6 +17,7 @@ namespace WebAPI
             services.AddHealthChecks();
             services.AddSingleton<GlobalExceptionMiddleware>();
             services.AddSingleton<PerformanceMiddleware>();
+            services.AddSingleton<Stopwatch>();
             services.AddScoped<IClaimsService, ClaimsService>();
             services.AddHttpContextAccessor();
             services.AddFluentValidationAutoValidation();
