@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Services;
+﻿using Application.Interfaces;
 using FluentValidation.AspNetCore;
 using Infrastructures;
 using System.Diagnostics;

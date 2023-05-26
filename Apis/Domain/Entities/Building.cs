@@ -7,9 +7,9 @@ namespace Domain.Entities;
 public partial class Building:BaseEntity
 {
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } 
 
-    public string Address { get; set; } = null!;
+    public string Address { get; set; } 
 
     public virtual ICollection<Order> Orders { get; } = new List<Order>();
 }

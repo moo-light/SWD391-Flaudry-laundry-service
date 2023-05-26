@@ -3,6 +3,7 @@ using Application.Commons;
 using Microsoft.EntityFrameworkCore;
 using Application.Interfaces.Repositories;
 using Domain.Entitiess;
+using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
@@ -18,7 +19,12 @@ namespace Infrastructures.Repositories
             _timeService = timeService;
             _claimsService = claimsService;
         }
-        public Task<List<TEntity>> GetAllAsync() => _dbSet.ToListAsync();
+        public async Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes) 
+            => await includes
+           .Aggregate(_dbSet.AsQueryable(),
+               (entity, property) => entity.Include(property))
+           .Where(x => x.IsDeleted == false)
+           .ToListAsync();
 
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
@@ -27,28 +33,36 @@ namespace Infrastructures.Repositories
             return result;
         }
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<bool> AddAsync(TEntity entity)
         {
             entity.CreationDate = _timeService.GetCurrentTime();
             entity.CreatedBy = _claimsService.GetCurrentUserId;
             await _dbSet.AddAsync(entity);
+            return true;
         }
 
-        public void SoftRemove(TEntity entity)
+        public bool SoftRemove(TEntity entity)
         {
             entity.IsDeleted = true;
             entity.DeleteBy = _claimsService.GetCurrentUserId;
             _dbSet.Update(entity);
+            return true;
         }
-
-        public void Update(TEntity entity)
+        public bool SoftRemoveByID(Guid entityId)
+        {
+            TEntity? entity = GetByIdAsync(entityId).Result;
+            if (entity == null) return false;
+            return SoftRemove(entity);
+        }
+        public bool Update(TEntity entity)
         {
             entity.ModificationDate = _timeService.GetCurrentTime();
             entity.ModificationBy = _claimsService.GetCurrentUserId;
             _dbSet.Update(entity);
+            return true;
         }
 
-        public async Task AddRangeAsync(List<TEntity> entities)
+        public async Task<bool> AddRangeAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -56,9 +70,10 @@ namespace Infrastructures.Repositories
                 entity.CreatedBy = _claimsService.GetCurrentUserId;
             }
             await _dbSet.AddRangeAsync(entities);
+            return true;
         }
 
-        public void SoftRemoveRange(List<TEntity> entities)
+        public bool SoftRemoveRange(List<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -67,6 +82,7 @@ namespace Infrastructures.Repositories
                 entity.DeleteBy = _claimsService.GetCurrentUserId;
             }
             _dbSet.UpdateRange(entities);
+            return true;
         }
 
         public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10)
@@ -89,7 +105,7 @@ namespace Infrastructures.Repositories
             return result;
         }
 
-        public void UpdateRange(List<TEntity> entities)
+        public bool UpdateRange(List<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -97,6 +113,9 @@ namespace Infrastructures.Repositories
                 entity.CreatedBy = _claimsService.GetCurrentUserId;
             }
             _dbSet.UpdateRange(entities);
+            return true;    
         }
+
+       
     }
 }

@@ -24,16 +24,21 @@ namespace Application.Services
             _configuration = configuration;
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync() => await _unitOfWork.UserRepository.GetAllAsync();
+        public async Task<User?> GetByIdAsync(Guid entityId) => await _unitOfWork.UserRepository.GetByIdAsync(entityId);
+        public async Task<bool> AddAsync(User newUser) => await _unitOfWork.UserRepository.AddAsync(newUser);
+        public bool Remove(Guid entityId) => _unitOfWork.UserRepository.SoftRemoveByID(entityId);
+        public bool Update(User entity) => _unitOfWork.UserRepository.Update(entity);
         public async Task<string> LoginAsync(UserLoginDTO userObject)
         {
             var user = await _unitOfWork.UserRepository.GetUserByUserNameAndPasswordHash(userObject.UserName, userObject.Password.Hash());
             return user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime());
         }
 
-        public async Task RegisterAsync(UserLoginDTO userObject)
+        public async Task RegisterAsync(UserRegisterDTO userObject)
         {
             // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.UserName);
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.Email);
 
             if (isExited)
             {
@@ -42,12 +47,14 @@ namespace Application.Services
 
             var newUser = new User
             {
-                Email = userObject.UserName,
-                PasswordHash = userObject.Password.Hash()
+                Email = userObject.Email,
+                PasswordHash = userObject.Password.Hash(),
+                Address = userObject.Address
             };
 
             await _unitOfWork.UserRepository.AddAsync(newUser);
             await _unitOfWork.SaveChangeAsync();
         }
+
     }
 }

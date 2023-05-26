@@ -38,7 +38,7 @@ namespace Infrastructures
             modelBuilder.Entity<Batch>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.Property(x => x.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.BatchType).HasMaxLength(20);
 
@@ -54,7 +54,7 @@ namespace Infrastructures
             modelBuilder.Entity<Building>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.Property(x => x.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.Name).HasMaxLength(100);
             });
@@ -63,7 +63,7 @@ namespace Infrastructures
             {
                 entity.HasKey(e => e.Id);
 
-                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.Property(x => x.Id).HasDefaultValueSql("NEWID()");
                 entity.Property(e => e.Status).HasMaxLength(20);
 
                 entity.HasOne(d => d.User).WithMany(p => p.DriverReports)
@@ -74,7 +74,7 @@ namespace Infrastructures
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(x => x.Id).ValueGeneratedOnAdd();
+                entity.Property(x => x.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.DeliveringStatus).HasMaxLength(20);
                 entity.Property(e => e.TotalPrice).HasColumnType("decimal(10, 2)");
@@ -99,7 +99,7 @@ namespace Infrastructures
             modelBuilder.Entity<Package>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
                 entity.Property(e => e.WeightKg).HasColumnType("decimal(10, 2)");
@@ -116,7 +116,7 @@ namespace Infrastructures
             modelBuilder.Entity<Payment>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.Status).HasMaxLength(20);
 
@@ -128,7 +128,7 @@ namespace Infrastructures
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.HasKey(e => e.RoleId);
-                entity.Property(e => e.RoleId).ValueGeneratedOnAdd();
+                entity.Property(e => e.RoleId).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.RoleName).HasMaxLength(50);
             });
@@ -136,7 +136,7 @@ namespace Infrastructures
             modelBuilder.Entity<Service>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.PricePerKg).HasColumnType("decimal(10, 2)");
 
@@ -148,7 +148,7 @@ namespace Infrastructures
             modelBuilder.Entity<Store>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.Name).HasMaxLength(100);
 
@@ -160,7 +160,7 @@ namespace Infrastructures
             modelBuilder.Entity<StoreReport>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.Status).HasMaxLength(20);
 
@@ -176,7 +176,7 @@ namespace Infrastructures
             modelBuilder.Entity<TimeSlot>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.Property(e => e.Date).HasColumnType("date");
             });
@@ -184,7 +184,7 @@ namespace Infrastructures
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).HasDefaultValueSql("NEWID()");
 
                 entity.HasIndex(e => e.Email).IsUnique();
 

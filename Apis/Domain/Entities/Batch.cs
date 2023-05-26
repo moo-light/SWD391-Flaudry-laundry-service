@@ -9,7 +9,7 @@ public partial class Batch :BaseEntity
 
     public Guid DriverId { get; set; }
 
-    public string BatchType { get; set; } = null!;
+    public string BatchType { get; set; } 
 
     public Guid? TimeSlotId { get; set; }
 
