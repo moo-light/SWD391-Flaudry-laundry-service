@@ -1,0 +1,18 @@
+swagger: '2.0'
+info:
+  title: Example API
+  description: This is an example API
+  version: 1.0.0
+  
+produces:
+  - application/json
+
+paths:
+  /example:
+    get:
+      summary: Get an example resource
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK

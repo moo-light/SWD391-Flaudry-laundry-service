@@ -21,6 +21,11 @@ namespace Infrastructures
         public IUserRepository UserRepository => _userRepository;
         public IOrderRepository OrderRepository => _orderRepository;
 
+        public int SaveChange()
+        {
+            return _dbContext.SaveChanges();
+        }
+
         public async Task<int> SaveChangeAsync()
         {
             return await _dbContext.SaveChangesAsync();

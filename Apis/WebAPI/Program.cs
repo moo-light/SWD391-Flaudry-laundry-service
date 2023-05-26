@@ -2,6 +2,11 @@ using Infrastructures;
 using WebAPI.Middlewares;
 using WebAPI;
 using Application.Commons;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +28,22 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.DefaultModelExpandDepth(0);
+        c.DefaultModelsExpandDepth(-1);
+        c.DefaultModelRendering(ModelRendering.Example);
+        c.DisplayOperationId();
+        c.DisplayRequestDuration();
+        c.DocExpansion(DocExpansion.None);
+        c.EnableDeepLinking();
+        c.EnableFilter();
+        c.ShowExtensions();
+        c.EnableValidator();
+
+        // Add this line to configure Swagger UI to use JSON as the default response format
+    });
 }
 
 app.UseMiddleware<GlobalExceptionMiddleware>();

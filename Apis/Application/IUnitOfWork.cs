@@ -8,6 +8,7 @@ namespace Application
         public IUserRepository UserRepository { get; }
         public IOrderRepository OrderRepository { get; }
 
+        int SaveChange();
         public Task<int> SaveChangeAsync();
     }
 }

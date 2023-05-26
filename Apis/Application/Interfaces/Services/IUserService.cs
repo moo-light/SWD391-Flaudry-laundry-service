@@ -6,7 +6,7 @@ namespace Application.Interfaces
     public interface IUserService
     {
         public Task RegisterAsync(UserRegisterDTO userObject);
-        public Task<string> LoginAsync(UserLoginDTO userObject);
+        public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
         Task<bool> AddAsync(User user);
         bool Remove(Guid entityId);
         bool Update(User entity);

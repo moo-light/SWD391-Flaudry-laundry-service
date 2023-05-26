@@ -35,6 +35,7 @@ namespace Infrastructures.Repositories
 
         public async Task<bool> AddAsync(TEntity entity)
         {
+            entity.Id = Guid.NewGuid();
             entity.CreationDate = _timeService.GetCurrentTime();
             entity.CreatedBy = _claimsService.GetCurrentUserId;
             await _dbSet.AddAsync(entity);

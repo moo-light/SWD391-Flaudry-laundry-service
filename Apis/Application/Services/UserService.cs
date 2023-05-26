@@ -26,13 +26,32 @@ namespace Application.Services
 
         public async Task<IEnumerable<User>> GetAllAsync() => await _unitOfWork.UserRepository.GetAllAsync();
         public async Task<User?> GetByIdAsync(Guid entityId) => await _unitOfWork.UserRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(User newUser) => await _unitOfWork.UserRepository.AddAsync(newUser);
-        public bool Remove(Guid entityId) => _unitOfWork.UserRepository.SoftRemoveByID(entityId);
-        public bool Update(User entity) => _unitOfWork.UserRepository.Update(entity);
-        public async Task<string> LoginAsync(UserLoginDTO userObject)
+        public async Task<bool> AddAsync(User user)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUserNameAndPasswordHash(userObject.UserName, userObject.Password.Hash());
-            return user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime());
+            await _unitOfWork.UserRepository.AddAsync(user);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public bool Remove(Guid entityId)
+        {
+            _unitOfWork.UserRepository.SoftRemoveByID(entityId);
+            return _unitOfWork.SaveChange() > 0;
+        }
+
+        public bool Update(User entity)
+        {
+            _unitOfWork.UserRepository.Update(entity);
+            return _unitOfWork.SaveChange() > 0;
+        }
+
+        public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
+        {
+            var user = await _unitOfWork.UserRepository.GetUserByUserNameAndPasswordHash(userObject.Email, userObject.Password.Hash());
+            return new UserLoginDTOResponse
+            {
+                UserId = user.Id,
+                JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+            };
         }
 
         public async Task RegisterAsync(UserRegisterDTO userObject)
