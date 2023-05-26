@@ -7,7 +7,7 @@ public partial class Role
 {
     public Guid RoleId { get; set; }
 
-    public string RoleName { get; set; } = null!;
+    public string? RoleName { get; set; }
 
     public string? RolePermission { get; set; }
 

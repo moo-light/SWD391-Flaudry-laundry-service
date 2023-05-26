@@ -7,13 +7,13 @@ namespace Domain.Entities;
 public partial class Batch :BaseEntity
 {
 
-    public Guid DriverId { get; set; }
+    public Guid? DriverId { get; set; }
 
-    public string BatchType { get; set; } 
+    public string? BatchType { get; set; } 
 
     public Guid? TimeSlotId { get; set; }
 
-    public virtual User Driver { get; set; } = null!;
+    public virtual User? Driver { get; set; } 
 
     public virtual TimeSlot? TimeSlot { get; set; }
 }

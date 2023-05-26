@@ -6,13 +6,13 @@ namespace Domain.Entities;
 
 public partial class Service : BaseEntity
 {
-    public Guid StoreId { get; set; }
+    public Guid? StoreId { get; set; }
 
-    public decimal PricePerKg { get; set; }
+    public decimal? PricePerKg { get; set; }
 
     public virtual ICollection<Package> Packages { get; } = new List<Package>();
 
-    public virtual Store Store { get; set; } = null!;
+    public virtual Store? Store { get; set; } 
 
     public virtual ICollection<StoreReport> StoreReports { get; } = new List<StoreReport>();
 }

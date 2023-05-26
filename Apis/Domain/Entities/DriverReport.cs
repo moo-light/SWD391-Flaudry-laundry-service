@@ -7,11 +7,10 @@ namespace Domain.Entities;
 public partial class DriverReport:BaseEntity
 {
 
-    public Guid UserId { get; set; }
+    public Guid? UserId { get; set; }
 
-    public string Reason { get; set; } = null!;
+    public string? Reason { get; set; } 
+    public string? Status { get; set; } 
 
-    public string Status { get; set; } = null!;
-
-    public virtual User User { get; set; } = null!;
+    public virtual User? User { get; set; } 
 }

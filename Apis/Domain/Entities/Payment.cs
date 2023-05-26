@@ -7,9 +7,9 @@ namespace Domain.Entities;
 public partial class Payment:BaseEntity
 {
 
-    public Guid PackageId { get; set; }
+    public Guid? PackageId { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string? Status { get; set; } = string.Empty;
 
-    public virtual Package Package { get; set; } = null!;
+    public virtual Package? Package { get; set; } 
 }

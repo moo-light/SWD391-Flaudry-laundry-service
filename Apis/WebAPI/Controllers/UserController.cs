@@ -25,14 +25,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddAsync(User entity)
         {
             var result = await _userService.AddAsync(entity);
-            return result ? Ok(result) : BadRequest(result);
+            return result ? Ok() : BadRequest();
         }
         [HttpPut]
 
         public IActionResult Update(User entity)
         {
             var result = _userService.Update(entity);
-            return result ? Ok(result) : BadRequest(result);
+            return result ? Ok() : BadRequest();
         }
         [HttpGet]
         public async Task<IActionResult> GetByIDAsync(Guid entityId)
@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
         public IActionResult DeleteById(Guid entityId)
         {
             var result = _userService.Remove(entityId);
-            return result ? Ok(result) : BadRequest(result);
+            return result ? Ok() : BadRequest();
         }
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
