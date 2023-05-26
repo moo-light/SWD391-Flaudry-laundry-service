@@ -26,9 +26,7 @@ namespace Infrastructures
 
             // ATTENTION: if you do migration please check file README.md
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(databaseConnection).EnableSensitiveDataLogging());
-            Console.WriteLine("\n\n\n\n\nAppDbContext\n\n\n\n\n");
             // this configuration just use in-memory for fast develop
-            //services.AddDbContext<AppDbContext>(option => option.UseInMemoryDatabase("test"));
 
             services.AddAutoMapper(typeof(MapperConfigurationsProfile).Assembly);
 
