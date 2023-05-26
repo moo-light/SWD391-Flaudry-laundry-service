@@ -1,6 +1,19 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entitiess;
+using System;
+using System.Collections.Generic;
 
-public class Batch : BaseEntity
+namespace Domain.Entities;
+
+public partial class Batch :BaseEntity
 {
-    
+
+    public Guid DriverId { get; set; }
+
+    public string BatchType { get; set; } = null!;
+
+    public Guid? TimeSlotId { get; set; }
+
+    public virtual User Driver { get; set; } = null!;
+
+    public virtual TimeSlot? TimeSlot { get; set; }
 }

@@ -14,6 +14,6 @@ namespace Application.Interfaces.Repositories
         /// <exception cref="Exception"></exception>
         Task<User> GetUserByUserNameAndPasswordHash(string username, string passwordHash);
 
-        Task<bool> CheckUserNameExited(string username);
+        Task<bool> CheckEmailExisted(string username);
     }
 }

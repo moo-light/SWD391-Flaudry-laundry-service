@@ -14,11 +14,11 @@ namespace Application.Utils
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier ,user.UserName),
+                new Claim(ClaimTypes.NameIdentifier ,user.Email),
             };
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: now.AddMinutes(15),
+                expires: now.AddMinutes(30),
                 signingCredentials: credentials);
 
 

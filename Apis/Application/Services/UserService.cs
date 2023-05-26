@@ -33,7 +33,7 @@ namespace Infrastructures.Services
         public async Task RegisterAsync(UserLoginDTO userObject)
         {
             // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckUserNameExited(userObject.UserName);
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.UserName);
 
             if(isExited)
             {
@@ -42,7 +42,7 @@ namespace Infrastructures.Services
 
             var newUser = new User
             {
-                UserName = userObject.UserName,
+                Email = userObject.UserName,
                 PasswordHash = userObject.Password.Hash()
             };
 

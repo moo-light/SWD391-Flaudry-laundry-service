@@ -1,8 +1,8 @@
 ﻿using Application.Interfaces;
 using Application.Commons;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Application.Interfaces.Repositories;
+using Domain.Entitiess;
 
 namespace Infrastructures.Repositories
 {

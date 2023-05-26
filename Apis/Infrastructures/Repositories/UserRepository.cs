@@ -19,12 +19,12 @@ namespace Infrastructures.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<bool> CheckUserNameExited(string username) => _dbContext.Users.AnyAsync(u => u.UserName == username);
+        public Task<bool> CheckEmailExisted(string email) => _dbContext.Users.AnyAsync(u => u.Email == email);
 
-        public async Task<User> GetUserByUserNameAndPasswordHash(string username, string passwordHash)
+        public async Task<User> GetUserByUserNameAndPasswordHash(string email, string passwordHash)
         {
             var user = await _dbContext.Users
-                .FirstOrDefaultAsync( record => record.UserName == username
+                .FirstOrDefaultAsync( record => record.Email == email
                                         && record.PasswordHash == passwordHash);
             if(user is null)
             {

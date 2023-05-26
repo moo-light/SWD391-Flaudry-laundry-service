@@ -12,7 +12,7 @@ namespace Infrastructures.FluentAPIs
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.Property(x => x.UserName).HasMaxLength(100);
+            builder.Property(x => x.Email).HasMaxLength(100);
         }
     }
 }
