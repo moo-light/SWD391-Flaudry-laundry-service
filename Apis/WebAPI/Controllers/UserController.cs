@@ -1,10 +1,11 @@
 using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Application.ViewModels.UserViewModels;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace WebAPI.Controllers
 {
-  public class UserController : BaseController
+  public class UserController : BaseController,IWebController
     {
         private readonly IUserService _userService;
 
@@ -18,5 +19,9 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         public async Task<string> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
+
+        //[HttpGet]
+
+
     }
 }

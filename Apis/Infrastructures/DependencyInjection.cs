@@ -4,7 +4,6 @@ using Application.Interfaces.Repositories;
 using Application.Services;
 using Infrastructures.Mappers;
 using Infrastructures.Repositories;
-using Infrastructures.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

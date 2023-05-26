@@ -7,7 +7,7 @@ using AutoMapper;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructures.Services
+namespace Application.Services
 {
     public class UserService : IUserService
     {
@@ -21,7 +21,7 @@ namespace Infrastructures.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _currentTime = currentTime;
-            _configuration= configuration;
+            _configuration = configuration;
         }
 
         public async Task<string> LoginAsync(UserLoginDTO userObject)
@@ -35,7 +35,7 @@ namespace Infrastructures.Services
             // check username exited
             var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.UserName);
 
-            if(isExited)
+            if (isExited)
             {
                 throw new Exception("Username exited please try again");
             }
