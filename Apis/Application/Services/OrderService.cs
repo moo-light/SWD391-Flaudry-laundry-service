@@ -1,27 +1,36 @@
-﻿using Application.Commons;
-using Application.Interfaces;
-using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Interfaces;
+using Application.Interfaces.Services;
+using Domain.Entities;
 
 namespace Application.Services
 {
     public class OrderService:IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ICurrentTime _currentTime;
-        private readonly AppConfiguration _configuration;
 
-        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ICurrentTime currentTime, AppConfiguration configuration)
+        public OrderService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _currentTime = currentTime;
-            _configuration = configuration;
         }
+        public async Task<IEnumerable<Order>> GetAllAsync() => await _unitOfWork.OrderRepository.GetAllAsync();
+        public async Task<Order?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderRepository.GetByIdAsync(entityId);
+        public async Task<bool> AddAsync(Order order)
+        {
+            await _unitOfWork.OrderRepository.AddAsync(order);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public bool Remove(Guid entityId)
+        {
+            _unitOfWork.OrderRepository.SoftRemoveByID(entityId);
+            return _unitOfWork.SaveChange() > 0;
+        }
+
+        public bool Update(Order entity)
+        {
+            _unitOfWork.OrderRepository.Update(entity);
+            return _unitOfWork.SaveChange() > 0;
+        }
+
     }
 }

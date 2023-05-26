@@ -3,6 +3,7 @@ using Application.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Application.Interfaces;
 using Domain.Entities;
+using Application.Interfaces.Services;
 
 namespace WebAPI.Controllers
 {
@@ -54,8 +55,6 @@ namespace WebAPI.Controllers
             var result = await _userService.GetAllAsync();
             return result.Count() > 0 ? Ok(result) : BadRequest(result);
         }
-
-        //[HttpGet]
 
 
     }

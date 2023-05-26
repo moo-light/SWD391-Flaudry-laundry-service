@@ -1,6 +1,7 @@
 ﻿using Application;
 using Application.Commons;
 using Application.Interfaces;
+using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
@@ -29,18 +30,18 @@ namespace Application.Services
         public async Task<bool> AddAsync(User user)
         {
             await _unitOfWork.UserRepository.AddAsync(user);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangeAsync() >0;
         }
 
         public bool Remove(Guid entityId)
         {
-            _unitOfWork.UserRepository.SoftRemoveByID(entityId);
+             _unitOfWork.UserRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
         }
 
         public bool Update(User entity)
         {
-            _unitOfWork.UserRepository.Update(entity);
+             _unitOfWork.UserRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
@@ -52,7 +53,7 @@ namespace Application.Services
                 UserId = user.Id,
                 JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
             };
-        }
+    }
 
         public async Task RegisterAsync(UserRegisterDTO userObject)
         {
