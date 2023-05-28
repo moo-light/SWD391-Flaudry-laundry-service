@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Domain.Entitiess;
+using System;
 using System.Collections.Generic;
 
 namespace Domain.Entities;
 
-public partial class Role
+public partial class Role : BaseEntity
 {
     public Guid RoleId { get; set; }
 
