@@ -1,7 +1,10 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.Utils;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
@@ -20,6 +23,22 @@ namespace Infrastructures.Repositories
         }
 
         public Task<bool> CheckEmailExisted(string email) => _dbContext.Users.AnyAsync(u => u.Email == email);
+
+        public override async Task<IEnumerable<User>> GetFilterAsync(User user)
+        {
+            IQueryable<User> result = null;
+
+            Expression<Func<User, bool>> address = x => user.Address.IsNullOrEmpty() || x.Address.Contains(user.Address);
+            Expression<Func<User, bool>> email = x => user.Email.IsNullOrEmpty() || x.Email.Contains(user.Email);
+            Expression<Func<User, bool>> phoneNumber = x => user.PhoneNumber.IsNullOrEmpty() || x.PhoneNumber.Contains(user.PhoneNumber);
+            Expression<Func<User, bool>> fullName = x => user.FullName.IsNullOrEmpty() || x.FullName.Contains(user.FullName) ;
+
+            var predicates = ExpressionUtils.CreateListOfExpression(address,email, phoneNumber, fullName);
+
+            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+                 
+            return result.AsEnumerable();
+        }
 
         public async Task<User> GetUserByUserNameAndPasswordHash(string email, string passwordHash)
         {

@@ -1,12 +1,16 @@
 ﻿using Application.Commons;
+using Domain.Entities;
 using Domain.Entitiess;
+using System.Linq.Expressions;
 
 namespace Application.Interfaces.Repositories
 {
     public interface IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        Task<List<TEntity>> GetAllAsync(params System.Linq.Expressions.Expression<Func<TEntity, object>>[] includes);
+        Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
+        Task<int> GetCountAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity?> GetByIdAsync(Guid id);
+        Task<IEnumerable<TEntity>> GetFilterAsync(TEntity entity);
         Task<bool> AddAsync(TEntity entity);
         bool Update(TEntity entity);
         bool UpdateRange(List<TEntity> entities);

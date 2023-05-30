@@ -7,9 +7,10 @@ namespace WebAPI.Controllers
     public interface IWebController<TEntity> where TEntity : BaseEntity
     {
         Task<IActionResult> AddAsync(TEntity entity);
-        IActionResult DeleteById(Guid entityId);
-        Task<IActionResult> GetAllAsync();
-        Task<IActionResult> GetByIDAsync(Guid entityId);
+        IActionResult DeleteById(Guid id);
+        Task<IActionResult> GetByIDAsync(Guid id);
+        //Task<IActionResult> GetCount();
+        //Task<IActionResult> GetListWithFilter(TEntity entity);
         IActionResult Update(TEntity entity);
     }
 }

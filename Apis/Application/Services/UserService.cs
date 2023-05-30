@@ -76,5 +76,14 @@ namespace Application.Services
             await _unitOfWork.SaveChangeAsync();
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.UserRepository.GetCountAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetFilter(User user)
+        {
+            return await _unitOfWork.UserRepository.GetFilterAsync(user);
+        }
     }
 }

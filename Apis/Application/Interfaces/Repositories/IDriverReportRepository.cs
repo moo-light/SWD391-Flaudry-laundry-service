@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IDriverReportRepository :IGenericRepository<DriverReport>
+    public interface IDriverReportRepository : IGenericRepository<DriverReport>
     {
     }
 }

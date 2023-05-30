@@ -12,6 +12,8 @@ namespace Application.Interfaces.Services
         Task<bool> AddAsync(Payment entity);
         Task<IEnumerable<Payment>> GetAllAsync();
         Task<Payment?> GetByIdAsync(Guid entityId);
+        Task<int> GetCountAsync();
+        Task<IEnumerable<Payment>> GetFilter(Payment entity);
         bool Remove(Guid entityId);
         bool Update(Payment entity);
     }

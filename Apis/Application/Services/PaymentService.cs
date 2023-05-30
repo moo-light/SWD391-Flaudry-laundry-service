@@ -26,6 +26,18 @@ namespace Application.Services
         public async Task<IEnumerable<Payment>> GetAllAsync() => await _unitOfWork.PaymentRepository.GetAllAsync();
 
         public async Task<Payment?> GetByIdAsync(Guid entityId) => await _unitOfWork.PaymentRepository.GetByIdAsync(entityId);
+
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.PaymentRepository.GetCountAsync();
+        }
+
+        public async Task<IEnumerable<Payment>> GetFilter(Payment entity)
+        {
+            return await _unitOfWork.PaymentRepository.GetFilterAsync(entity);
+
+        }
+
         public bool Remove(Guid entityId)
         {
             _unitOfWork.PaymentRepository.SoftRemoveByID(entityId);

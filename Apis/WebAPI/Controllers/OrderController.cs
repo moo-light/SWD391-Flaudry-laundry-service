@@ -51,6 +51,16 @@ namespace WebAPI.Controllers
             return result.Count() > 0 ? Ok(result) : BadRequest(result);
         }
 
-      
+        public async Task<IActionResult> GetCount()
+        {
+            var result = await _orderService.GetCountAsync();
+            return result > 0 ? Ok(result) : BadRequest();
+        }
+
+        public async Task<IActionResult> GetListWithFilter(Order entity)
+        {
+            var result = await _orderService.GetFilter(entity);
+            return result != null ? Ok(result) : BadRequest();
+        }
     }
 }

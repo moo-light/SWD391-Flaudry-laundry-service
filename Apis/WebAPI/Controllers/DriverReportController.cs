@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Services;
+using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +36,19 @@ namespace WebAPI.Controllers
             var result = await _driverReportService.GetByIdAsync(entityId);
             return (result != null ? Ok() : BadRequest());
         }
+
+        public Task<IActionResult> GetCount()
+        {
+            var result = await _driverReportService.GetCountAsync();
+            return result > 0 ? Ok(result) : BadRequest();
+        }
+
+        public Task<IActionResult> GetListWithFilter(DriverReport entity)
+        {
+            var result = await _driverReportService.GetFilter(entity);
+            return result != null ? Ok(result) : BadRequest();
+        }
+
         [HttpPut]
         public IActionResult Update(DriverReport entity)
         {

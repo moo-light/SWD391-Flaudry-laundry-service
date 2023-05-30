@@ -27,6 +27,17 @@ namespace Application.Services
 
         public async Task<DriverReport?> GetByIdAsync(Guid entityId) => await _unitOfWork.DriverReportRepository.GetByIdAsync(entityId);
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.DriverReportRepository.GetCountAsync();
+        }
+
+        public async Task<IEnumerable<DriverReport>> GetFilter(DriverReport entity)
+        {
+            return await _unitOfWork.DriverReportRepository.GetFilterAsync(entity);
+
+        }
+
         public bool Remove(Guid entityId)
         {
             _unitOfWork.DriverReportRepository.SoftRemoveByID(entityId);

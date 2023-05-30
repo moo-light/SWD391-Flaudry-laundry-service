@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.Services
 {
-    public class OrderService:IOrderService
+    public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -32,5 +32,14 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.OrderRepository.GetCountAsync();
+        }
+
+        public async Task<IEnumerable<Order>> GetFilter(Order entity)
+        {
+            return await _unitOfWork.OrderRepository.GetFilterAsync();
+        }
     }
 }

@@ -36,6 +36,19 @@ namespace WebAPI.Controllers
             var result = await _paymentService.GetByIdAsync(entityId);
             return result != null ? Ok(result) : BadRequest(result);
         }
+
+        public Task<IActionResult> GetCount()
+        {
+            var result = await _paymentService.GetCountAsync();
+            return result > 0 ? Ok(result) : BadRequest();
+        }
+
+        public async Task<IActionResult> GetListWithFilter(Payment entity)
+        {
+            IEnumerable<Payment> result = await _paymentService.GetFilter(entity);
+            return result != null ? Ok(result) : BadRequest();
+        }
+
         [HttpPut]
         public IActionResult Update(Payment entity)
         {

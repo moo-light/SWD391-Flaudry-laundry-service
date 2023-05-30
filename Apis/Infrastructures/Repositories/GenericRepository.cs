@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Application.Interfaces.Repositories;
 using Domain.Entitiess;
 using System.Linq.Expressions;
+using Domain.Entities;
 
 namespace Infrastructures.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
+    public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         protected DbSet<TEntity> _dbSet;
         private readonly ICurrentTime _timeService;
@@ -25,7 +26,12 @@ namespace Infrastructures.Repositories
                (entity, property) => entity.Include(property))
            .Where(x => x.IsDeleted == false)
            .ToListAsync();
-
+        public async Task<int> GetCountAsync(params Expression<Func<TEntity, object>>[] includes) =>
+            await includes
+           .Aggregate(_dbSet.AsQueryable(),
+               (entity, property) => entity.Include(property))
+           .Where(x => x.IsDeleted == false)
+           .CountAsync();
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
             var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
@@ -62,7 +68,7 @@ namespace Infrastructures.Repositories
             _dbSet.Update(entity);
             return true;
         }
-
+        public abstract Task<IEnumerable<TEntity>> GetFilterAsync(TEntity entity);
         public async Task<bool> AddRangeAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)
@@ -117,6 +123,5 @@ namespace Infrastructures.Repositories
             return true;    
         }
 
-       
     }
 }

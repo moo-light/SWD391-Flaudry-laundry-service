@@ -9,5 +9,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface IPaymentRepository : IGenericRepository<Payment>
     {
+        Task<IEnumerable<Payment>> GetFilterAsync();
     }
 }

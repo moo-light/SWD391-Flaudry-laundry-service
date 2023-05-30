@@ -12,4 +12,6 @@ public interface IUserService
     bool Update(User entity);
     Task<User?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<User>> GetAllAsync();
+    Task<int> GetCountAsync();
+    Task<IEnumerable<User>> GetFilter(User entity);
 }

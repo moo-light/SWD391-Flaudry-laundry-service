@@ -12,6 +12,8 @@ namespace Application.Interfaces.Services
         Task<bool> AddAsync(DriverReport entity);
         Task<IEnumerable<DriverReport>> GetAllAsync();
         Task<DriverReport?> GetByIdAsync(Guid entityId);
+        Task<int> GetCountAsync();
+        Task<IEnumerable<DriverReport>> GetFilter(DriverReport entity);
         bool Remove(Guid entityId);
         bool Update(DriverReport entity);
     }
