@@ -17,6 +17,10 @@ namespace Infrastructures.Repositories
     {
         _dbContext = dbContext;
     }
+        public override Task<IEnumerable<TimeSlot>> GetFilterAsync(TimeSlot entity)
+        {
+            throw new NotImplementedException();
+        }
 
 }
 }

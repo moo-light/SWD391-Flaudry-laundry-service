@@ -1,10 +1,11 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
 using Application.Services;
+using Application.Utils;
 using FluentAssertions;
 using Infrastructures;
 using Infrastructures.Repositories;
-using Infrastructures.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;

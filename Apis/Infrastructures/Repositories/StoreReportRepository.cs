@@ -17,6 +17,10 @@ namespace Infrastructures.Repositories
     {
         _dbContext = dbContext;
     }
+        public override Task<IEnumerable<StoreReport>> GetFilterAsync(StoreReport entity)
+        {
+            throw new NotImplementedException();
+        }
 
 }
 }

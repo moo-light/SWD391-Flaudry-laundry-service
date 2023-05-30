@@ -18,5 +18,10 @@ namespace Infrastructures.Repositories
         {
             _appDbContext = context;
         }
+
+        public override Task<IEnumerable<Building>> GetFilterAsync(Building entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

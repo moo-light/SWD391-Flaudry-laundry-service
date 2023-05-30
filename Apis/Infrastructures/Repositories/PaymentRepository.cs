@@ -33,5 +33,6 @@ namespace Infrastructures.Repositories
 
             return result.AsEnumerable();
         }
+
     }
 }

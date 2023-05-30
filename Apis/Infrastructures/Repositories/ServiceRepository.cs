@@ -18,5 +18,9 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-}
+        public override Task<IEnumerable<Service>> GetFilterAsync(Service entity)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
