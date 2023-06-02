@@ -41,8 +41,6 @@ if (app.Environment.IsDevelopment())
         c.EnableFilter();
         c.ShowExtensions();
         c.EnableValidator();
-
-        // Add this line to configure Swagger UI to use JSON as the default response format
     });
 }
 
