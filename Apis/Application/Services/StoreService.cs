@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
+using Application.ViewModels;
 using Domain.Entities;
 
 namespace Application.Services
@@ -33,6 +34,15 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.StoreRepository.GetCountAsync();
+        }
 
+        public async Task<IEnumerable<Store>> GetFilterAsync(BaseFilterringModel entity)
+        {
+            return await _unitOfWork.StoreRepository.GetFilterAsync(entity);
+
+        }
     }
 }

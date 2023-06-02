@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Application.Interfaces.Services
         Task<bool> AddAsync(Batch batch);
         Task<IEnumerable<Batch>> GetAllAsync();
         Task<Batch?> GetByIdAsync(Guid entityId);
+        Task<int> GetCountAsync();
+        Task<IEnumerable<Batch>> GetFilterAsync(BaseFilterringModel entity);
         bool Remove(Guid entityId);
         bool Update(Batch entity);
     }

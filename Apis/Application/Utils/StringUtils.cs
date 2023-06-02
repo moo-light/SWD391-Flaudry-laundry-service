@@ -9,7 +9,7 @@ namespace Application.Utils
             // todo hash the string
             return input;
         }
-        public static bool IsCorrectEnum(this string current, Type @enum)
+        public static bool IsValidEnum(this string current, Type @enum)
         {
             var values = Enum.GetNames(@enum);
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Payment>> GetAllAsync();
         Task<Payment?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<IEnumerable<Payment>> GetFilter(Payment entity);
+        Task<IEnumerable<Payment>> GetFilterAsync(BaseFilterringModel entity);
         bool Remove(Guid entityId);
         bool Update(Payment entity);
     }

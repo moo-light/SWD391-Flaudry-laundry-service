@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
+using Application.ViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -20,19 +21,23 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public override async Task<IEnumerable<Payment>> GetFilterAsync(Payment entity)
+        //public override async Task<IEnumerable<Payment>> GetFilterAsync(Payment entity)
+        //{
+        //    IQueryable<Payment> result;
+
+        //    Expression<Func<Payment, bool>> status = x => entity.Status.EmptyOrContainedIn(x.Status);
+        //    Expression<Func<Payment, bool>> packageId = x => entity.PackageId.EmptyOrEquals(x.PackageId);
+
+        //    var predicates = ExpressionUtils.CreateListOfExpression(status,packageId);
+
+        //    result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+
+        //    return result.AsEnumerable();
+        //}
+
+        public override Task<IQueryable<Payment>> GetFilterAsync(BaseFilterringModel entity)
         {
-            IQueryable<Payment> result;
-
-            Expression<Func<Payment, bool>> status = x => entity.Status.EmptyOrContainedIn(x.Status);
-            Expression<Func<Payment, bool>> packageId = x => entity.PackageId.EmptyOrEquals(x.PackageId);
-
-            var predicates = ExpressionUtils.CreateListOfExpression(status,packageId);
-
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
-
-            return result.AsEnumerable();
+            throw new NotImplementedException();
         }
-
     }
 }

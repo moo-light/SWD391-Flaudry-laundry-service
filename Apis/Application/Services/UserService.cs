@@ -3,6 +3,7 @@ using Application.Commons;
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
+using Application.ViewModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -81,7 +82,7 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<User>> GetFilter(User user)
+        public async Task<IEnumerable<User>> GetFilterAsync(UserFilteringModel user)
         {
             return await _unitOfWork.UserRepository.GetFilterAsync(user);
         }

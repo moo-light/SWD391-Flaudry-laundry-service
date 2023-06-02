@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
+using Application.ViewModels;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
@@ -21,19 +22,21 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public override async Task<IEnumerable<DriverReport>> GetFilterAsync(DriverReport entity)
+        public override Task<IQueryable<DriverReport>> GetFilterAsync(BaseFilterringModel entity)
         {
-            IQueryable<DriverReport> result = null;
+            //IQueryable<DriverReport> result = null;
 
-            Expression<Func<DriverReport, bool>> userId = x => entity.UserId.HasValue == false || x.UserId == entity.UserId;
-            Expression<Func<DriverReport, bool>> reason = x => entity.Reason.IsNullOrEmpty() || x.Reason.Contains(entity.Reason);
-            Expression<Func<DriverReport, bool>> status = x => (entity.Status.IsNullOrEmpty()) || x.Status.Contains(entity.Status) ;
+            //Expression<Func<DriverReport, bool>> userId = x => entity.UserId.HasValue == false || x.UserId == entity.UserId;
+            //Expression<Func<DriverReport, bool>> reason = x => entity.Reason.IsNullOrEmpty() || x.Reason.Contains(entity.Reason);
+            //Expression<Func<DriverReport, bool>> status = x => (entity.Status.IsNullOrEmpty()) || x.Status.Contains(entity.Status) ;
 
-            var predicates = ExpressionUtils.CreateListOfExpression(userId,reason,status);
+            //var predicates = ExpressionUtils.CreateListOfExpression(userId,reason,status);
 
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            //result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
 
-            return result.AsEnumerable();
+            //return result.AsEnumerable();
+            throw new NotImplementedException();
         }
+
     }
 }

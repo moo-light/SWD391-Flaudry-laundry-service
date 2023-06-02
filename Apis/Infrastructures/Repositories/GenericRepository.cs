@@ -5,6 +5,7 @@ using Application.Interfaces.Repositories;
 using Domain.Entitiess;
 using System.Linq.Expressions;
 using Domain.Entities;
+using Application.ViewModels;
 
 namespace Infrastructures.Repositories
 {
@@ -38,7 +39,6 @@ namespace Infrastructures.Repositories
             // todo should throw exception when not found
             return result;
         }
-
         public async Task<bool> AddAsync(TEntity entity)
         {
             entity.Id = Guid.NewGuid();
@@ -68,7 +68,7 @@ namespace Infrastructures.Repositories
             _dbSet.Update(entity);
             return true;
         }
-        public abstract Task<IEnumerable<TEntity>> GetFilterAsync(TEntity entity);
+        public abstract Task<IQueryable<TEntity>> GetFilterAsync(BaseFilterringModel entity);
         public async Task<bool> AddRangeAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)
@@ -123,5 +123,6 @@ namespace Infrastructures.Repositories
             return true;    
         }
 
+      
     }
 }

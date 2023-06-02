@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Application.Services
             return await _unitOfWork.PaymentRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Payment>> GetFilter(Payment entity)
+        public async Task<IEnumerable<Payment>> GetFilterAsync(BaseFilterringModel entity)
         {
             return await _unitOfWork.PaymentRepository.GetFilterAsync(entity);
 

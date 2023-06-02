@@ -1,4 +1,5 @@
 ﻿using Application.Commons;
+using Application.ViewModels;
 using Domain.Entities;
 using Domain.Entitiess;
 using System.Linq.Expressions;
@@ -10,7 +11,7 @@ namespace Application.Interfaces.Repositories
         Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<int> GetCountAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity?> GetByIdAsync(Guid id);
-        Task<IEnumerable<TEntity>> GetFilterAsync(TEntity entity);
+        Task<IQueryable<TEntity>> GetFilterAsync(BaseFilterringModel entity);
         Task<bool> AddAsync(TEntity entity);
         bool Update(TEntity entity);
         bool UpdateRange(List<TEntity> entities);

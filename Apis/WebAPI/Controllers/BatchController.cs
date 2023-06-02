@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces.Services;
+using Application.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +16,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Batch entity)
+        public async Task<IActionResult> Add(Batch entity)
         {
             var result = await _batchService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -42,6 +44,18 @@ namespace WebAPI.Controllers
         {
             var result = _batchService.Update(entity);
             return result ? Ok() : BadRequest();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCount()
+        {
+            var result = await _batchService.GetCountAsync();
+            return result > 0 ? Ok(result) : BadRequest();
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        {
+            var result = await _batchService.GetFilterAsync(entity);
+            return result != null ? Ok(result) : BadRequest();
         }
     }
 }

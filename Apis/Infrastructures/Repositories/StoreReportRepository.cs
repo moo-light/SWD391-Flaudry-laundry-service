@@ -1,6 +1,10 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.Utils;
+using Application.ViewModels;
 using Domain.Entities;
+using Domain.Enums;
+using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
@@ -17,9 +21,17 @@ namespace Infrastructures.Repositories
     {
         _dbContext = dbContext;
     }
-        public override Task<IEnumerable<StoreReport>> GetFilterAsync(StoreReport entity)
+        public override async Task<IQueryable<StoreReport>> GetFilterAsync(BaseFilterringModel entity)
         {
-            throw new NotImplementedException();
+            IQueryable<StoreReport> result = null;
+
+            Expression<Func<StoreReport, bool>> reason = x => entity.Search.EmptyOrContainedIn(x.ReasonReport);
+            Expression<Func<StoreReport, bool>> status = x => x.Status.IsInEnumNames(entity.Status,typeof(ReportStatus));
+            var predicates = ExpressionUtils.CreateListOfExpression(reason, status);
+
+            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+
+            return result;
         }
 
 }

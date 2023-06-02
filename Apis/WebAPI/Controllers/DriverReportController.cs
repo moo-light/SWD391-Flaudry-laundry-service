@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services;
 using Application.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace WebAPI.Controllers
             _driverReportService = driverReportService;
         }
         [HttpPost]
-        public async Task<IActionResult> AddAsync(DriverReport entity)
+        public async Task<IActionResult> Add(DriverReport entity)
         {
             var result = await _driverReportService.AddAsync(entity);
             return result ? Ok(result) : BadRequest();
@@ -36,16 +37,17 @@ namespace WebAPI.Controllers
             var result = await _driverReportService.GetByIdAsync(entityId);
             return (result != null ? Ok() : BadRequest());
         }
-
-        public Task<IActionResult> GetCount()
+        [HttpGet]
+        public async Task<IActionResult> GetCount()
         {
             var result = await _driverReportService.GetCountAsync();
             return result > 0 ? Ok(result) : BadRequest();
         }
 
-        public Task<IActionResult> GetListWithFilter(DriverReport entity)
+        [HttpGet]
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
-            var result = await _driverReportService.GetFilter(entity);
+            var result = await _driverReportService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();
         }
 

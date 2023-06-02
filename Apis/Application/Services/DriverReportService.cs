@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Application.Services
             return await _unitOfWork.DriverReportRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<DriverReport>> GetFilter(DriverReport entity)
+        public async Task<IEnumerable<DriverReport>> GetFilterAsync(BaseFilterringModel entity)
         {
             return await _unitOfWork.DriverReportRepository.GetFilterAsync(entity);
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<DriverReport>> GetAllAsync();
         Task<DriverReport?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<IEnumerable<DriverReport>> GetFilter(DriverReport entity);
+        Task<IEnumerable<DriverReport>> GetFilterAsync(BaseFilterringModel entity);
         bool Remove(Guid entityId);
         bool Update(DriverReport entity);
     }

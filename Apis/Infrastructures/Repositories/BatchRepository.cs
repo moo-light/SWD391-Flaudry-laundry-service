@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.ViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public override Task<IEnumerable<Batch>> GetFilterAsync(Batch entity)
+        public override Task<IQueryable<Batch>> GetFilterAsync(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

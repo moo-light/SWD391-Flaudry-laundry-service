@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class RoleController : BaseController, IWebController<Role>
+    public class RoleController : BaseController
     {
         private readonly IRoleService _roleService;
         public RoleController(IRoleService roleService)

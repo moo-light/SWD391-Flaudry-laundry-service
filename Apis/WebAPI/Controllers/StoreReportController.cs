@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Domain.Entities;
 using Application.Services;
 using Application.Interfaces.Services;
+using Application.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -18,7 +19,7 @@ namespace WebAPI.Controllers
 
     
         [HttpPost]
-        public async Task<IActionResult> AddAsync(StoreReport entity)
+        public async Task<IActionResult> Add(StoreReport entity)
         {
             var result = await _storeReportService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -50,7 +51,18 @@ namespace WebAPI.Controllers
             var result = await _storeReportService.GetAllAsync();
             return result.Count() > 0 ? Ok(result) : BadRequest(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetCount()
+        {
+            var result = await _storeReportService.GetCountAsync();
+            return result > 0 ? Ok(result) : BadRequest();
+        }
 
-      
+        [HttpPost]
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        {
+            IEnumerable<StoreReport> result = await _storeReportService.GetFilter(entity);
+            return result != null ? Ok(result) : BadRequest();
+        }
     }
 }

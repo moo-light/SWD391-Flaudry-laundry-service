@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.ViewModels;
 using Domain.Entities;
 
 namespace Infrastructures.Repositories
@@ -17,10 +18,10 @@ namespace Infrastructures.Repositories
     {
         _dbContext = dbContext;
     }
-        public override Task<IEnumerable<Store>> GetFilterAsync(Store entity)
+
+        public override Task<IQueryable<Store>> GetFilterAsync(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }
-
-}
+    }
 }

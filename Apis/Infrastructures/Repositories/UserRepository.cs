@@ -1,6 +1,8 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
+using Application.ViewModels;
+using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -24,21 +26,23 @@ namespace Infrastructures.Repositories
 
         public Task<bool> CheckEmailExisted(string email) => _dbContext.Users.AnyAsync(u => u.Email == email);
 
-        public override async Task<IEnumerable<User>> GetFilterAsync(User user)
+        public override async Task<IQueryable<User>> GetFilterAsync(BaseFilterringModel entity)
         {
             IQueryable<User> result = null;
 
-            Expression<Func<User, bool>> address = x => user.Address.IsNullOrEmpty() || x.Address.Contains(user.Address);
-            Expression<Func<User, bool>> email = x => user.Email.IsNullOrEmpty() || x.Email.Contains(user.Email);
-            Expression<Func<User, bool>> phoneNumber = x => user.PhoneNumber.IsNullOrEmpty() || x.PhoneNumber.Contains(user.PhoneNumber);
-            Expression<Func<User, bool>> fullName = x => user.FullName.IsNullOrEmpty() || x.FullName.Contains(user.FullName) ;
+            Expression<Func<User, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
+            Expression<Func<User, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
+            Expression<Func<User, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
+            Expression<Func<User, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(address,email, phoneNumber, fullName);
+            var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName);
 
             result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
-                 
-            return result.AsEnumerable();
+
+            return result;
         }
+
+      
 
         public async Task<User> GetUserByUserNameAndPasswordHash(string email, string passwordHash)
         {
@@ -47,7 +51,7 @@ namespace Infrastructures.Repositories
                                         && record.PasswordHash == passwordHash);
             if(user is null)
             {
-                throw new Exception("UserName & password is not correct");
+                throw new Exception("Email & password is not correct");
             }
 
 

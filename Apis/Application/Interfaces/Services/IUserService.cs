@@ -1,4 +1,5 @@
-﻿using Application.ViewModels.UserViewModels;
+﻿using Application.ViewModels;
+using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 
 namespace Application.Interfaces.Services;
@@ -13,5 +14,5 @@ public interface IUserService
     Task<User?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<User>> GetAllAsync();
     Task<int> GetCountAsync();
-    Task<IEnumerable<User>> GetFilter(User entity);
+    Task<IEnumerable<User>> GetFilterAsync(UserFilteringModel entity);
 }

@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces.Services;
+using Application.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +14,7 @@ namespace WebAPI.Controllers
             _packageService = packageService;
         }
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Package entity)
+        public async Task<IActionResult> Add(Package entity)
         {
             var result = await _packageService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -40,6 +42,18 @@ namespace WebAPI.Controllers
         {
             var result = _packageService.Update(entity);
             return result ? Ok(result) : BadRequest();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCount()
+        {
+            var result = await _packageService.GetCountAsync();
+            return result > 0 ? Ok(result) : BadRequest();
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        {
+            var result = await _packageService.GetFilterAsync(entity);
+            return result != null ? Ok(result) : BadRequest();
         }
     }
 }

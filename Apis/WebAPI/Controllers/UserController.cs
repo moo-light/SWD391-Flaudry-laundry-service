@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Application.Interfaces;
 using Domain.Entities;
 using Application.Interfaces.Services;
+using Application.ViewModels;
 
 namespace WebAPI.Controllers
 {
@@ -21,7 +22,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
         [HttpPost]
-        public async Task<IActionResult> AddAsync(User entity)
+        public async Task<IActionResult> Add(User entity)
         {
             var result = await _userService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -50,11 +51,12 @@ namespace WebAPI.Controllers
             var result = await _userService.GetCountAsync();
             return result>0 ? Ok(result) : BadRequest();
         }
-
-        public async Task<IActionResult> GetListWithFilter(User entity)
+        [HttpGet]
+        public async Task<IActionResult> GetListWithFilter(UserFilteringModel entity)
         {
-            var result = await _userService.GetFilter(entity);
+            var result = await _userService.GetFilterAsync(entity);
             return result != null? Ok(result) : BadRequest();
         }
+
     }
 }

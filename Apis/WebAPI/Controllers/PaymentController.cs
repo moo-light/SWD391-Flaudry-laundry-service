@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Services;
 using Application.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace WebAPI.Controllers
             _paymentService = paymentService;
         }
         [HttpPost]
-        public async Task<IActionResult> AddAsync(Payment entity)
+        public async Task<IActionResult> Add(Payment entity)
         {
             var result = await _paymentService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -36,16 +37,16 @@ namespace WebAPI.Controllers
             var result = await _paymentService.GetByIdAsync(entityId);
             return result != null ? Ok(result) : BadRequest(result);
         }
-
-        public Task<IActionResult> GetCount()
+        [HttpGet]
+        public async Task<IActionResult> GetCount()
         {
             var result = await _paymentService.GetCountAsync();
             return result > 0 ? Ok(result) : BadRequest();
         }
-
-        public async Task<IActionResult> GetListWithFilter(Payment entity)
+        [HttpPost]
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
-            IEnumerable<Payment> result = await _paymentService.GetFilter(entity);
+            IEnumerable<Payment> result = await _paymentService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();
         }
 

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 
 namespace Application.Interfaces.Services;
 
@@ -8,7 +9,7 @@ public interface IOrderService
     Task<IEnumerable<Order>> GetAllAsync();
     Task<Order?> GetByIdAsync(Guid entityId);
     Task<int> GetCountAsync();
-    Task<IEnumerable<Order>> GetFilter(Order entity);
+    Task<IEnumerable<Order>> GetFilterAsync(BaseFilterringModel entity);
     bool Remove(Guid entityId);
     bool Update(Order entity);
 }

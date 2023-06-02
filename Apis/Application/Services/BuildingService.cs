@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
+using Application.ViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,16 @@ namespace Application.Services
         public async Task<IEnumerable<Building>> GetAllAsync() => await _unitOfWork.BuildingRepository.GetAllAsync();
 
         public async Task<Building?> GetByIdAsync(Guid entityId) => await _unitOfWork.BuildingRepository.GetByIdAsync(entityId);
+
+        public async Task<int> GetCountAsync()
+        {
+            return await _unitOfWork.BuildingRepository.GetCountAsync();
+        }
+
+        public async Task<IEnumerable<Building>> GetFilterAsync(BaseFilterringModel entity)
+        {
+            return await _unitOfWork.BuildingRepository.GetFilterAsync(entity);
+        }
 
         public bool Remove(Guid entityId)
         {
