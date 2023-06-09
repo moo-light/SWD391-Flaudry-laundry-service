@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository : GenericRepository<BaseUser>, IUserRepository
     {
         private readonly AppDbContext _dbContext;
 
@@ -26,14 +26,14 @@ namespace Infrastructures.Repositories
 
         public Task<bool> CheckEmailExisted(string email) => _dbContext.Users.AnyAsync(u => u.Email == email);
 
-        public override async Task<IQueryable<User>> GetFilterAsync(BaseFilterringModel entity)
+        public override async Task<IQueryable<BaseUser>> GetFilterAsync(BaseFilterringModel entity)
         {
-            IQueryable<User> result = null;
+            IQueryable<BaseUser> result = null;
 
-            Expression<Func<User, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
-            Expression<Func<User, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
-            Expression<Func<User, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
-            Expression<Func<User, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
+            Expression<Func<BaseUser, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
+            Expression<Func<BaseUser, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
+            Expression<Func<BaseUser, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
+            Expression<Func<BaseUser, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
 
             var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName);
 
@@ -44,7 +44,7 @@ namespace Infrastructures.Repositories
 
       
 
-        public async Task<User> GetUserByUserNameAndPasswordHash(string email, string passwordHash)
+        public async Task<BaseUser> GetUserByUserNameAndPasswordHash(string email, string passwordHash)
         {
             var user = await _dbContext.Users
                 .FirstOrDefaultAsync( record => record.Email == email

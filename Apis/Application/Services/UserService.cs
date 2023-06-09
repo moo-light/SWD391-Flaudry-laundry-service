@@ -26,9 +26,9 @@ namespace Application.Services
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync() => await _unitOfWork.UserRepository.GetAllAsync();
-        public async Task<User?> GetByIdAsync(Guid entityId) => await _unitOfWork.UserRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(User user)
+        public async Task<IEnumerable<BaseUser>> GetAllAsync() => await _unitOfWork.UserRepository.GetAllAsync();
+        public async Task<BaseUser?> GetByIdAsync(Guid entityId) => await _unitOfWork.UserRepository.GetByIdAsync(entityId);
+        public async Task<bool> AddAsync(BaseUser user)
         {
             await _unitOfWork.UserRepository.AddAsync(user);
             return await _unitOfWork.SaveChangeAsync() >0;
@@ -40,7 +40,7 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public bool Update(User entity)
+        public bool Update(BaseUser entity)
         {
              _unitOfWork.UserRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
@@ -66,7 +66,7 @@ namespace Application.Services
                 throw new Exception("Username exited please try again");
             }
 
-            var newUser = new User
+            var newUser = new BaseUser
             {
                 Email = userObject.Email,
                 PasswordHash = userObject.Password.Hash(),
@@ -82,7 +82,7 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<User>> GetFilterAsync(UserFilteringModel user)
+        public async Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel user)
         {
             return await _unitOfWork.UserRepository.GetFilterAsync(user);
         }

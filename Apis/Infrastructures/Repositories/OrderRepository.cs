@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class OrderRepository : GenericRepository<Order>, IOrderRepository
+    public class OrderRepository : GenericRepository<LaundryOrder>, IOrderRepository
     {
         private readonly AppDbContext _dbContext;
 
@@ -22,7 +22,7 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-        public override Task<IQueryable<Order>> GetFilterAsync(BaseFilterringModel entity)
+        public override Task<IQueryable<LaundryOrder>> GetFilterAsync(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

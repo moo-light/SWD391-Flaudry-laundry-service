@@ -10,9 +10,8 @@ public partial class Service : BaseEntity
 
     public decimal? PricePerKg { get; set; }
 
-    public virtual ICollection<Package> Packages { get; } = new List<Package>();
 
-    public virtual Store? Store { get; set; } 
+    public virtual Store? Store { get; set; }
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
-    public virtual ICollection<StoreReport> StoreReports { get; } = new List<StoreReport>();
 }

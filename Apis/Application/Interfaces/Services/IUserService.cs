@@ -8,11 +8,11 @@ public interface IUserService
 {
     public Task RegisterAsync(UserRegisterDTO userObject);
     public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
-    Task<bool> AddAsync(User user);
+    Task<bool> AddAsync(BaseUser user);
     bool Remove(Guid entityId);
-    bool Update(User entity);
-    Task<User?> GetByIdAsync(Guid entityId);
-    Task<IEnumerable<User>> GetAllAsync();
+    bool Update(BaseUser entity);
+    Task<BaseUser?> GetByIdAsync(Guid entityId);
+    Task<IEnumerable<BaseUser>> GetAllAsync();
     Task<int> GetCountAsync();
-    Task<IEnumerable<User>> GetFilterAsync(UserFilteringModel entity);
+    Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel entity);
 }

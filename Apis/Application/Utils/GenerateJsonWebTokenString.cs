@@ -8,7 +8,7 @@ namespace Application.Utils
 {
     public static class GenerateJsonWebTokenString
     {
-        public static string GenerateJsonWebToken(this User user, string secretKey, DateTime now)
+        public static string GenerateJsonWebToken(this BaseUser user, string secretKey, DateTime now)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

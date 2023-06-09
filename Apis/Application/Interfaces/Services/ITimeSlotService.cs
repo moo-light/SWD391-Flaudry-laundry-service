@@ -5,12 +5,12 @@ namespace Application.Interfaces.Services
 {
     public interface ITimeSlotService
     {
-        Task<bool> AddAsync(TimeSlot timeSlot);
-        Task<IEnumerable<TimeSlot>> GetAllAsync();
-        Task<TimeSlot?> GetByIdAsync(Guid entityId);
+        Task<bool> AddAsync(Session timeSlot);
+        Task<IEnumerable<Session>> GetAllAsync();
+        Task<Session?> GetByIdAsync(Guid entityId);
         Task<int> GetCount();
-        Task<IEnumerable<TimeSlot>> GetFilter(BaseFilterringModel entity);
+        Task<IEnumerable<Session>> GetFilter(BaseFilterringModel entity);
         bool Remove(Guid entityId);
-        bool Update(TimeSlot entity);
+        bool Update(Session entity);
     }
 }

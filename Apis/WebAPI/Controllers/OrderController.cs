@@ -8,7 +8,7 @@ using Application.ViewModels;
 
 namespace WebAPI.Controllers
 {
-    public class OrderController : BaseController, IWebController<Order>
+    public class OrderController : BaseController, IWebController<LaundryOrder>
     {
         private readonly IOrderService _orderService;
 
@@ -19,14 +19,14 @@ namespace WebAPI.Controllers
 
     
         [HttpPost]
-        public async Task<IActionResult> Add(Order entity)
+        public async Task<IActionResult> Add(LaundryOrder entity)
         {
             var result = await _orderService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
 
-        public IActionResult Update(Order entity)
+        public IActionResult Update(LaundryOrder entity)
         {
             var result = _orderService.Update(entity);
             return result ? Ok() : BadRequest();

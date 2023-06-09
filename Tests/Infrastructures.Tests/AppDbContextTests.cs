@@ -12,7 +12,7 @@ namespace Infrastructures.Tests
         public async Task AppDbContext_ChemicalsDbSetShouldReturnCorrectData()
         {
 
-            var mockData = _fixture.Build<Order>().CreateMany(10).ToList();
+            var mockData = _fixture.Build<LaundryOrder>().CreateMany(10).ToList();
             await _dbContext.Orders.AddRangeAsync(mockData);
             
             await _dbContext.SaveChangesAsync();

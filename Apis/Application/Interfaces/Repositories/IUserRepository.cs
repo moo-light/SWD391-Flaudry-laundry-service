@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<BaseUser>
     {
 
         /// <summary>
@@ -13,7 +13,7 @@ namespace Application.Interfaces.Repositories
         /// <param name="passwordHash"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        Task<User> GetUserByUserNameAndPasswordHash(string username, string passwordHash);
+        Task<BaseUser> GetUserByUserNameAndPasswordHash(string username, string passwordHash);
 
         Task<bool> CheckEmailExisted(string username);
     }

@@ -14,9 +14,9 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<TimeSlot>> GetAllAsync() => await _unitOfWork.TimeSlotRepository.GetAllAsync();
-        public async Task<TimeSlot?> GetByIdAsync(Guid entityId) => await _unitOfWork.TimeSlotRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(TimeSlot timeSlot)
+        public async Task<IEnumerable<Session>> GetAllAsync() => await _unitOfWork.TimeSlotRepository.GetAllAsync();
+        public async Task<Session?> GetByIdAsync(Guid entityId) => await _unitOfWork.TimeSlotRepository.GetByIdAsync(entityId);
+        public async Task<bool> AddAsync(Session timeSlot)
         {
             await _unitOfWork.TimeSlotRepository.AddAsync(timeSlot);
             return await _unitOfWork.SaveChangeAsync() > 0;
@@ -28,13 +28,13 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public bool Update(TimeSlot entity)
+        public bool Update(Session entity)
         {
             _unitOfWork.TimeSlotRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public async Task<IEnumerable<TimeSlot>> GetFilter(BaseFilterringModel entity)
+        public async Task<IEnumerable<Session>> GetFilter(BaseFilterringModel entity)
         {
             return await _unitOfWork.TimeSlotRepository.GetFilterAsync(entity);
         }

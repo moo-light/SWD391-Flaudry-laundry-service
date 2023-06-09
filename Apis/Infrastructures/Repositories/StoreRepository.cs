@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.Utils;
 using Application.ViewModels;
 using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
@@ -19,9 +21,19 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-        public override Task<IQueryable<Store>> GetFilterAsync(BaseFilterringModel entity)
+        public override async Task<IQueryable<Store>> GetFilterAsync(BaseFilterringModel entity)
         {
-            throw new NotImplementedException();
+            IQueryable<Store> result = null;
+
+            Expression<Func<Store, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
+            Expression<Func<Store, bool>> name = x => entity.Search.EmptyOrContainedIn(x.Name);
+            Expression<Func<Store, bool>> ownerId = x => entity.Id.EmptyOrEquals(x.OwnerId);
+
+            var predicates = ExpressionUtils.CreateListOfExpression(address, name,ownerId);
+
+            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+
+            return result;
         }
     }
 }

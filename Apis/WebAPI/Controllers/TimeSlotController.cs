@@ -8,7 +8,7 @@ using Application.ViewModels;
 
 namespace WebAPI.Controllers
 {
-    public class TimeSlotController : BaseController, IWebController<TimeSlot>
+    public class TimeSlotController : BaseController, IWebController<Session>
     {
         private readonly ITimeSlotService _timeSlotService;
 
@@ -19,14 +19,14 @@ namespace WebAPI.Controllers
 
     
         [HttpPost]
-        public async Task<IActionResult> Add(TimeSlot entity)
+        public async Task<IActionResult> Add(Session entity)
         {
             var result = await _timeSlotService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
 
-        public IActionResult Update(TimeSlot entity)
+        public IActionResult Update(Session entity)
         {
             var result = _timeSlotService.Update(entity);
             return result ? Ok() : BadRequest();
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
-            IEnumerable<TimeSlot> result = await _timeSlotService.GetFilter(entity);
+            IEnumerable<Session> result = await _timeSlotService.GetFilter(entity);
             return result!=null? Ok(result):BadRequest(result);
         }
     }

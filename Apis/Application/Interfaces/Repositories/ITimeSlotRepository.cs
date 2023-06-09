@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ITimeSlotRepository: IGenericRepository<TimeSlot>
+    public interface ITimeSlotRepository: IGenericRepository<Session>
     {
     }
 }

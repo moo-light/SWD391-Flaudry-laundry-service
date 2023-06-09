@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class TimeSlotRepository : GenericRepository<TimeSlot>, ITimeSlotRepository
+    public class TimeSlotRepository : GenericRepository<Session>, ITimeSlotRepository
     {
         private readonly AppDbContext _dbContext;
 
@@ -20,11 +20,11 @@ namespace Infrastructures.Repositories
         {
             _dbContext = dbContext;
         }
-        public override async Task<IQueryable<TimeSlot>> GetFilterAsync(BaseFilterringModel entity)
+        public override async Task<IQueryable<Session>> GetFilterAsync(BaseFilterringModel entity)
         {
-            IQueryable<TimeSlot> result = null;
+            IQueryable<Session> result = null;
 
-            Expression<Func<TimeSlot, bool>> dateTime = x => x.Date.IsInDateTime(entity.FromDate,entity.ToDate); 
+            Expression<Func<Session, bool>> dateTime = x => x.Date.IsInDateTime(entity.FromDate,entity.ToDate); 
             var predicates = ExpressionUtils.CreateListOfExpression(dateTime);
 
             result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
