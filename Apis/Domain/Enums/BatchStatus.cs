@@ -1,10 +1,7 @@
 ﻿namespace Domain.Enums
 {
-    public enum StatusEnums
+    public enum BatchStatus
     {
-        Good,
-        Bad,
-        Out,
-        OnTrack
+      
     }
 }

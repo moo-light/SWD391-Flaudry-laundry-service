@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums
 {
-    internal class OrderInBatchStatus
+    public enum OrderInBatchStatus
     {
+        Waiting,
+        Shipping,
+        Done
     }
 }

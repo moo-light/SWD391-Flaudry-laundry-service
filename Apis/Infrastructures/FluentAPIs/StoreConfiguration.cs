@@ -4,19 +4,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructures.FluentAPIs
 {
-    public class ServiceConfiguration : IEntityTypeConfiguration<Service>
+    public class StoreConfiguration : IEntityTypeConfiguration<Store>
     {
-        public void Configure(EntityTypeBuilder<Service> builder)
+        public void Configure(EntityTypeBuilder<Store> builder)
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).HasDefaultValueSql("NEWID()");
-            builder.Property(e => e.PricePerKg).HasColumnType("decimal(10, 2)");
 
-            builder.HasOne(d => d.Store).WithMany(p => p.Services)
-                .HasForeignKey(d => d.StoreId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(e => e.Name).HasMaxLength(100);
 
-            builder.HasMany(d => d.OrderDetails).WithOne(o => o.Service).HasForeignKey(x => x.ServiceId);
+            builder.HasMany(e => e.Services).WithOne(x => x.Store).HasForeignKey(x => x.StoreId);
+            builder.HasMany(e => e.Orders).WithOne(x => x.Store).HasForeignKey(x => x.StoreId);
 
         }
     }
