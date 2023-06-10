@@ -18,7 +18,7 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public override Task<IQueryable<Batch>> GetFilter(BaseFilterringModel entity)
+        public override IQueryable<Batch> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }
