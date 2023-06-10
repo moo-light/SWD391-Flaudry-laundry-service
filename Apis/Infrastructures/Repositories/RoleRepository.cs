@@ -19,7 +19,7 @@ namespace Infrastructures.Repositories
         }
 
 
-        public override Task<IQueryable<Role>> GetFilterAsync(BaseFilterringModel entity)
+        public override Task<IQueryable<Role>> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

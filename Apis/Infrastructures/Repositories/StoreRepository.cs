@@ -21,15 +21,14 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-        public override async Task<IQueryable<Store>> GetFilterAsync(BaseFilterringModel entity)
+        public override IQueryable<Store> GetFilter(BaseFilterringModel entity)
         {
             IQueryable<Store> result = null;
 
             Expression<Func<Store, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
             Expression<Func<Store, bool>> name = x => entity.Search.EmptyOrContainedIn(x.Name);
-            Expression<Func<Store, bool>> ownerId = x => entity.Id.EmptyOrEquals(x.OwnerId);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(address, name,ownerId);
+            var predicates = ExpressionUtils.CreateListOfExpression(address, name);
 
             result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
 

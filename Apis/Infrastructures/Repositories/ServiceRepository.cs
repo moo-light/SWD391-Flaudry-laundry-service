@@ -19,7 +19,7 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-        public override Task<IQueryable<Service>> GetFilterAsync(BaseFilterringModel entity)
+        public override IQueryable<Service> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

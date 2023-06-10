@@ -11,14 +11,14 @@ using Microsoft.Extensions.Configuration;
 
 namespace Application.Services
 {
-    public class UserService : IUserService
+    public class CustomerService : ICustomerService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICurrentTime _currentTime;
         private readonly AppConfiguration _configuration;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, ICurrentTime currentTime, AppConfiguration configuration)
+        public CustomerService(IUnitOfWork unitOfWork, IMapper mapper, ICurrentTime currentTime, AppConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -48,7 +48,7 @@ namespace Application.Services
 
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByUserNameAndPasswordHash(userObject.Email, userObject.Password.Hash());
+            var user = await _unitOfWork.UserRepository.GetUserByEmailAndPasswordHash(userObject.Email, userObject.Password.Hash());
             return new UserLoginDTOResponse
             {
                 UserId = user.Id,
@@ -56,21 +56,21 @@ namespace Application.Services
             };
     }
 
-        public async Task RegisterAsync(UserRegisterDTO userObject)
+        public async Task RegisterAsync(UserRegisterDTO customer)
         {
             // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.Email);
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(customer.Email);
 
             if (isExited)
             {
-                throw new Exception("Username exited please try again");
+                throw new InvalidDataException("Username exited please try again");
             }
 
-            var newUser = new BaseUser
+            var newUser = new Customer
             {
-                Email = userObject.Email,
-                PasswordHash = userObject.Password.Hash(),
-                Address = userObject.Address
+                Email = customer.Email,
+                PasswordHash = customer.Password.Hash(),
+                Address = customer.Address
             };
 
             await _unitOfWork.UserRepository.AddAsync(newUser);
@@ -84,7 +84,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel user)
         {
-            return await _unitOfWork.UserRepository.GetFilterAsync(user);
+            return  _unitOfWork.UserRepository.GetFilter(user);
         }
     }
 }

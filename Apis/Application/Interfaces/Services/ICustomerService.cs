@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.Interfaces.Services;
 
-public interface IUserService
+public interface ICustomerService
 {
     public Task RegisterAsync(UserRegisterDTO userObject);
     public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);

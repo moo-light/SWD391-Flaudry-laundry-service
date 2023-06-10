@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IOrderRepository : IGenericRepository<LaundryOrder>
+    public interface IOrderInBatchRepository : IGenericRepository<OrderInBatch>
     {
     }
 }

@@ -19,6 +19,7 @@ namespace Infrastructures
         public DbSet<Batch> Batchs { get; set; }
         public DbSet<Building> Buildings { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<BaseUser> Users { get; set; }
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<LaundryOrder> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
@@ -28,15 +29,10 @@ namespace Infrastructures
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Store> Stores { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+            modelBuilder.Entity<BaseUser>().UseTptMappingStrategy();
         }
     }
 }

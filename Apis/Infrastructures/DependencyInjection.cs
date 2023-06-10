@@ -20,12 +20,6 @@ namespace Infrastructures
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
 
-            services.AddScoped<IDriverReportRepository, DriverReportRepository>();
-            services.AddScoped<IDriverReportService, DriverReportService>();
-
-            services.AddScoped<IPackageRepository, PackageRepository>();
-            services.AddScoped<IPackageService, PackageService>();
-
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentService, PaymentService>();
 
@@ -34,17 +28,15 @@ namespace Infrastructures
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ILaundryOrderRepository, LaundryOrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
 
-            services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ITimeSlotService, TimeSlotService>();
 
-            services.AddScoped<IStoreReportRepository, StoreReportRepository>();
-            services.AddScoped<IStoreReportService, StoreReportService>();
 
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IStoreService, StoreService>();

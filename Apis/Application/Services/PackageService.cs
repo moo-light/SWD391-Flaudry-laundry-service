@@ -34,7 +34,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<Package>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return await _unitOfWork.PackageRepository.GetFilterAsync(entity);
+            return await _unitOfWork.PackageRepository.GetFilter(entity);
         }
 
         public bool Remove(Guid entityId)

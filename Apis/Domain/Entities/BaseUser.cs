@@ -14,5 +14,4 @@ public partial class BaseUser : BaseEntity
     public string? PasswordHash { get; set; } 
     [Phone]
     public string? PhoneNumber { get; set; }
-    public string? Address { get; set; } 
 }

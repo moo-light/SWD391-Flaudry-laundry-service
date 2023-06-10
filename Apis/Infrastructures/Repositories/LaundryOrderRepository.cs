@@ -8,21 +8,19 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class OrderRepository : GenericRepository<LaundryOrder>, IOrderRepository
+    public class LaundryOrderRepository : GenericRepository<LaundryOrder>, ILaundryOrderRepository
     {
-        private readonly AppDbContext _dbContext;
 
-    public OrderRepository(AppDbContext dbContext,
-        ICurrentTime timeService,
-        IClaimsService claimsService)
-        : base(dbContext,
-              timeService,
-              claimsService)
-    {
-        _dbContext = dbContext;
-    }
+        public LaundryOrderRepository(AppDbContext dbContext,
+            ICurrentTime timeService,
+            IClaimsService claimsService)
+            : base(dbContext,
+                  timeService,
+                  claimsService)
+        {
+        }
 
-        public override Task<IQueryable<LaundryOrder>> GetFilterAsync(BaseFilterringModel entity)
+        public override IQueryable<LaundryOrder> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

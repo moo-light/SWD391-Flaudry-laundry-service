@@ -12,11 +12,13 @@ namespace Infrastructures.Repositories
     public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         protected DbSet<TEntity> _dbSet;
+        protected AppDbContext _dbContext;
         private readonly ICurrentTime _timeService;
         private readonly IClaimsService _claimsService;
 
         public GenericRepository(AppDbContext context, ICurrentTime timeService, IClaimsService claimsService)
         {
+            _dbContext = context;
             _dbSet = context.Set<TEntity>();
             _timeService = timeService;
             _claimsService = claimsService;
@@ -68,7 +70,7 @@ namespace Infrastructures.Repositories
             _dbSet.Update(entity);
             return true;
         }
-        public abstract Task<IQueryable<TEntity>> GetFilterAsync(BaseFilterringModel entity);
+        public abstract IQueryable<TEntity> GetFilter(BaseFilterringModel entity);
         public async Task<bool> AddRangeAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)

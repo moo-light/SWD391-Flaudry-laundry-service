@@ -7,9 +7,9 @@ namespace Infrastructures
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _dbContext;
-        private readonly IOrderRepository _orderRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly ITimeSlotRepository _timeSlotRepository;
+        private readonly ILaundryOrderRepository _orderRepository;
+        private readonly ICustomerRepository _userRepository;
+        private readonly ISessionRepository _timeSlotRepository;
         private readonly IStoreReportRepository _storeReportRepository;
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
@@ -21,9 +21,9 @@ namespace Infrastructures
         private readonly IRoleRepository _roleRepository;
 
         public UnitOfWork(AppDbContext dbContext,
-                          IOrderRepository orderRepository,
-                          IUserRepository userRepository,
-                          ITimeSlotRepository timeSlotRepository,
+                          ILaundryOrderRepository orderRepository,
+                          ICustomerRepository userRepository,
+                          ISessionRepository timeSlotRepository,
                           IStoreRepository storeRepository,
                           IServiceRepository serviceRepository,
                           IStoreReportRepository storeReportRepository,
@@ -49,9 +49,9 @@ namespace Infrastructures
             _roleRepository = roleRepository;
         }
 
-        public IUserRepository UserRepository => _userRepository;
-        public IOrderRepository OrderRepository => _orderRepository;
-        public ITimeSlotRepository TimeSlotRepository => _timeSlotRepository;
+        public ICustomerRepository CustomerRepository => _userRepository;
+        public ILaundryOrderRepository OrderRepository => _orderRepository;
+        public ISessionRepository TimeSlotRepository => _timeSlotRepository;
 
         public IStoreReportRepository StoreReportRepository => _storeReportRepository;
 

@@ -10,9 +10,9 @@ namespace WebAPI.Controllers
 {
     public class UserController : BaseController, IWebController<BaseUser>
     {
-        private readonly IUserService _userService;
+        private readonly ICustomerService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(ICustomerService userService)
         {
             _userService = userService;
         }

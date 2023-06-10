@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class TimeSlotRepository : GenericRepository<Session>, ITimeSlotRepository
+    public class SessionRepository : GenericRepository<Session>, ISessionRepository
     {
         private readonly AppDbContext _dbContext;
 
-        public TimeSlotRepository(AppDbContext dbContext,
+        public SessionRepository(AppDbContext dbContext,
             ICurrentTime timeService,
             IClaimsService claimsService)
             : base(dbContext,
@@ -20,11 +20,11 @@ namespace Infrastructures.Repositories
         {
             _dbContext = dbContext;
         }
-        public override async Task<IQueryable<Session>> GetFilterAsync(BaseFilterringModel entity)
+        public override  IQueryable<Session> GetFilter(BaseFilterringModel entity)
         {
             IQueryable<Session> result = null;
 
-            Expression<Func<Session, bool>> dateTime = x => x.Date.IsInDateTime(entity.FromDate,entity.ToDate); 
+            Expression<Func<Session, bool>> dateTime = x => x.StartTime.IsInDateTime(entity.FromDate.Value.Date,entity.ToDate.Value.Date); 
             var predicates = ExpressionUtils.CreateListOfExpression(dateTime);
 
             result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));

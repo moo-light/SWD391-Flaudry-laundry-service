@@ -35,7 +35,7 @@ namespace Infrastructures.Repositories
         //    return result.AsEnumerable();
         //}
 
-        public override Task<IQueryable<Payment>> GetFilterAsync(BaseFilterringModel entity)
+        public override IQueryable<Payment> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }
