@@ -15,6 +15,7 @@ namespace Application.Utils
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier ,user.Email),
+                new Claim(ClaimTypes.UserData ,user.Id.ToString()),
             };
             var token = new JwtSecurityToken(
                 claims: claims,

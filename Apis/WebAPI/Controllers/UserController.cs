@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -18,6 +19,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [TokenAuthorization]
         public async Task RegisterAsync(UserRegisterDTO registerObject) => await _userService.RegisterAsync(registerObject);
         [HttpPost]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
