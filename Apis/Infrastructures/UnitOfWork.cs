@@ -8,17 +8,15 @@ namespace Infrastructures
     {
         private readonly AppDbContext _dbContext;
         private readonly ILaundryOrderRepository _orderRepository;
-        private readonly ICustomerRepository _userRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IBaseUserRepository _baseUserRepository;
+        private readonly IDriverRepository _driverRepository;
         private readonly ISessionRepository _timeSlotRepository;
-        private readonly IStoreReportRepository _storeReportRepository;
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IBatchRepository _batchRepository;
         private readonly IBuildingRepository _buildingRepository;
-        private readonly IDriverReportRepository _driverReportRepository;
-        private readonly IPackageRepository _packageRepository;
         private readonly IPaymentRepository _paymentRepository;
-        private readonly IRoleRepository _roleRepository;
 
         public UnitOfWork(AppDbContext dbContext,
                           ILaundryOrderRepository orderRepository,
@@ -26,34 +24,29 @@ namespace Infrastructures
                           ISessionRepository timeSlotRepository,
                           IStoreRepository storeRepository,
                           IServiceRepository serviceRepository,
-                          IStoreReportRepository storeReportRepository,
                           IBatchRepository batchRepository,
                           IBuildingRepository buildingRepository,
-                          IDriverReportRepository driverReportRepository,
-                          IPackageRepository packageRepository,
                           IPaymentRepository paymentRepository,
-                          IRoleRepository roleRepository)
+                          IDriverRepository driverRepository,
+                          IBaseUserRepository baseUserRepository)
         {
             _dbContext = dbContext;
             _orderRepository = orderRepository;
-            _userRepository = userRepository;
+            _customerRepository = userRepository;
             _timeSlotRepository = timeSlotRepository;
             _storeRepository = storeRepository;
             _serviceRepository = serviceRepository;
-            _storeReportRepository = storeReportRepository;
             _batchRepository = batchRepository;
             _buildingRepository = buildingRepository;
-            _driverReportRepository = driverReportRepository;
-            _packageRepository = packageRepository;
             _paymentRepository = paymentRepository;
-            _roleRepository = roleRepository;
+            _driverRepository = driverRepository;
+            _baseUserRepository = baseUserRepository;
         }
 
-        public ICustomerRepository CustomerRepository => _userRepository;
+        public ICustomerRepository CustomerRepository => _customerRepository;
         public ILaundryOrderRepository OrderRepository => _orderRepository;
-        public ISessionRepository TimeSlotRepository => _timeSlotRepository;
+        public ISessionRepository SessionRepository => _timeSlotRepository;
 
-        public IStoreReportRepository StoreReportRepository => _storeReportRepository;
 
         public IStoreRepository StoreRepository => _storeRepository;
 
@@ -63,13 +56,12 @@ namespace Infrastructures
 
         public IBuildingRepository BuildingRepository => _buildingRepository;
 
-        public IDriverReportRepository DriverReportRepository => _driverReportRepository;
-
-        public IPackageRepository PackageRepository => _packageRepository;
 
         public IPaymentRepository PaymentRepository => _paymentRepository;
 
-        public IRoleRepository RoleRepository => _roleRepository;
+        public IBaseUserRepository UserRepository => _baseUserRepository;
+
+        public IDriverRepository DriverRepository => _driverRepository;
 
         public int SaveChange()
         {

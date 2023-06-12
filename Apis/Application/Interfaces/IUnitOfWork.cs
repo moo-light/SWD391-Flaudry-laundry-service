@@ -9,7 +9,7 @@ namespace Application.Interfaces
         public IBaseUserRepository UserRepository { get; }
         public IDriverRepository DriverRepository { get; }
         public ILaundryOrderRepository OrderRepository { get; }
-        public ISessionRepository TimeSlotRepository { get; }
+        public ISessionRepository SessionRepository { get; }
         public IStoreRepository StoreRepository { get; }
         public IServiceRepository ServiceRepository { get; }
         public IBatchRepository BatchRepository { get; }

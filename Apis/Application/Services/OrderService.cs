@@ -40,7 +40,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<LaundryOrder>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return await _unitOfWork.OrderRepository.GetFilter(entity);
+            return _unitOfWork.OrderRepository.GetFilter(entity);
         }
 
     }

@@ -41,7 +41,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<Store>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return await _unitOfWork.StoreRepository.GetFilter(entity);
+            return _unitOfWork.StoreRepository.GetFilter(entity);
 
         }
     }
