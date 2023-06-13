@@ -32,17 +32,16 @@ namespace Infrastructures
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentService, PaymentService>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IOrderInBatchRepository, OrderInBatchRepository>();
+            services.AddScoped<IOrderInBatchService, OrderInBatchService>();
 
-            services.AddScoped<ILaundryOrderRepository, LaundryOrderRepository>();
-            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ITimeSlotService, TimeSlotService>();
-
 
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IStoreService, StoreService>();
