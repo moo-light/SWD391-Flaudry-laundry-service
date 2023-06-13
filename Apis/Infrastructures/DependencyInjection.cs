@@ -20,11 +20,17 @@ namespace Infrastructures
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
 
+            services.AddScoped<IDriverRepository, DriverRepository>();
+            services.AddScoped<IDriverService, DriverService>();
+
+            services.AddScoped<ILaundryOrderRepository, LaundryOrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
+
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IOrderDetail, OrderDetailService>(); 
+
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentService, PaymentService>();
-
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IRoleService, RoleService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class PackageService : IPackageService
+    public class OrderDetailService : IOrderDetail
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PackageService(IUnitOfWork unitOfWork)
+        public OrderDetailService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<bool> AddAsync(Package package)
+        public async Task<bool> AddAsync(OrderDetail package)
         {
-            await _unitOfWork.PackageRepository.AddAsync(package);
+            await _unitOfWork.OrderDetailRepository.AddAsync(package);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 

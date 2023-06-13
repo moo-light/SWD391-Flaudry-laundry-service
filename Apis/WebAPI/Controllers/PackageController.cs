@@ -8,8 +8,8 @@ namespace WebAPI.Controllers
 {
     public class PackageController : BaseController, IWebController<Package>
     {
-        private readonly IPackageService _packageService;
-        public PackageController(IPackageService packageService)
+        private readonly IOrderDetail _packageService;
+        public PackageController(IOrderDetail packageService)
         {
             _packageService = packageService;
         }

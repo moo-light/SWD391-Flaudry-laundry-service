@@ -1,11 +1,14 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using AutoMapper;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,14 +17,29 @@ namespace Application.Services
     public class BatchService : IBatchService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IClaimsService _claimsService;
+        private readonly IMapper _mapper;
 
-        public BatchService(IUnitOfWork unitOfWork)
+        public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService)
         {
             _unitOfWork = unitOfWork;
+            _claimsService = claimsService;
         }
 
-        public async Task<bool> AddAsync(Batch batch)
+        public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService, IMapper mapper)
         {
+            _mapper = mapper;
+        }
+
+        public async Task<bool> AddAsync(Batch batchDTO)
+        {
+            if (_claimsService.GetCurrentUserId == Guid.Empty) throw new AuthenticationException("User not login");
+            var batchId = Guid.NewGuid();
+            Guid driverId = _claimsService.GetCurrentUserId;
+            var batch = _mapper.Map<Batch>(batchDTO);
+            batch.Id = batchId;
+            batch.DriverId = driverId;
+
             await _unitOfWork.BatchRepository.AddAsync(batch);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }

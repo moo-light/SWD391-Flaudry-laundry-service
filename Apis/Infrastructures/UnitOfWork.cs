@@ -10,29 +10,28 @@ namespace Infrastructures
         private readonly ILaundryOrderRepository _orderRepository;
         private readonly ICustomerRepository _userRepository;
         private readonly ISessionRepository _timeSlotRepository;
-        private readonly IStoreReportRepository _storeReportRepository;
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IBatchRepository _batchRepository;
         private readonly IBuildingRepository _buildingRepository;
-        private readonly IDriverReportRepository _driverReportRepository;
-        private readonly IPackageRepository _packageRepository;
         private readonly IPaymentRepository _paymentRepository;
-        private readonly IRoleRepository _roleRepository;
-
+        private readonly IOrderInBatchRepository _orderInBatchRepository;
+        private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly IDriverRepository _driverRepository;
         public UnitOfWork(AppDbContext dbContext,
                           ILaundryOrderRepository orderRepository,
                           ICustomerRepository userRepository,
                           ISessionRepository timeSlotRepository,
                           IStoreRepository storeRepository,
                           IServiceRepository serviceRepository,
-                          IStoreReportRepository storeReportRepository,
                           IBatchRepository batchRepository,
                           IBuildingRepository buildingRepository,
-                          IDriverReportRepository driverReportRepository,
-                          IPackageRepository packageRepository,
                           IPaymentRepository paymentRepository,
-                          IRoleRepository roleRepository)
+                          IOrderInBatchRepository orderInBatchRepository,
+                          IOrderDetailRepository orderDetailRepository,
+                          IDriverRepository driverRepository
+            )
+
         {
             _dbContext = dbContext;
             _orderRepository = orderRepository;
@@ -40,21 +39,17 @@ namespace Infrastructures
             _timeSlotRepository = timeSlotRepository;
             _storeRepository = storeRepository;
             _serviceRepository = serviceRepository;
-            _storeReportRepository = storeReportRepository;
             _batchRepository = batchRepository;
             _buildingRepository = buildingRepository;
-            _driverReportRepository = driverReportRepository;
-            _packageRepository = packageRepository;
             _paymentRepository = paymentRepository;
-            _roleRepository = roleRepository;
+            _orderDetailRepository = orderDetailRepository;
+            _orderInBatchRepository = orderInBatchRepository;
+            _driverRepository = driverRepository;
         }
 
         public ICustomerRepository CustomerRepository => _userRepository;
         public ILaundryOrderRepository OrderRepository => _orderRepository;
         public ISessionRepository TimeSlotRepository => _timeSlotRepository;
-
-        public IStoreReportRepository StoreReportRepository => _storeReportRepository;
-
         public IStoreRepository StoreRepository => _storeRepository;
 
         public IServiceRepository ServiceRepository => _serviceRepository;
@@ -63,13 +58,13 @@ namespace Infrastructures
 
         public IBuildingRepository BuildingRepository => _buildingRepository;
 
-        public IDriverReportRepository DriverReportRepository => _driverReportRepository;
-
-        public IPackageRepository PackageRepository => _packageRepository;
-
         public IPaymentRepository PaymentRepository => _paymentRepository;
 
-        public IRoleRepository RoleRepository => _roleRepository;
+        public IDriverRepository DriverRepository => _driverRepository;
+
+        public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
+
+        public IOrderInBatchRepository OrderInBatchRepository => _orderInBatchRepository;
 
         public int SaveChange()
         {
