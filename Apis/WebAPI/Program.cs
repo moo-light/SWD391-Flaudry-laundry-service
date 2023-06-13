@@ -29,9 +29,6 @@ builder.Services.AddCors(options
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend API", Version = "v1" });
-
-   
-
     opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -39,7 +36,7 @@ builder.Services.AddSwaggerGen(opt =>
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
         BearerFormat = "JWT",
-        Scheme = "bearer"
+        Scheme = "bearer",
     });
 
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
