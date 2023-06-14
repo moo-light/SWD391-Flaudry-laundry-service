@@ -41,9 +41,14 @@ namespace Infrastructures
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
+            
+            services.AddScoped<IDriverRepository, DriverRepository>();
+            services.AddScoped<IDriverService, DriverService>();
+            
+            services.AddScoped<IBaseUserRepository, BaseUserRepository>();
 
             services.AddScoped<ISessionRepository, SessionRepository>();
-            services.AddScoped<ITimeSlotService, TimeSlotService>();
+            services.AddScoped<ISessionService, SessionService>();
 
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IStoreService, StoreService>();

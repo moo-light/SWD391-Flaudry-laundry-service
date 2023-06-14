@@ -7,6 +7,7 @@ using Application.ViewModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 
 namespace Application.Services
@@ -25,9 +26,10 @@ namespace Application.Services
             _currentTime = currentTime;
             _configuration = configuration;
         }
-
+        [Authorize(Roles ="Admin")]
         public async Task<IEnumerable<Customer>> GetAllAsync() => await _unitOfWork.CustomerRepository.GetAllAsync();
-        public async Task<BaseUser?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
+        [Authorize(Roles = "Admin,Customer,Driver")]
+        public async Task<Customer?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(Customer user)
         {
             await _unitOfWork.CustomerRepository.AddAsync(user);
