@@ -8,9 +8,9 @@ namespace Infrastructures
     {
         private readonly AppDbContext _dbContext;
         private readonly ILaundryOrderRepository _orderRepository;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;//check lai register
         private readonly IBaseUserRepository _baseUserRepository;
-        private readonly IDriverRepository _driverRepository;
+        private readonly IDriverRepository _driverRepository;//check lai register
         private readonly ISessionRepository _sessionRepository;
         private readonly IStoreRepository _storeRepository;
         private readonly IServiceRepository _serviceRepository;
