@@ -18,8 +18,8 @@ namespace Infrastructures
         private readonly IBuildingRepository _buildingRepository;
         private readonly IPaymentRepository _paymentRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
-        private readonly IDriverRepository _driverRepository;
-        private readonly IBaseUserRepository _baseUserRepository;
+        private readonly IOrderInBatchRepository _orderInBatchRepository;
+
         public UnitOfWork(AppDbContext dbContext,
                           ILaundryOrderRepository orderRepository,
                           ICustomerRepository userRepository,
@@ -32,8 +32,10 @@ namespace Infrastructures
                           IOrderDetailRepository orderDetailRepository,
                           IDriverRepository driverRepository,
                           IBaseUserRepository baseUserRepository
-                          
-            )
+,
+                          IOrderInBatchRepository orderInBatchRepository
+,
+                          ICustomerRepository customerRepository)
 
         {
             _dbContext = dbContext;
@@ -51,6 +53,8 @@ namespace Infrastructures
             _customerRepository = customerRepository;
             _driverRepository = driverRepository;
             _baseUserRepository = baseUserRepository;
+            _orderInBatchRepository = orderInBatchRepository;
+            _customerRepository = customerRepository;
         }
 
         public ICustomerRepository CustomerRepository => _customerRepository;
@@ -76,7 +80,6 @@ namespace Infrastructures
 
         public IOrderInBatchRepository OrderInBatchRepository => _orderInBatchRepository;
 
-        public IBaseUserRepository UserRepository => _baseUserRepository;
 
         public int SaveChange()
         {
