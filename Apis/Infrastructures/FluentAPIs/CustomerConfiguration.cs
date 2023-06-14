@@ -8,7 +8,6 @@ namespace Infrastructures.FluentAPIs
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-                       
             builder.HasMany(x=>x.Orders).WithOne(x=>x.Customer).HasForeignKey(x=>x.CustomerId);
         }
     }

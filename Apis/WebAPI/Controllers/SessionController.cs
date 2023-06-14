@@ -14,8 +14,10 @@ namespace WebAPI.Controllers
     {
         private readonly ISessionService _sessionService;
 
+        public SessionController(ISessionService sessionService)
         public SessionController(ISessionService timeSlotService)
         {
+            _sessionService = sessionService;
             _sessionService = timeSlotService;
         }
         [HttpPost]

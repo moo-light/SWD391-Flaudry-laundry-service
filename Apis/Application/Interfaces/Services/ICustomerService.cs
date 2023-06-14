@@ -11,7 +11,7 @@ public interface ICustomerService
     Task<bool> AddAsync(Customer user);
     bool Remove(Guid entityId);
     bool Update(Customer entity);
-    Task<BaseUser?> GetByIdAsync(Guid entityId);
+    Task<Customer?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<Customer>> GetAllAsync();
     Task<int> GetCountAsync();
     Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel entity);

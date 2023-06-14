@@ -14,34 +14,34 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Session>> GetAllAsync() => await _unitOfWork.TimeSlotRepository.GetAllAsync();
-        public async Task<Session?> GetByIdAsync(Guid entityId) => await _unitOfWork.TimeSlotRepository.GetByIdAsync(entityId);
+        public async Task<IEnumerable<Session>> GetAllAsync() => await _unitOfWork.SessionRepository.GetAllAsync();
+        public async Task<Session?> GetByIdAsync(Guid entityId) => await _unitOfWork.SessionRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(Session timeSlot)
         {
-            await _unitOfWork.TimeSlotRepository.AddAsync(timeSlot);
+            await _unitOfWork.SessionRepository.AddAsync(timeSlot);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public bool Remove(Guid entityId)
         {
-            _unitOfWork.TimeSlotRepository.SoftRemoveByID(entityId);
+            _unitOfWork.SessionRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
         }
 
         public bool Update(Session entity)
         {
-            _unitOfWork.TimeSlotRepository.Update(entity);
+            _unitOfWork.SessionRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
         public async Task<IEnumerable<Session>> GetFilter(BaseFilterringModel entity)
         {
-            return _unitOfWork.TimeSlotRepository.GetFilter(entity);
+            return  _unitOfWork.SessionRepository.GetFilter(entity);
         }
 
         public async Task<int> GetCount()
         {
-            return await _unitOfWork.TimeSlotRepository.GetCountAsync();
+            return await _unitOfWork.SessionRepository.GetCountAsync();
         }
     }
 }
