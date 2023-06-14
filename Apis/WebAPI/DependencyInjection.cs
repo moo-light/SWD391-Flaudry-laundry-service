@@ -35,8 +35,8 @@ namespace WebAPI
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = secretKey,
@@ -46,6 +46,8 @@ namespace WebAPI
                     };
                 });
 
+            services.AddAuthentication();
+            services.AddAuthorization();
             return services;
         }
     }

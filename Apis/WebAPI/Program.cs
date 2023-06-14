@@ -81,6 +81,8 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseMiddleware<PerformanceMiddleware>();
 app.MapHealthChecks("/healthchecks");
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 // todo authentication
 app.UseAuthorization();
 

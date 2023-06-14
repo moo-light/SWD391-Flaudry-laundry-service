@@ -6,6 +6,7 @@ using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.Utils;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
@@ -21,6 +22,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task RegisterAsync(UserRegisterDTO registerObject) => await _userService.RegisterAsync(registerObject);
         [HttpPost]
+        [AllowAnonymous]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
         [HttpPost]
         public async Task<IActionResult> Add(BaseUser entity)
@@ -34,7 +36,8 @@ namespace WebAPI.Controllers
             var result = _userService.Update(entity);
             return result ? Ok() : BadRequest();
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
+        [Authorize(Roles = "Admin,Customer,Driver")]
         public async Task<IActionResult> GetByIDAsync(Guid Id)
         {
             var result = await _userService.GetByIdAsync(Id);
