@@ -9,6 +9,7 @@ namespace Domain.Enums
     public enum OrderInBatchStatus
     {
         Waiting,
+        RequestChange, //Change status
         Shipping,
         Done
     }

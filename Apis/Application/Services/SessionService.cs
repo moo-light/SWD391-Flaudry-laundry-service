@@ -5,11 +5,11 @@ using Domain.Entities;
 
 namespace Application.Services
 {
-    public class TimeSlotService : ITimeSlotService
+    public class SessionService : ISessionService
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public TimeSlotService(IUnitOfWork unitOfWork)
+        public SessionService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

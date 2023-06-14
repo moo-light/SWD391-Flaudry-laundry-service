@@ -1,63 +1,66 @@
 using Microsoft.AspNetCore.Mvc;
-using Application.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Application.Interfaces;
 using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
-    public class UserController : BaseController, IWebController<Customer>
+    public class DriverController : BaseController, IWebController<Customer>
     {
-        private readonly ICustomerService _userService;
+        private readonly ICustomerService _driverService;
 
-        public UserController(ICustomerService userService)
+        public DriverController(ICustomerService driverService)
         {
-            _userService = userService;
+            _driverService = driverService;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(UserRegisterDTO registerObject) => await _userService.RegisterAsync(registerObject);
+        public async Task RegisterAsync(UserRegisterDTO registerObject) => await _driverService.RegisterAsync(registerObject);
         [HttpPost]
-        [AllowAnonymous]
-        public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
-        [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Add(Customer entity)
         {
-            var result = await _userService.AddAsync(entity);
+            var result = await _driverService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
+        [Authorize(Roles ="Admin,Driver")]
         public IActionResult Update(Customer entity)
         {
-            var result = _userService.Update(entity);
+            var result = _driverService.Update(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetByIDAsync(Guid Id)
+        [Authorize(Roles = "Admin,Driver")]
+        public async Task<IActionResult> GetByIDAsync(Guid id)
         {
-            var result = await _userService.GetByIdAsync(Id);
+            var result = await _driverService.GetByIdAsync(id);
             return result != null ? Ok(result) : BadRequest(result);
         }
         [HttpDelete("{id:guid}")]
-        public IActionResult DeleteById(Guid Id)
+        [Authorize(Roles = "Admin,Driver")]
+        public IActionResult DeleteById(Guid id)
         {
-            var result = _userService.Remove(Id);
+            var result = _driverService.Remove(id);
             return result ? Ok() : BadRequest();
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCount()
         {
-            var result = await _userService.GetCountAsync();
+            var result = await _driverService.GetCountAsync();
             return result>0 ? Ok(result) : BadRequest();
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetListWithFilter(UserFilteringModel entity)
         {
-            var result = await _userService.GetFilterAsync(entity);
+            var result = await _driverService.GetFilterAsync(entity);
             return result != null? Ok(result) : BadRequest();
         }
 

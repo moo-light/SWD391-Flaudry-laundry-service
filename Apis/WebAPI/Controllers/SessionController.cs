@@ -5,62 +5,69 @@ using Domain.Entities;
 using Application.Services;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace WebAPI.Controllers
 {
-    public class TimeSlotController : BaseController, IWebController<Session>
+    public class SessionController : BaseController, IWebController<Session>
     {
-        private readonly ITimeSlotService _timeSlotService;
+        private readonly ISessionService _sessionService;
 
-        public TimeSlotController(ITimeSlotService timeSlotService)
+        public SessionController(ISessionService timeSlotService)
         {
-            _timeSlotService = timeSlotService;
+            _sessionService = timeSlotService;
         }
-
-    
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(Session entity)
         {
-            var result = await _timeSlotService.AddAsync(entity);
+            var result = await _sessionService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Update(Session entity)
         {
-            var result = _timeSlotService.Update(entity);
+            var result = _sessionService.Update(entity);
             return result ? Ok() : BadRequest();
         }
-        [HttpGet]
+        [HttpGet("{entityId:guid}")]
+        [Authorize]
         public async Task<IActionResult> GetByIDAsync(Guid entityId)
         {
-            var result = await _timeSlotService.GetByIdAsync(entityId);
+            var result = await _sessionService.GetByIdAsync(entityId);
             return result != null ? Ok(result) : BadRequest(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{entityId:guid}")]
 
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteById(Guid entityId)
         {
-            var result = _timeSlotService.Remove(entityId);
+            var result = _sessionService.Remove(entityId);
             return result ? Ok() : BadRequest();
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllAsync()
         {
-            var result = await _timeSlotService.GetAllAsync();
+            var result = await _sessionService.GetAllAsync();
             return result.Count() > 0 ? Ok(result) : BadRequest(result);
         }
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCount()
         {
-            var result = await _timeSlotService.GetCount();
+            var result = await _sessionService.GetCount();
             return result > 0 ? Ok(result) : BadRequest();
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
-            IEnumerable<Session> result = await _timeSlotService.GetFilter(entity);
+            IEnumerable<Session> result = await _sessionService.GetFilter(entity);
             return result!=null? Ok(result):BadRequest(result);
         }
     }

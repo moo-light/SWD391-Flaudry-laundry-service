@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.Interfaces.Services
 {
-    public interface ITimeSlotService
+    public interface ISessionService
     {
         Task<bool> AddAsync(Session timeSlot);
         Task<IEnumerable<Session>> GetAllAsync();

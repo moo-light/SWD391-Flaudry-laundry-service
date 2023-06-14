@@ -43,7 +43,7 @@ namespace Infrastructures
             services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<ISessionRepository, SessionRepository>();
-            services.AddScoped<ITimeSlotService, TimeSlotService>();
+            services.AddScoped<ISessionService, SessionService>();
 
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IStoreService, StoreService>();
