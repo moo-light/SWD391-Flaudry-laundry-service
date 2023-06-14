@@ -8,12 +8,10 @@ public partial class Batch :BaseEntity
 {
 
     public Guid? DriverId { get; set; }
-
-    public string? BatchType { get; set; } 
-
-    public Guid? TimeSlotId { get; set; }
-
-    public virtual User? Driver { get; set; } 
-
-    public virtual TimeSlot? TimeSlot { get; set; }
+    public Guid? SessionId { get; set; }
+    public string? Type { get; set; } 
+    public string? Status { get; set; } 
+    public virtual Driver? Driver { get; set; }
+    public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+    public virtual ICollection<OrderInBatch> OrderInBatches { get; set; } = new List<OrderInBatch>();
 }

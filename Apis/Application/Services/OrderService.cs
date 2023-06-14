@@ -13,9 +13,9 @@ namespace Application.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IEnumerable<Order>> GetAllAsync() => await _unitOfWork.OrderRepository.GetAllAsync();
-        public async Task<Order?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(Order order)
+        public async Task<IEnumerable<LaundryOrder>> GetAllAsync() => await _unitOfWork.OrderRepository.GetAllAsync();
+        public async Task<LaundryOrder?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderRepository.GetByIdAsync(entityId);
+        public async Task<bool> AddAsync(LaundryOrder order)
         {
             await _unitOfWork.OrderRepository.AddAsync(order);
             return await _unitOfWork.SaveChangeAsync() > 0;
@@ -27,7 +27,7 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public bool Update(Order entity)
+        public bool Update(LaundryOrder entity)
         {
             _unitOfWork.OrderRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
@@ -38,9 +38,9 @@ namespace Application.Services
             return await _unitOfWork.OrderRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Order>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<LaundryOrder>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return await _unitOfWork.OrderRepository.GetFilterAsync(entity);
+            return _unitOfWork.OrderRepository.GetFilter(entity);
         }
 
     }

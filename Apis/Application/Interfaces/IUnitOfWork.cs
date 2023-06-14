@@ -5,18 +5,18 @@ namespace Application.Interfaces
     public interface IUnitOfWork
     {
 
-        public IUserRepository UserRepository { get; }
-        public IOrderRepository OrderRepository { get; }
-        public ITimeSlotRepository TimeSlotRepository { get; }
-        public IStoreReportRepository StoreReportRepository { get; }
-        public IStoreRepository StoreRepository { get; }
+        public ICustomerRepository CustomerRepository { get; } //r
+        public IDriverRepository DriverRepository { get; } //r
+        public ILaundryOrderRepository OrderRepository { get; } //r
+        public IStoreRepository StoreRepository { get; } //r 
+        public IOrderDetailRepository OrderDetailRepository { get; } //r
+        public IBatchRepository BatchRepository { get; } //r
+        public IBuildingRepository BuildingRepository { get; } //r
+        public IPaymentRepository PaymentRepository { get; } //r
+        public IBaseUserRepository UserRepository { get; }
+        public ISessionRepository SessionRepository { get; }
         public IServiceRepository ServiceRepository { get; }
-        public IBatchRepository BatchRepository { get; }
-        public IBuildingRepository BuildingRepository { get; }
-        public IDriverReportRepository DriverReportRepository { get; }
-        public IPackageRepository PackageRepository { get; }
-        public IPaymentRepository PaymentRepository { get; }
-        public IRoleRepository RoleRepository { get; }
+        public IOrderInBatchRepository OrderInBatchRepository { get; }
 
         public int SaveChange();
         public Task<int> SaveChangeAsync();

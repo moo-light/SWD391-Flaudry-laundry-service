@@ -14,37 +14,41 @@ namespace Infrastructures
     {
         public static IServiceCollection AddInfrastructuresService(this IServiceCollection services, string databaseConnection)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IBatchService, BatchService>();
             services.AddScoped<IBatchRepository, BatchRepository>();
 
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IBuildingRepository, BuildingRepository>();
 
-            services.AddScoped<IDriverReportRepository, DriverReportRepository>();
-            services.AddScoped<IDriverReportService, DriverReportService>();
+            services.AddScoped<IDriverRepository, DriverRepository>();
+            services.AddScoped<IDriverService, DriverService>();
 
-            services.AddScoped<IPackageRepository, PackageRepository>();
-            services.AddScoped<IPackageService, PackageService>();
+            services.AddScoped<ILaundryOrderRepository, LaundryOrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
+
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IOrderDetail, OrderDetailService>(); 
 
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentService, PaymentService>();
 
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IOrderInBatchRepository, OrderInBatchRepository>();
+            services.AddScoped<IOrderInBatchService, OrderInBatchService>();
+            
+            services.AddScoped<IBaseUserRepository, BaseUserRepository>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            
+            services.AddScoped<IDriverRepository, DriverRepository>();
+            services.AddScoped<IDriverService, DriverService>();
+            
+            services.AddScoped<IBaseUserRepository, BaseUserRepository>();
 
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderService, OrderService>();
-
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
-            services.AddScoped<ITimeSlotService, TimeSlotService>();
-
-            services.AddScoped<IStoreReportRepository, StoreReportRepository>();
-            services.AddScoped<IStoreReportService, StoreReportService>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ISessionService, SessionService>();
 
             services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IStoreService, StoreService>();

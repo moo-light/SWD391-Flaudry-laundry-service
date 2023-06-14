@@ -5,6 +5,7 @@ using Domain.Entities;
 using Application.Services;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
@@ -19,6 +20,7 @@ namespace WebAPI.Controllers
 
     
         [HttpPost]
+        [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> Add(Store entity)
         {
             var result = await _storeService.AddAsync(entity);
@@ -26,32 +28,36 @@ namespace WebAPI.Controllers
         }
         [HttpPut]
 
+        [Authorize(Roles = "Customer,Admin")]
         public IActionResult Update(Store entity)
         {
             var result = _storeService.Update(entity);
             return result ? Ok() : BadRequest();
         }
-        [HttpGet]
+        [HttpGet("{entityId:guid}")]
+        [Authorize]
         public async Task<IActionResult> GetByIDAsync(Guid entityId)
         {
             var result = await _storeService.GetByIdAsync(entityId);
             return result != null ? Ok(result) : BadRequest(result);
         }
 
-        [HttpDelete]
-
+        [HttpDelete("{entityId:guid}")]
+        [Authorize(Roles = "Customer,Admin")]
         public IActionResult DeleteById(Guid entityId)
         {
             var result = _storeService.Remove(entityId);
             return result ? Ok() : BadRequest();
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _storeService.GetAllAsync();
             return result.Count() > 0 ? Ok(result) : BadRequest(result);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetCount()
         {
             var result = await _storeService.GetCountAsync();
@@ -59,6 +65,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
             var result = await _storeService.GetFilterAsync(entity);

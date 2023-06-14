@@ -2,6 +2,7 @@
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<Building>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return await _unitOfWork.BuildingRepository.GetFilterAsync(entity);
+            return  await _unitOfWork.BuildingRepository.GetFilter(entity).ToListAsync();
         }
 
         public bool Remove(Guid entityId)

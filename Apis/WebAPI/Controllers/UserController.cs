@@ -5,41 +5,44 @@ using Application.Interfaces;
 using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
-    public class UserController : BaseController, IWebController<User>
+    public class UserController : BaseController, IWebController<Customer>
     {
-        private readonly IUserService _userService;
+        private readonly ICustomerService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(ICustomerService userService)
         {
             _userService = userService;
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task RegisterAsync(UserRegisterDTO registerObject) => await _userService.RegisterAsync(registerObject);
         [HttpPost]
+        [AllowAnonymous]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
         [HttpPost]
-        public async Task<IActionResult> Add(User entity)
+        public async Task<IActionResult> Add(Customer entity)
         {
             var result = await _userService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
-        public IActionResult Update(User entity)
+        public IActionResult Update(Customer entity)
         {
             var result = _userService.Update(entity);
             return result ? Ok() : BadRequest();
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetByIDAsync(Guid Id)
         {
             var result = await _userService.GetByIdAsync(Id);
             return result != null ? Ok(result) : BadRequest(result);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public IActionResult DeleteById(Guid Id)
         {
             var result = _userService.Remove(Id);

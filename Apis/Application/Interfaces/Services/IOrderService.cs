@@ -5,11 +5,11 @@ namespace Application.Interfaces.Services;
 
 public interface IOrderService
 {
-    Task<bool> AddAsync(Order order);
-    Task<IEnumerable<Order>> GetAllAsync();
-    Task<Order?> GetByIdAsync(Guid entityId);
+    Task<bool> AddAsync(LaundryOrder order);
+    Task<IEnumerable<LaundryOrder>> GetAllAsync();
+    Task<LaundryOrder?> GetByIdAsync(Guid entityId);
     Task<int> GetCountAsync();
-    Task<IEnumerable<Order>> GetFilterAsync(BaseFilterringModel entity);
+    Task<IEnumerable<LaundryOrder>> GetFilterAsync(BaseFilterringModel entity);
     bool Remove(Guid entityId);
-    bool Update(Order entity);
+    bool Update(LaundryOrder entity);
 }
