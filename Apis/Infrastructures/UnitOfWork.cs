@@ -17,6 +17,7 @@ namespace Infrastructures
         private readonly IBatchRepository _batchRepository;
         private readonly IBuildingRepository _buildingRepository;
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IRoleRepository _roleRepository;
 
         public UnitOfWork(AppDbContext dbContext,
                           ILaundryOrderRepository orderRepository,
@@ -27,8 +28,7 @@ namespace Infrastructures
                           IBatchRepository batchRepository,
                           IBuildingRepository buildingRepository,
                           IPaymentRepository paymentRepository,
-                          IDriverRepository driverRepository,
-                          IBaseUserRepository baseUserRepository)
+                          IRoleRepository roleRepository)
         {
             _dbContext = dbContext;
             _orderRepository = orderRepository;
@@ -39,14 +39,14 @@ namespace Infrastructures
             _batchRepository = batchRepository;
             _buildingRepository = buildingRepository;
             _paymentRepository = paymentRepository;
-            _driverRepository = driverRepository;
-            _baseUserRepository = baseUserRepository;
+            _roleRepository = roleRepository;
         }
 
         public ICustomerRepository CustomerRepository => _customerRepository;
         public ILaundryOrderRepository OrderRepository => _orderRepository;
-        public ISessionRepository SessionRepository => _timeSlotRepository;
+        public ISessionRepository TimeSlotRepository => _timeSlotRepository;
 
+        public IStoreReportRepository StoreReportRepository => _storeReportRepository;
 
         public IStoreRepository StoreRepository => _storeRepository;
 
@@ -56,12 +56,13 @@ namespace Infrastructures
 
         public IBuildingRepository BuildingRepository => _buildingRepository;
 
+        public IDriverReportRepository DriverReportRepository => _driverReportRepository;
 
-        public IPaymentRepository PaymentRepository => _paymentRepository;
+        public IPackageRepository PackageRepository => _packageRepository;
 
-        public IBaseUserRepository UserRepository => _baseUserRepository;
+        public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
 
-        public IDriverRepository DriverRepository => _driverRepository;
+        public IRoleRepository RoleRepository => _roleRepository;
 
         public int SaveChange()
         {

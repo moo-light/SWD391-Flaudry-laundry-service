@@ -1,6 +1,8 @@
-﻿namespace Application.Interfaces.Repositories
+﻿using Domain.Entities;
+
+namespace Application.Interfaces.Repositories
 {
-    public interface IOrderDetailRepository
+    public interface IOrderDetailRepository : IGenericRepository<OrderDetail>
     {
     }
 }
