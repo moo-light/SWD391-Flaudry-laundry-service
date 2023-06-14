@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Infrastructures.Repositories
 {
     public class CustomerRepository : GenericRepository<Customer>, ICustomerRepository
-    `{
+    {
         private readonly AppDbContext _appDbContext;
         public CustomerRepository(AppDbContext context, ICurrentTime timeService, IClaimsService claimsService) : base(context, timeService, claimsService)
         {

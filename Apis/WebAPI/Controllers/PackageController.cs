@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class PackageController : BaseController, IWebController<Package>
+    public class PackageController : BaseController, IWebController<OrderDetail>
     {
         private readonly IOrderDetail _packageService;
         public PackageController(IOrderDetail packageService)
@@ -14,7 +14,7 @@ namespace WebAPI.Controllers
             _packageService = packageService;
         }
         [HttpPost]
-        public async Task<IActionResult> Add(Package entity)
+        public async Task<IActionResult> Add(OrderDetail entity)
         {
             var result = await _packageService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             return (result != null ? Ok() : BadRequest());
         }
         [HttpPut]
-        public IActionResult Update(Package entity)
+        public IActionResult Update(OrderDetail entity)
         {
             var result = _packageService.Update(entity);
             return result ? Ok(result) : BadRequest();

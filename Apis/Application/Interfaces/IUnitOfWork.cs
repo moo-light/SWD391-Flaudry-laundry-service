@@ -6,7 +6,7 @@ namespace Application.Interfaces
     {
 
         public ICustomerRepository CustomerRepository { get; } //r
-        //public IBaseUserRepository UserRepository { get; } //?
+        public IBaseUserRepository UserRepository { get; } //?
         public IDriverRepository DriverRepository { get; } //r
         public ILaundryOrderRepository OrderRepository { get; } //r
         public ISessionRepository TimeSlotRepository { get; } //r

@@ -23,29 +23,29 @@ namespace Application.Services
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public async Task<IEnumerable<Package>> GetAllAsync() => await _unitOfWork.PackageRepository.GetAllAsync();
+        public async Task<IEnumerable<OrderDetail>> GetAllAsync() => await _unitOfWork.OrderDetailRepository.GetAllAsync();
 
-        public async Task<Package?> GetByIdAsync(Guid entityId) => await _unitOfWork.PackageRepository.GetByIdAsync(entityId);
+        public async Task<OrderDetail?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderDetailRepository.GetByIdAsync(entityId);
 
         public async Task<int> GetCountAsync()
         {
-           return await _unitOfWork.PackageRepository.GetCountAsync();
+           return await _unitOfWork.OrderDetailRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Package>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<OrderDetail>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return await _unitOfWork.PackageRepository.GetFilter(entity);
+            return _unitOfWork.OrderDetailRepository.GetFilter(entity);
         }
 
         public bool Remove(Guid entityId)
         {
-            _unitOfWork.PackageRepository.SoftRemoveByID(entityId);
+            _unitOfWork.OrderDetailRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public bool Update(Package entity)
+        public bool Update(OrderDetail entity)
         {
-            _unitOfWork.PackageRepository.Update(entity);
+            _unitOfWork.OrderDetailRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
     }

@@ -36,7 +36,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<Session>> GetFilter(BaseFilterringModel entity)
         {
-            return await _unitOfWork.TimeSlotRepository.GetFilter(entity);
+            return _unitOfWork.TimeSlotRepository.GetFilter(entity);
         }
 
         public async Task<int> GetCount()

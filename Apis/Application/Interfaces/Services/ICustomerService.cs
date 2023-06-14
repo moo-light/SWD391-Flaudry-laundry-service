@@ -8,11 +8,11 @@ public interface ICustomerService
 {
     public Task RegisterAsync(UserRegisterDTO userObject);
     public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
-    Task<bool> AddAsync(BaseUser user);
+    Task<bool> AddAsync(Customer user);
     bool Remove(Guid entityId);
-    bool Update(BaseUser entity);
+    bool Update(Customer entity);
     Task<BaseUser?> GetByIdAsync(Guid entityId);
-    Task<IEnumerable<BaseUser>> GetAllAsync();
+    Task<IEnumerable<Customer>> GetAllAsync();
     Task<int> GetCountAsync();
-    Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel entity);
+    Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel entity);
 }

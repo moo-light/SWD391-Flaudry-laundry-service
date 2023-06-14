@@ -8,7 +8,7 @@ using Application.ViewModels;
 
 namespace WebAPI.Controllers
 {
-    public class UserController : BaseController, IWebController<BaseUser>
+    public class UserController : BaseController, IWebController<Customer>
     {
         private readonly ICustomerService _userService;
 
@@ -22,13 +22,13 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
         [HttpPost]
-        public async Task<IActionResult> Add(BaseUser entity)
+        public async Task<IActionResult> Add(Customer entity)
         {
             var result = await _userService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
-        public IActionResult Update(BaseUser entity)
+        public IActionResult Update(Customer entity)
         {
             var result = _userService.Update(entity);
             return result ? Ok() : BadRequest();
