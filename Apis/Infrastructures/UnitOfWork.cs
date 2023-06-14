@@ -18,8 +18,8 @@ namespace Infrastructures
         private readonly IBuildingRepository _buildingRepository;
         private readonly IPaymentRepository _paymentRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
-        private readonly IOrderInBatchRepository _orderInBatchRepository;
-
+        private readonly IDriverRepository _driverRepository;
+        private readonly IBaseUserRepository _baseUserRepository;
         public UnitOfWork(AppDbContext dbContext,
                           ILaundryOrderRepository orderRepository,
                           ICustomerRepository userRepository,
@@ -30,11 +30,11 @@ namespace Infrastructures
                           IBuildingRepository buildingRepository,
                           IPaymentRepository paymentRepository,
                           IOrderDetailRepository orderDetailRepository,
-                          IOrderInBatchRepository orderInBatchRepository,
-                          IBaseUserRepository baseUserRepository,
-                          ICustomerRepository customerRepository,
                           IDriverRepository driverRepository,
-                          ISessionRepository sessionRepository)
+                          IBaseUserRepository baseUserRepository
+                          
+            )
+
         {
             _dbContext = dbContext;
             _orderRepository = orderRepository;
@@ -50,7 +50,7 @@ namespace Infrastructures
             _baseUserRepository = baseUserRepository;
             _customerRepository = customerRepository;
             _driverRepository = driverRepository;
-            _sessionRepository = sessionRepository;
+            _baseUserRepository = baseUserRepository;
         }
 
         public ICustomerRepository CustomerRepository => _customerRepository;
@@ -75,6 +75,8 @@ namespace Infrastructures
         public IBaseUserRepository UserRepository => _baseUserRepository;
 
         public IOrderInBatchRepository OrderInBatchRepository => _orderInBatchRepository;
+
+        public IBaseUserRepository UserRepository => _baseUserRepository;
 
         public int SaveChange()
         {

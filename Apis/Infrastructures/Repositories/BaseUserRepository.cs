@@ -29,11 +29,12 @@ namespace Infrastructures.Repositories
         {
             IQueryable<BaseUser> result = null;
 
+            //Expression<Func<BaseUser, bool>> address = x => entity.Search.EmptyOrContainedIn(x.);
             Expression<Func<BaseUser, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
             Expression<Func<BaseUser, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
             Expression<Func<BaseUser, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(email, phoneNumber, fullName);
+            var predicates = ExpressionUtils.CreateListOfExpression( email, phoneNumber, fullName);
 
             result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
 

@@ -34,7 +34,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<OrderDetail>> GetFilterAsync(BaseFilterringModel entity)
         {
-            return  _unitOfWork.OrderDetailRepository.GetFilter(entity);
+            return _unitOfWork.OrderDetailRepository.GetFilter(entity);
         }
 
         public bool Remove(Guid entityId)

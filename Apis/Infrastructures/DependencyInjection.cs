@@ -14,6 +14,8 @@ namespace Infrastructures
     {
         public static IServiceCollection AddInfrastructuresService(this IServiceCollection services, string databaseConnection)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<IBatchService, BatchService>();
             services.AddScoped<IBatchRepository, BatchRepository>();
 
@@ -34,8 +36,8 @@ namespace Infrastructures
 
             services.AddScoped<IOrderInBatchRepository, OrderInBatchRepository>();
             services.AddScoped<IOrderInBatchService, OrderInBatchService>();
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
+            services.AddScoped<IBaseUserRepository, BaseUserRepository>();
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();

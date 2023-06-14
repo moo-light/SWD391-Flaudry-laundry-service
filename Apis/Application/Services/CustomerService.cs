@@ -27,22 +27,22 @@ namespace Application.Services
             _configuration = configuration;
         }
         [Authorize(Roles ="Admin")]
-        public async Task<IEnumerable<BaseUser>> GetAllAsync() => await _unitOfWork.UserRepository.GetAllAsync();
+        public async Task<IEnumerable<Customer>> GetAllAsync() => await _unitOfWork.CustomerRepository.GetAllAsync();
         [Authorize(Roles = "Admin,Customer,Driver")]
-        public async Task<BaseUser?> GetByIdAsync(Guid entityId) => await _unitOfWork.UserRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(BaseUser user)
+        public async Task<Customer?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
+        public async Task<bool> AddAsync(Customer user)
         {
-            await _unitOfWork.UserRepository.AddAsync(user);
+            await _unitOfWork.CustomerRepository.AddAsync(user);
             return await _unitOfWork.SaveChangeAsync() >0;
         }
 
         public bool Remove(Guid entityId)
         {
-             _unitOfWork.UserRepository.SoftRemoveByID(entityId);
+             _unitOfWork.CustomerRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public bool Update(BaseUser entity)
+        public bool Update(Customer entity)
         {
              _unitOfWork.UserRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
@@ -84,9 +84,9 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel user)
+        public async Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel user)
         {
-            return  _unitOfWork.UserRepository.GetFilter(user);
+            return  _unitOfWork.CustomerRepository.GetFilter(user);
         }
     }
 }

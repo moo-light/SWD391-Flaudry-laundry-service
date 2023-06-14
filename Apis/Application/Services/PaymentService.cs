@@ -36,6 +36,7 @@ namespace Application.Services
         public async Task<IEnumerable<Payment>> GetFilterAsync(BaseFilterringModel entity)
         {
             return  _unitOfWork.PaymentRepository.GetFilter(entity);
+            return _unitOfWork.PaymentRepository.GetFilter(entity);
 
         }
 
