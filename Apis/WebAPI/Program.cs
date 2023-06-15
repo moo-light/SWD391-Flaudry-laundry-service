@@ -12,7 +12,8 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // parse the configuration in appsettings
-var configuration = builder.Configuration.Get<AppConfiguration>();
+var configuration = builder.Configuration?.Get<AppConfiguration>();
+if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 builder.Services.AddInfrastructuresService(configuration.DatabaseConnection);
 builder.Services.AddWebAPIService(configuration!.JWTSecretKey);
 /*
@@ -58,24 +59,23 @@ builder.Services.AddSwaggerGen(opt =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.DefaultModelExpandDepth(0);
-        c.DefaultModelsExpandDepth(-1);
-        c.DefaultModelRendering(ModelRendering.Example);
-        c.DisplayOperationId();
-        c.DisplayRequestDuration();
-        c.DocExpansion(DocExpansion.None);
-        c.EnableDeepLinking();
-        c.EnableFilter();
-        c.ShowExtensions();
-        c.EnableValidator();
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.DefaultModelExpandDepth(0);
+    c.DefaultModelsExpandDepth(-1);
+    c.DefaultModelRendering(ModelRendering.Example);
+    c.DisplayOperationId();
+    c.DisplayRequestDuration();
+    c.DocExpansion(DocExpansion.None);
+    c.EnableDeepLinking();
+    c.EnableFilter();
+    c.ShowExtensions();
+    c.EnableValidator();
+});
+
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseMiddleware<PerformanceMiddleware>();
