@@ -58,14 +58,14 @@ namespace Application.Services
             };
     }
 
-        public async Task RegisterAsync(UserRegisterDTO customer)
+        public async Task<bool> RegisterAsync(UserRegisterDTO customer)
         {
             // check username exited
             var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(customer.Email);
 
             if (isExited)
             {
-                throw new InvalidDataException("Username exited please try again");
+                throw new Exception("Username exited please try again");
             }
 
             var newUser = new Customer
@@ -76,7 +76,7 @@ namespace Application.Services
             };
 
             await _unitOfWork.UserRepository.AddAsync(newUser);
-            await _unitOfWork.SaveChangeAsync();
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<int> GetCountAsync()

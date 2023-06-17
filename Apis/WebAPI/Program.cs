@@ -53,32 +53,38 @@ builder.Services.AddSwaggerGen(opt =>
                 new string[]{}
             }
         });
-});
+}); 
 
-var app = builder.Build();
+    var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.DefaultModelExpandDepth(0);
-        c.DefaultModelsExpandDepth(-1);
-        c.DefaultModelRendering(ModelRendering.Example);
-        c.DisplayOperationId();
-        c.DisplayRequestDuration();
-        c.DocExpansion(DocExpansion.None);
-        c.EnableDeepLinking();
-        c.EnableFilter();
-        c.ShowExtensions();
-        c.EnableValidator();
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.DefaultModelExpandDepth(0);
+    c.DefaultModelsExpandDepth(-1);
+    c.DefaultModelRendering(ModelRendering.Example);
+    c.DisplayOperationId();
+    c.DisplayRequestDuration();
+    c.DocExpansion(DocExpansion.None);
+    c.EnableDeepLinking();
+    c.EnableFilter();
+    c.ShowExtensions();
+    c.EnableValidator();
+});
 
-app.UseMiddleware<GlobalExceptionMiddleware>();
+app.Use((context, next) =>
+{
+    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    return next.Invoke();
+});
+app.UseCors();
+
 app.UseMiddleware<PerformanceMiddleware>();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapHealthChecks("/healthchecks");
 app.UseHttpsRedirection();
 app.UseAuthentication();

@@ -20,7 +20,14 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(UserRegisterDTO registerObject) => await _userService.RegisterAsync(registerObject);
+        public async Task<IActionResult> RegisterAsync(UserRegisterDTO registerObject)
+        {
+            var checkReg = await _userService.RegisterAsync(registerObject);
+            if (checkReg)
+            {
+                return Ok("Register successfully");
+            } else { return BadRequest("Register fail"); }
+        }
         [HttpPost]
         [AllowAnonymous]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject) => await _userService.LoginAsync(loginObject);
