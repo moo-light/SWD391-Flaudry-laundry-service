@@ -26,25 +26,25 @@ namespace Application.Services
             _currentTime = currentTime;
             _configuration = configuration;
         }
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<Customer>> GetAllAsync() => await _unitOfWork.CustomerRepository.GetAllAsync();
         [Authorize(Roles = "Admin,Customer,Driver")]
         public async Task<Customer?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(Customer user)
         {
             await _unitOfWork.CustomerRepository.AddAsync(user);
-            return await _unitOfWork.SaveChangeAsync() >0;
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public bool Remove(Guid entityId)
         {
-             _unitOfWork.CustomerRepository.SoftRemoveByID(entityId);
+            _unitOfWork.CustomerRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
         }
 
         public bool Update(Customer entity)
         {
-             _unitOfWork.UserRepository.Update(entity);
+            _unitOfWork.UserRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
@@ -56,18 +56,19 @@ namespace Application.Services
                 UserId = user.Id,
                 JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
             };
-    }
+        }
+        public async Task<bool> CheckEmail(UserRegisterDTO userObject)
+        {
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.Email);
+            if (isExited)
+            {
+                return true;
+            } 
+            return false;
+        }
 
         public async Task<bool> RegisterAsync(UserRegisterDTO customer)
         {
-            // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(customer.Email);
-
-            if (isExited)
-            {
-                throw new Exception("Username exited please try again");
-            }
-
             var newUser = new Customer
             {
                 Email = customer.Email,
@@ -86,7 +87,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel user)
         {
-            return  _unitOfWork.CustomerRepository.GetFilter(user);
+            return _unitOfWork.CustomerRepository.GetFilter(user);
         }
     }
 }

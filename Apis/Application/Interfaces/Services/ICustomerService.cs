@@ -6,6 +6,7 @@ namespace Application.Interfaces.Services;
 
 public interface ICustomerService
 {
+    public Task<bool> CheckEmail(UserRegisterDTO userObject);
     public Task<bool> RegisterAsync(UserRegisterDTO userObject);
     public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
     Task<bool> AddAsync(Customer user);

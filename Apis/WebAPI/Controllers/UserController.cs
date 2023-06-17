@@ -22,11 +22,32 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RegisterAsync(UserRegisterDTO registerObject)
         {
-            var checkReg = await _userService.RegisterAsync(registerObject);
-            if (checkReg)
+            var checkExist = await _userService.CheckEmail(registerObject);
+            if (checkExist)
             {
-                return Ok("Register successfully");
-            } else { return BadRequest("Register fail"); }
+                return BadRequest(new 
+                { 
+                    Message = "Email has existed, please try again" 
+                });
+            }
+            else
+            {
+                var checkReg = await _userService.RegisterAsync(registerObject);
+                if (checkReg)
+                {
+                    return Ok(new
+                    {
+                        Message = "Email has existed, please try again"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Register fail"
+                    });
+                }
+            }
         }
         [HttpPost]
         [AllowAnonymous]
@@ -59,13 +80,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetCount()
         {
             var result = await _userService.GetCountAsync();
-            return result>0 ? Ok(result) : BadRequest();
+            return result > 0 ? Ok(result) : BadRequest();
         }
         [HttpGet]
         public async Task<IActionResult> GetListWithFilter(UserFilteringModel entity)
         {
             var result = await _userService.GetFilterAsync(entity);
-            return result != null? Ok(result) : BadRequest();
+            return result != null ? Ok(result) : BadRequest();
         }
 
     }
