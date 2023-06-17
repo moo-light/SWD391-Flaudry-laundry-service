@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
             return result > 0 ? Ok(result) : BadRequest();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Driver,Admin")]
 
         //1. status = RequestChange
