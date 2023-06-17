@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ILaundryOrderRepository : IGenericRepository<LaundryOrder>
+    public interface IOrderRepository : IGenericRepository<LaundryOrder>
     {
         IEnumerable<LaundryOrder> GetFilter(BaseFilterringModel entity);
     }

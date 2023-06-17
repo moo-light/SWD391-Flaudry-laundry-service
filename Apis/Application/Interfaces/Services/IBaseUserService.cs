@@ -1,5 +1,6 @@
 ﻿using Application.ViewModels;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Application.Interfaces.Services
         Task<BaseUser?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
         Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel entity);
+        Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject);
         bool Remove(Guid entityId);
         bool Update(BaseUser entity);
     }

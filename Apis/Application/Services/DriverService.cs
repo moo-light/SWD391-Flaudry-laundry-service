@@ -57,7 +57,7 @@ namespace Application.Services
             };
     }
 
-        public async Task RegisterAsync(UserRegisterDTO driver)
+        public async Task RegisterAsync(DriverRegisterDTO driver)
         {
             // check username exited
             var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(driver.Email);
@@ -67,13 +67,9 @@ namespace Application.Services
                 throw new InvalidDataException("Username exited please try again");
             }
 
-            var newUser = new Driver
-            {
-                Email = driver.Email,
-                PasswordHash = driver.Password.Hash(),
-            };
+            var newDriver = _mapper.Map<Driver>(driver);
 
-            await _unitOfWork.DriverRepository.AddAsync(newUser);
+            await _unitOfWork.DriverRepository.AddAsync(newDriver);
             await _unitOfWork.SaveChangeAsync();
         }
 

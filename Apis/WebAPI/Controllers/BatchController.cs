@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Driver,Admin")]
-        public async Task<IActionResult> GetListWithFilter([AllowNull] BatchFilteringModel entity)
+        public async Task<IActionResult> GetListWithFilter([AllowNull] BatchFilteringModel? entity)
         {
             var result = await _batchService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

@@ -8,6 +8,6 @@ namespace Application.Interfaces.Repositories
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
         public Task<Customer> GetCustomerByEmailAndPassword(string email, string password);
-        IEnumerable<Customer> GetFilter(UserFilteringModel entity);
+        IEnumerable<Customer> GetFilter(CustomerFilteringModel entity);
     }
 }

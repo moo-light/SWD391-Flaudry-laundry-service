@@ -10,6 +10,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface IBuildingRepository : IGenericRepository<Building>
     {
-        IQueryable<Building> GetFilter(BuildingFilteringModel entity);
+        IEnumerable<Building> GetFilter(BuildingFilteringModel entity);
     }
 }

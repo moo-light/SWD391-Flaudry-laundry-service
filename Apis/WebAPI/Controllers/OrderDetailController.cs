@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles ="Customer,Admin")]
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel? entity)
         {
             var result = await _orderDetailService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

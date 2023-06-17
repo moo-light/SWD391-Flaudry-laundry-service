@@ -10,28 +10,28 @@ using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {
-    public class DriverController : BaseController, IWebController<Customer>
+    public class DriverController : BaseController, IWebController<Driver>
     {
-        private readonly ICustomerService _driverService;
+        private readonly IDriverService _driverService;
 
-        public DriverController(ICustomerService driverService)
+        public DriverController(IDriverService driverService)
         {
             _driverService = driverService;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(UserRegisterDTO registerObject) => await _driverService.RegisterAsync(registerObject);
+        public async Task RegisterAsync(DriverRegisterDTO registerObject) => await _driverService.RegisterAsync(registerObject);
         [HttpPost]
         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> Add(Customer entity)
+        public async Task<IActionResult> Add(Driver entity)
         {
             var result = await _driverService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
         [HttpPut]
         [Authorize(Roles ="Admin,Driver")]
-        public IActionResult Update(Customer entity)
+        public IActionResult Update(Driver entity)
         {
             var result = _driverService.Update(entity);
             return result ? Ok() : BadRequest();
@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(UserFilteringModel entity)
+        public async Task<IActionResult> GetListWithFilter(UserFilteringModel? entity)
         {
             var result = await _driverService.GetFilterAsync(entity);
             return result != null? Ok(result) : BadRequest();

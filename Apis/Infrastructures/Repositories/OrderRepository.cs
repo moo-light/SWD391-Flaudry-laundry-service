@@ -8,10 +8,10 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class LaundryOrderRepository : GenericRepository<LaundryOrder>, ILaundryOrderRepository
+    public class OrderRepository : GenericRepository<LaundryOrder>, IOrderRepository
     {
 
-        public LaundryOrderRepository(AppDbContext dbContext,
+        public OrderRepository(AppDbContext dbContext,
             ICurrentTime timeService,
             IClaimsService claimsService)
             : base(dbContext,

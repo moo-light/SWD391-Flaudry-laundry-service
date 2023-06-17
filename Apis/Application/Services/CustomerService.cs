@@ -46,21 +46,13 @@ namespace Application.Services
 
         public bool Update(Customer entity)
         {
-            _unitOfWork.UserRepository.Update(entity);
+            _unitOfWork.CustomerRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
-        {
-            var user = await _unitOfWork.UserRepository.GetUserByEmailAndPasswordHash(userObject.Email, userObject.Password.Hash());
-            return new UserLoginDTOResponse
-            {
-                UserId = user.Id,
-                JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
-            };
-        }
+     
 
-        public async Task RegisterAsync(UserRegisterDTO customer)
+        public async Task RegisterAsync(CustomerRegisterDTO customer)
         {
             // check username exited
             var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(customer.Email);
@@ -70,14 +62,9 @@ namespace Application.Services
                 throw new InvalidDataException("Username exited please try again");
             }
 
-            var newUser = new Customer
-            {
-                Email = customer.Email,
-                PasswordHash = customer.Password.Hash(),
-                Address = customer.Address
-            };
+            var newCustomer = _mapper.Map<Customer>(customer);
 
-            await _unitOfWork.UserRepository.AddAsync(newUser);
+            await _unitOfWork.UserRepository.AddAsync(newCustomer);
             await _unitOfWork.SaveChangeAsync();
         }
 
@@ -86,7 +73,7 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel user)
+        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
         {
             return _unitOfWork.CustomerRepository.GetFilter(user);
         }

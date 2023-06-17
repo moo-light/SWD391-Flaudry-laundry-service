@@ -8,7 +8,7 @@ namespace Application.Interfaces.Services;
 
 public interface IDriverService
 {
-    public Task RegisterAsync(UserRegisterDTO userObject);
+    public Task RegisterAsync(DriverRegisterDTO userObject);
     public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
     Task<bool> AddAsync(Driver user);
     bool Remove(Guid entityId);

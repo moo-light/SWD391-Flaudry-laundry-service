@@ -25,7 +25,7 @@ namespace Infrastructures
             services.AddScoped<IDriverRepository, DriverRepository>();
             services.AddScoped<IDriverService, DriverService>();
 
-            services.AddScoped<ILaundryOrderRepository, LaundryOrderRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
 
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
@@ -37,7 +37,6 @@ namespace Infrastructures
             services.AddScoped<IOrderInBatchRepository, OrderInBatchRepository>();
             services.AddScoped<IOrderInBatchService, OrderInBatchService>();
             
-            services.AddScoped<IBaseUserRepository, BaseUserRepository>();
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
@@ -46,6 +45,7 @@ namespace Infrastructures
             services.AddScoped<IDriverService, DriverService>();
             
             services.AddScoped<IBaseUserRepository, BaseUserRepository>();
+            services.AddScoped<IBaseUserService, BaseUserService>();
 
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISessionService, SessionService>();

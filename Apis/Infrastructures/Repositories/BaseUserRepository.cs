@@ -38,13 +38,13 @@ namespace Infrastructures.Repositories
 
             var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
-            return result;
+            return result.AsQueryable();
         }
 
         public async Task<BaseUser?> GetUserByEmailAndPasswordHash(string email, string password)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email && password.CheckPassword(x.PasswordHash)) 
-                ?? throw new Exception("Email or password is not correct");
+                BaseUser? user = (await GetAllAsync()).FirstOrDefault(x => x.Email == email && password.CheckPassword(x.PasswordHash));
+                return user ?? throw new Exception("Email or password is not correct");
         }
 
   

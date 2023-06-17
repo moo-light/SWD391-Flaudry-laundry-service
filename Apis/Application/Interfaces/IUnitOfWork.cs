@@ -7,7 +7,7 @@ namespace Application.Interfaces
 
         public ICustomerRepository CustomerRepository { get; } //r
         public IDriverRepository DriverRepository { get; } //r
-        public ILaundryOrderRepository OrderRepository { get; } //r
+        public IOrderRepository OrderRepository { get; } //r
         public IStoreRepository StoreRepository { get; } //r 
         public IOrderDetailRepository OrderDetailRepository { get; } //r
         public IBatchRepository BatchRepository { get; } //r

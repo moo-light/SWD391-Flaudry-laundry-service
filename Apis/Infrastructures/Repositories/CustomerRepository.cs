@@ -6,6 +6,7 @@ using Application.ViewModels;
 using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,13 +29,13 @@ namespace Infrastructures.Repositories
             throw new NotImplementedException();
         }
 
-        public  IEnumerable<Customer> GetFilter(UserFilteringModel entity)
+        public  IEnumerable<Customer> GetFilter(CustomerFilteringModel entity)
         {
             entity ??= new();
-            Expression<Func<Customer, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
-            Expression<Func<Customer, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
-            Expression<Func<Customer, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
-            Expression<Func<Customer, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
+            Expression<Func<Customer, bool>> address = x => entity.Address.IsNullOrEmpty()|| entity.Address.Any(y=> x.Address != null && x.Address.Contains(y));
+            Expression<Func<Customer, bool>> email = x => entity.Email.IsNullOrEmpty() || entity.Email.Any(y => x.Email != null && x.Email.Contains(y));
+            Expression<Func<Customer, bool>> phoneNumber = x => entity.PhoneNumber.IsNullOrEmpty() || entity.PhoneNumber.Any(y => x.PhoneNumber != null && x.PhoneNumber.Contains(y));
+            Expression<Func<Customer, bool>> fullName = x => entity.FullName.IsNullOrEmpty() || entity.FullName.Any(y =>x.FullName!=null&&  x.FullName.Contains(y));
 
             var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName);
 

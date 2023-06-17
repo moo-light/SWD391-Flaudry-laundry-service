@@ -13,9 +13,9 @@ namespace Application.Utils
     public static class ExpressionUtils
     {
 
-        public static List<Expression<Func<T, bool>>> CreateListOfExpression<T>(params Expression<Func<T, bool>>[] expressions)
+        public static List<Expression<Func<T, bool>>> CreateListOfExpression<T>(params Expression<Func<T, bool>>[]? expressions )
         {
-            return new List<Expression<Func<T, bool>>>(expressions.AsEnumerable());
+            return expressions?.ToList() ?? new List<Expression<Func<T, bool>>>();
         }
 
         public static bool EmptyOrEquals(this Guid? thisId, Guid? thatId)

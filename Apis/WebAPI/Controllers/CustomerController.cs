@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(UserRegisterDTO registerObject) => await _customerService.RegisterAsync(registerObject);
+        public async Task RegisterAsync(CustomerRegisterDTO registerObject) => await _customerService.RegisterAsync(registerObject);
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(Customer entity)
@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(UserFilteringModel entity)
+        public async Task<IActionResult> GetListWithFilter(CustomerFilteringModel? entity)
         {
             var result = await _customerService.GetFilterAsync(entity);
             return result != null? Ok(result) : BadRequest();

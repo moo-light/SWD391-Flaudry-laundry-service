@@ -7,7 +7,7 @@ namespace Infrastructures
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _dbContext;
-        private readonly ILaundryOrderRepository _orderRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly ICustomerRepository _customerRepository;//check lai register
         private readonly IBaseUserRepository _baseUserRepository;
         private readonly IDriverRepository _driverRepository;//check lai register
@@ -21,7 +21,7 @@ namespace Infrastructures
         private readonly IOrderInBatchRepository _orderInBatchRepository;
 
         public UnitOfWork(AppDbContext dbContext,
-                          ILaundryOrderRepository orderRepository,
+                          IOrderRepository orderRepository,
                           ICustomerRepository userRepository,
                           ISessionRepository timeSlotRepository,
                           IStoreRepository storeRepository,
@@ -58,7 +58,7 @@ namespace Infrastructures
         }
 
         public ICustomerRepository CustomerRepository => _customerRepository;
-        public ILaundryOrderRepository OrderRepository => _orderRepository;
+        public IOrderRepository OrderRepository => _orderRepository;
 
         public IStoreRepository StoreRepository => _storeRepository;
 
