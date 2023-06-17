@@ -70,7 +70,6 @@ namespace Infrastructures.Repositories
             _dbSet.Update(entity);
             return true;
         }
-        public abstract IQueryable<TEntity> GetFilter(BaseFilterringModel entity);
         public async Task<bool> AddRangeAsync(List<TEntity> entities)
         {
             foreach (var entity in entities)

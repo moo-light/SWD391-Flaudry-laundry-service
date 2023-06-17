@@ -20,14 +20,13 @@ namespace Infrastructures.Repositories
         {
             _dbContext = dbContext;
         }
-        public override  IQueryable<Session> GetFilter(BaseFilterringModel entity)
+        public IEnumerable<Session> GetFilter(BaseFilterringModel entity)
         {
-            IQueryable<Session> result = null;
 
             Expression<Func<Session, bool>> dateTime = x => x.StartTime.IsInDateTime(entity.FromDate.Value.Date,entity.ToDate.Value.Date); 
             var predicates = ExpressionUtils.CreateListOfExpression(dateTime);
 
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;
         }

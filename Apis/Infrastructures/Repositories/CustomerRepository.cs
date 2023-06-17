@@ -3,8 +3,10 @@ using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,18 +29,17 @@ namespace Infrastructures.Repositories
             throw new NotImplementedException();
         }
 
-        public override IQueryable<Customer> GetFilter(BaseFilterringModel entity)
+        public  IEnumerable<Customer> GetFilter(CustomerFilteringModel entity)
         {
-            IQueryable<Customer> result = null;
-
-            Expression<Func<Customer, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
-            Expression<Func<Customer, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
-            Expression<Func<Customer, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
-            Expression<Func<Customer, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
+            entity ??= new();
+            Expression<Func<Customer, bool>> address = x => entity.Address.IsNullOrEmpty()|| entity.Address.Any(y=> x.Address != null && x.Address.Contains(y));
+            Expression<Func<Customer, bool>> email = x => entity.Email.IsNullOrEmpty() || entity.Email.Any(y => x.Email != null && x.Email.Contains(y));
+            Expression<Func<Customer, bool>> phoneNumber = x => entity.PhoneNumber.IsNullOrEmpty() || entity.PhoneNumber.Any(y => x.PhoneNumber != null && x.PhoneNumber.Contains(y));
+            Expression<Func<Customer, bool>> fullName = x => entity.FullName.IsNullOrEmpty() || entity.FullName.Any(y =>x.FullName!=null&&  x.FullName.Contains(y));
 
             var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName);
 
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            IEnumerable<Customer> result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;
         }

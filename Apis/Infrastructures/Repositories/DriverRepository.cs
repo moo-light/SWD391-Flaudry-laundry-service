@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public override IQueryable<Driver> GetFilter(BaseFilterringModel entity)
+        public  IEnumerable<Driver> GetFilter(UserFilteringModel entity)
         {
             throw new NotImplementedException();
         }

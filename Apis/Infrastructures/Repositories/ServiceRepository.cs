@@ -19,7 +19,7 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-        public override IQueryable<Service> GetFilter(BaseFilterringModel entity)
+        public IEnumerable<Service> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

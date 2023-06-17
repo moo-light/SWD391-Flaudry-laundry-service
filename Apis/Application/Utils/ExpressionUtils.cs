@@ -13,16 +13,30 @@ namespace Application.Utils
     public static class ExpressionUtils
     {
 
-        public static List<Expression<Func<T, bool>>> CreateListOfExpression<T>(params Expression<Func<T, bool>>[] expressions)
+        public static List<Expression<Func<T, bool>>> CreateListOfExpression<T>(params Expression<Func<T, bool>>[]? expressions )
         {
-            return expressions.ToList();
+            return expressions?.ToList() ?? new List<Expression<Func<T, bool>>>();
         }
 
         public static bool EmptyOrEquals(this Guid? thisId, Guid? thatId)
         {
             if (thisId == null || thisId == Guid.Empty) return true;
-            if (thatId == thisId) return true;
-            return false;
+
+            if (thatId == null) return false;
+            
+            return thisId.Equals(thatId);
+        }
+        /// <summary>
+        /// check if any of the list is equal thatId
+        /// </summary>
+        /// <param name="theseId"></param>
+        /// <param name="thatId"></param>
+        /// <returns>true if empty or one GUID equal thatId</returns>
+        public static bool EmptyOrEquals(this Guid?[]? theseId, Guid? thatId)
+        {
+            if (theseId == null) return true;
+
+            return theseId.Any(x => x.EmptyOrEquals(thatId));
         }
         public static bool EmptyOrContainedIn(this string? @this, string? that)
         {

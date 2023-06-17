@@ -31,8 +31,8 @@ namespace Infrastructures
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BaseUser>().UseTptMappingStrategy(); //table per type 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            modelBuilder.Entity<BaseUser>().UseTptMappingStrategy();
         }
     }
 }

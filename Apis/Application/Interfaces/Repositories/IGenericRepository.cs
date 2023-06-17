@@ -11,7 +11,7 @@ namespace Application.Interfaces.Repositories
         Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<int> GetCountAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity?> GetByIdAsync(Guid id);
-        IQueryable<TEntity> GetFilter(BaseFilterringModel entity);
+        //IQueryable<TEntity> GetFilter(BaseFilterringModel entity);
         Task<bool> AddAsync(TEntity entity);
         bool Update(TEntity entity);
         bool UpdateRange(List<TEntity> entities);

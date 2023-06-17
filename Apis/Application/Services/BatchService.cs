@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +50,7 @@ namespace Application.Services
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
 
-        public async Task<IEnumerable<Batch>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel entity)
         {
             return await _unitOfWork.BatchRepository.GetFilter(entity).ToListAsync();
         }

@@ -71,7 +71,7 @@ namespace WebAPI.Controllers
 
         //1. status = RequestChange
 
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel? entity)
         {
             var result = await _orderInBatchService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

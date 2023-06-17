@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel? entity)
         {
             IEnumerable<Payment> result = await _paymentService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

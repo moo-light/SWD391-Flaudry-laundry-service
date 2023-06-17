@@ -34,7 +34,7 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public async Task<IEnumerable<Session>> GetFilter(BaseFilterringModel entity)
+        public async Task<IEnumerable<Session>> GetFilterAsync(BaseFilterringModel entity)
         {
             return  _unitOfWork.SessionRepository.GetFilter(entity);
         }

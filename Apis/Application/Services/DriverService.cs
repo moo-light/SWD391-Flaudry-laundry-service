@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -55,25 +56,22 @@ namespace Application.Services
                 JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
             };
     }
-
-        public async Task RegisterAsync(UserRegisterDTO driver)
+        public async Task<bool> CheckEmail(DriverRegisterDTO driverRegisterDTO)
         {
-            // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(driver.Email);
-
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(driverRegisterDTO.Email);
             if (isExited)
             {
-                throw new InvalidDataException("Username exited please try again");
+                return true;
             }
+            else return false;
+        }
 
-            var newUser = new Driver
-            {
-                Email = driver.Email,
-                PasswordHash = driver.Password.Hash(),
-            };
+        public async Task<bool> RegisterAsync(DriverRegisterDTO driver)
+        {
+            var newDriver = _mapper.Map<Driver>(driver);
 
-            await _unitOfWork.DriverRepository.AddAsync(newUser);
-            await _unitOfWork.SaveChangeAsync();
+            await _unitOfWork.DriverRepository.AddAsync(newDriver);
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<int> GetCountAsync()
@@ -81,9 +79,10 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Driver>> GetFilterAsync(UserFilteringModel driver)
+        public async Task<Pagination<Driver>> GetFilterAsync(UserFilteringModel driver)
         {
-            return  _unitOfWork.DriverRepository.GetFilter(driver);
+            var o = _unitOfWork.DriverRepository.GetFilter(driver);
+            return _mapper.Map<Pagination<Driver>>(o);
         }
     }
 }

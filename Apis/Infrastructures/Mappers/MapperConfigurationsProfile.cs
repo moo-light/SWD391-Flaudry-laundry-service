@@ -2,6 +2,7 @@
 using Application.Commons;
 using Domain.Entities;
 using Application.ViewModels.UserViewModels;
+using Application.Utils;
 
 namespace Infrastructures.Mappers
 {
@@ -19,6 +20,13 @@ namespace Infrastructures.Mappers
             //    {
             //        Email = src.DestinationMember.
             //    });
+
+            CreateMap<DriverRegisterDTO, Driver>()
+                .ForMember(dest => dest.PasswordHash, src =>src.MapFrom(x=>x.Password.Hash()))
+                .ReverseMap();
+            CreateMap<CustomerRegisterDTO, Customer>()
+                .ForMember(dest => dest.PasswordHash, src => src.MapFrom(x => x.Password.Hash()))
+                .ReverseMap();
         }
     }
 }

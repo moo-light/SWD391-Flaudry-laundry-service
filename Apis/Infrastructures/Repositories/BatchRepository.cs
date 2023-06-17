@@ -1,10 +1,13 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
+using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +21,19 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public override IQueryable<Batch> GetFilter(BaseFilterringModel entity)
+        public IQueryable<Batch> GetFilter(BatchFilteringModel? entity)
         {
-            throw new NotImplementedException();
+            entity ??= new();
+            Expression<Func<Batch, bool>> driverId = x => entity.DriverId.EmptyOrEquals(x.DriverId);
+            Expression<Func<Batch, bool>> sessionId = x => entity.SessionId.EmptyOrEquals(x.SessionId);
+            Expression<Func<Batch, bool>> type = x => entity.Type.EmptyOrContainedIn(x.Type);
+            Expression<Func<Batch, bool>> status = x => entity.Status.EmptyOrContainedIn(x.Status);
+
+            var predicates = ExpressionUtils.CreateListOfExpression(driverId, sessionId, status, type);
+
+            var result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+
+            return result;  
         }
     }
 }

@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -45,7 +46,7 @@ namespace Application.Services
 
         public bool Update(Customer entity)
         {
-            _unitOfWork.UserRepository.Update(entity);
+            _unitOfWork.CustomerRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
@@ -58,26 +59,21 @@ namespace Application.Services
                 JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
             };
         }
-        public async Task<bool> CheckEmail(UserRegisterDTO userObject)
+        public async Task<bool> CheckEmail(CustomerRegisterDTO userObject)
         {
             var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.Email);
             if (isExited)
             {
                 return true;
-            } 
+            }
             return false;
         }
-
-        public async Task<bool> RegisterAsync(UserRegisterDTO customer)
+        public async Task<bool> RegisterAsync(CustomerRegisterDTO customer)
         {
-            var newUser = new Customer
-            {
-                Email = customer.Email,
-                PasswordHash = customer.Password.Hash(),
-                Address = customer.Address
-            };
 
-            await _unitOfWork.UserRepository.AddAsync(newUser);
+            var newCustomer = _mapper.Map<Customer>(customer);
+
+            await _unitOfWork.UserRepository.AddAsync(newCustomer);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
@@ -86,7 +82,7 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel user)
+        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
         {
             return _unitOfWork.CustomerRepository.GetFilter(user);
         }

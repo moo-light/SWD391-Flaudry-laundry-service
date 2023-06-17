@@ -6,6 +6,7 @@ using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {
@@ -20,7 +21,35 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(UserRegisterDTO registerObject) => await _driverService.RegisterAsync(registerObject);
+        public async Task<IActionResult> RegisterAsync(DriverRegisterDTO registerObject)
+        {
+            var checkExist = await _driverService.CheckEmail(registerObject);
+            if (checkExist)
+            {
+                return BadRequest(new
+                {
+                    Message = "Email has existed, please try again"
+                });
+            }
+            else
+            {
+                var checkReg = await _driverService.RegisterAsync(registerObject);
+                if (checkReg)
+                {
+                    return Ok(new
+                    {
+                        Message = "Register Success"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Register fail"
+                    });
+                }
+            }
+        }
         [HttpPost]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Add(Driver entity)
@@ -58,7 +87,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(UserFilteringModel entity)
+        public async Task<IActionResult> GetListWithFilter(UserFilteringModel? entity)
         {
             var result = await _driverService.GetFilterAsync(entity);
             return result != null? Ok(result) : BadRequest();

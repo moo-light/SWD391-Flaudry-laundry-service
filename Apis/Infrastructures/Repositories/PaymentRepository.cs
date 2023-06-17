@@ -35,7 +35,7 @@ namespace Infrastructures.Repositories
         //    return result.AsEnumerable();
         //}
 
-        public override IQueryable<Payment> GetFilter(BaseFilterringModel entity)
+        public  IEnumerable<Payment> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }
