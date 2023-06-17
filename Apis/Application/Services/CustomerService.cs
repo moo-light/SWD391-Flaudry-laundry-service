@@ -9,6 +9,7 @@ using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Application.Services
 {
@@ -26,25 +27,25 @@ namespace Application.Services
             _currentTime = currentTime;
             _configuration = configuration;
         }
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<Customer>> GetAllAsync() => await _unitOfWork.CustomerRepository.GetAllAsync();
         [Authorize(Roles = "Admin,Customer,Driver")]
         public async Task<Customer?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(Customer user)
         {
             await _unitOfWork.CustomerRepository.AddAsync(user);
-            return await _unitOfWork.SaveChangeAsync() >0;
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public bool Remove(Guid entityId)
         {
-             _unitOfWork.CustomerRepository.SoftRemoveByID(entityId);
+            _unitOfWork.CustomerRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
         }
 
         public bool Update(Customer entity)
         {
-             _unitOfWork.UserRepository.Update(entity);
+            _unitOfWork.UserRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
 
@@ -56,7 +57,7 @@ namespace Application.Services
                 UserId = user.Id,
                 JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
             };
-    }
+        }
 
         public async Task RegisterAsync(UserRegisterDTO customer)
         {
@@ -86,7 +87,26 @@ namespace Application.Services
 
         public async Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel user)
         {
-            return  _unitOfWork.CustomerRepository.GetFilter(user);
+            return _unitOfWork.CustomerRepository.GetFilter(user);
+        }
+
+        public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)
+        {
+            if (loginObject.Email.CheckPassword(_configuration.AdminAccount.Email))
+                if (loginObject.Password.CheckPassword(_configuration.AdminAccount.Password))
+                {
+                    return new UserLoginDTOResponse
+                    {
+                        UserId = Guid.NewGuid(),
+                        JWT = new BaseUser()
+                        {
+                            IsAdmin = true,
+                            Email = _configuration.AdminAccount.Email,
+                            Id = Guid.NewGuid()//admin want to be anonymous
+                        }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+                    };
+                }
+            throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
         }
     }
 }

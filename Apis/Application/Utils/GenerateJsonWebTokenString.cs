@@ -16,7 +16,7 @@ namespace Application.Utils
             {
                 new Claim(ClaimTypes.NameIdentifier ,user.Email),
                 new Claim("userId" ,user.Id.ToString()),
-                new Claim(ClaimTypes.Role ,user.GetType().Name),
+                new Claim(ClaimTypes.Role ,(user.IsAdmin??false)?"Admin": user.GetType().Name),
             };
             var token = new JwtSecurityToken(
                 claims: claims,
