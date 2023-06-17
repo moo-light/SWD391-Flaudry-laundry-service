@@ -68,7 +68,7 @@ namespace WebAPI.Controllers
             return result > 0 ? Ok(result) : BadRequest();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
