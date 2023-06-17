@@ -51,7 +51,7 @@ namespace Application.Services
 
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
         {
-            var user = await _unitOfWork.UserRepository.GetUserByEmailAndPasswordHash(userObject.Email, userObject.Password.Hash());
+            var user = await _unitOfWork.UserRepository.GetUserByEmailAndPasswordHash(userObject.Email, userObject.Password);
             return new UserLoginDTOResponse
             {
                 UserId = user.Id,
