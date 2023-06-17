@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
                 {
                     return Ok(new
                     {
-                        Message = "Email has existed, please try again"
+                        Message = "Register Success"
                     });
                 }
                 else
