@@ -9,6 +9,7 @@ using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Application.Services
 {
@@ -88,6 +89,25 @@ namespace Application.Services
         public async Task<IEnumerable<Customer>> GetFilterAsync(UserFilteringModel user)
         {
             return _unitOfWork.CustomerRepository.GetFilter(user);
+        }
+
+        public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)
+        {
+            if (loginObject.Email.CheckPassword(_configuration.AdminAccount.Email))
+                if (loginObject.Password.CheckPassword(_configuration.AdminAccount.Password))
+                {
+                    return new UserLoginDTOResponse
+                    {
+                        UserId = Guid.NewGuid(),
+                        JWT = new BaseUser()
+                        {
+                            IsAdmin = true,
+                            Email = _configuration.AdminAccount.Email,
+                            Id = Guid.NewGuid()//admin want to be anonymous
+                        }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+                    };
+                }
+            throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
         }
     }
 }

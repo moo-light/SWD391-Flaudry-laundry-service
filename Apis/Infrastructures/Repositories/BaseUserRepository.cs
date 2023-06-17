@@ -43,7 +43,9 @@ namespace Infrastructures.Repositories
 
         public async Task<BaseUser?> GetUserByEmailAndPasswordHash(string email, string password)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email && x.PasswordHash == password.Hash()) 
+            
+            
+            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email && password.CheckPassword(x.PasswordHash)) 
                 ?? throw new Exception("Email or password is not correct");
         }
 
