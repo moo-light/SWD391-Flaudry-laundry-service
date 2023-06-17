@@ -1,4 +1,6 @@
-﻿using Application.ViewModels;
+﻿using Application.Commons;
+using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 
@@ -14,5 +16,5 @@ public interface IDriverService
     Task<Driver?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<Driver>> GetAllAsync();
     Task<int> GetCountAsync();
-    Task<IEnumerable<Driver>> GetFilterAsync(UserFilteringModel entity);
+    Task<Pagination<Driver>> GetFilterAsync(UserFilteringModel driver);
 }

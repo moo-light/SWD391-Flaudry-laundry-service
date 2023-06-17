@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -81,9 +82,10 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Driver>> GetFilterAsync(UserFilteringModel driver)
+        public async Task<Pagination<Driver>> GetFilterAsync(UserFilteringModel driver)
         {
-            return  _unitOfWork.DriverRepository.GetFilter(driver);
+            var o = _unitOfWork.DriverRepository.GetFilter(driver);
+            return _mapper.Map<Pagination<Driver>>(o);
         }
     }
 }

@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
         {
-            IEnumerable<Session> result = await _sessionService.GetFilter(entity);
+            IEnumerable<Session> result = await _sessionService.GetFilterAsync(entity);
             return result!=null? Ok(result):BadRequest(result);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels.FilterModels;
+using Domain.Entities;
 
 namespace Application.Interfaces.Repositories;
 
@@ -15,4 +16,5 @@ public interface IBaseUserRepository:IGenericRepository<BaseUser>
     Task<BaseUser?> GetUserByEmailAndPasswordHash(string email, string password);
 
     Task<bool> CheckEmailExisted(string username);
+    IEnumerable<BaseUser> GetFilter(UserFilteringModel? entity);
 }

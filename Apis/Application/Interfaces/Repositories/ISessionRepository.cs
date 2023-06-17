@@ -1,8 +1,10 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ISessionRepository: IGenericRepository<Session>
+    public interface ISessionRepository : IGenericRepository<Session>
     {
+        IEnumerable<Session> GetFilter(BaseFilterringModel entity);
     }
 }

@@ -22,7 +22,7 @@ public class OrderInBatchRepository : GenericRepository<OrderInBatch>, IOrderInB
     {
     }
 
-    public override IQueryable<OrderInBatch> GetFilter(BaseFilterringModel entity)
+    public  IEnumerable<OrderInBatch> GetFilter(BaseFilterringModel entity)
     {
         throw new NotImplementedException();
     }

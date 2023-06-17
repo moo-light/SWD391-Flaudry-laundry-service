@@ -6,6 +6,7 @@ using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {

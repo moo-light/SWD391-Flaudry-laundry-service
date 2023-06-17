@@ -9,7 +9,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Session>> GetAllAsync();
         Task<Session?> GetByIdAsync(Guid entityId);
         Task<int> GetCount();
-        Task<IEnumerable<Session>> GetFilter(BaseFilterringModel entity);
+        Task<IEnumerable<Session>> GetFilterAsync(BaseFilterringModel entity);
         bool Remove(Guid entityId);
         bool Update(Session entity);
     }

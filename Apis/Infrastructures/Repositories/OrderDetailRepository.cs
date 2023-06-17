@@ -20,7 +20,7 @@ namespace Infrastructures.Repositories
         {
         }
 
-        public override IQueryable<OrderDetail> GetFilter(BaseFilterringModel entity)
+        public  IEnumerable<OrderDetail> GetFilter(BaseFilterringModel entity)
         {
             throw new NotImplementedException();
         }

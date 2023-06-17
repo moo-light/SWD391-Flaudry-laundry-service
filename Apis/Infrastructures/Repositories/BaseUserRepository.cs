@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,10 +26,9 @@ namespace Infrastructures.Repositories
             return await _dbSet.AnyAsync(x => x.Email == email);
         }
 
-        public override IQueryable<BaseUser> GetFilter(BaseFilterringModel entity)
+        public IEnumerable<BaseUser> GetFilter(UserFilteringModel? entity)
         {
-            IQueryable<BaseUser> result = null;
-
+            entity ??= new();
             //Expression<Func<BaseUser, bool>> address = x => entity.Search.EmptyOrContainedIn(x.);
             Expression<Func<BaseUser, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
             Expression<Func<BaseUser, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
@@ -36,15 +36,13 @@ namespace Infrastructures.Repositories
 
             var predicates = ExpressionUtils.CreateListOfExpression( email, phoneNumber, fullName);
 
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;
         }
 
         public async Task<BaseUser?> GetUserByEmailAndPasswordHash(string email, string password)
         {
-            
-            
             return await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email && password.CheckPassword(x.PasswordHash)) 
                 ?? throw new Exception("Email or password is not correct");
         }

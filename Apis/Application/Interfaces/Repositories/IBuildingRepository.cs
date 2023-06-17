@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels.FilterModels;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface IBuildingRepository : IGenericRepository<Building>
     {
+        IQueryable<Building> GetFilter(BuildingFilteringModel entity);
     }
 }

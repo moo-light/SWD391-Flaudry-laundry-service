@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,7 +35,7 @@ namespace Application.Services
             return await _unitOfWork.BuildingRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Building>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<Building>> GetFilterAsync(BuildingFilteringModel entity)
         {
             return  await _unitOfWork.BuildingRepository.GetFilter(entity).ToListAsync();
         }

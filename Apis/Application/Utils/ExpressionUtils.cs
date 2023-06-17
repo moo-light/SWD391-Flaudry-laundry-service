@@ -21,8 +21,22 @@ namespace Application.Utils
         public static bool EmptyOrEquals(this Guid? thisId, Guid? thatId)
         {
             if (thisId == null || thisId == Guid.Empty) return true;
-            if (thatId == thisId) return true;
-            return false;
+
+            if (thatId == null) return false;
+            
+            return thisId.Equals(thatId);
+        }
+        /// <summary>
+        /// check if any of the list is equal thatId
+        /// </summary>
+        /// <param name="theseId"></param>
+        /// <param name="thatId"></param>
+        /// <returns>true if empty or one GUID equal thatId</returns>
+        public static bool EmptyOrEquals(this Guid?[]? theseId, Guid? thatId)
+        {
+            if (theseId == null) return true;
+
+            return theseId.Any(x => x.EmptyOrEquals(thatId));
         }
         public static bool EmptyOrContainedIn(this string? @this, string? that)
         {

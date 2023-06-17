@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,10 +28,9 @@ namespace Infrastructures.Repositories
             throw new NotImplementedException();
         }
 
-        public override IQueryable<Customer> GetFilter(BaseFilterringModel entity)
+        public  IEnumerable<Customer> GetFilter(UserFilteringModel entity)
         {
-            IQueryable<Customer> result = null;
-
+            entity ??= new();
             Expression<Func<Customer, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
             Expression<Func<Customer, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
             Expression<Func<Customer, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
@@ -38,7 +38,7 @@ namespace Infrastructures.Repositories
 
             var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName);
 
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            IEnumerable<Customer> result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;
         }

@@ -6,6 +6,7 @@ using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {

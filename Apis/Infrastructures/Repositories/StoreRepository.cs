@@ -21,16 +21,15 @@ namespace Infrastructures.Repositories
         _dbContext = dbContext;
     }
 
-        public override IQueryable<Store> GetFilter(BaseFilterringModel entity)
+        public  IEnumerable<Store> GetFilter(BaseFilterringModel entity)
         {
-            IQueryable<Store> result = null;
-
+            entity ??= new();
             Expression<Func<Store, bool>> address = x => entity.Search.EmptyOrContainedIn(x.Address);
             Expression<Func<Store, bool>> name = x => entity.Search.EmptyOrContainedIn(x.Name);
 
             var predicates = ExpressionUtils.CreateListOfExpression(address, name);
 
-            result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;
         }

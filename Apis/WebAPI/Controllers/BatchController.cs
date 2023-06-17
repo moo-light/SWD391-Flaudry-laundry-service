@@ -1,10 +1,12 @@
 ﻿using Application.Interfaces.Services;
 using Application.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WebAPI.Controllers
 {
@@ -61,7 +63,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Driver,Admin")]
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel entity)
+        public async Task<IActionResult> GetListWithFilter([AllowNull] BatchFilteringModel entity)
         {
             var result = await _batchService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();
