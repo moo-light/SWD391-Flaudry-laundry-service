@@ -28,7 +28,8 @@ namespace Infrastructures.Repositories
             Expression<Func<LaundryOrder, bool>> storeId = x => entity.StoreId.IsNullOrEmpty() || entity.StoreId.Any(y => x.StoreId != null && x.StoreId == y);
             Expression<Func<LaundryOrder, bool>> orderInBatchId = x => entity.OrderInBatchId.IsNullOrEmpty() || entity.OrderInBatchId.Any(y => x.OrderInBatchId != null && x.OrderInBatchId == y);
             Expression<Func<LaundryOrder, bool>> note = x => entity.Note.IsNullOrEmpty() || entity.Note.Any(y => !x.Note.IsNullOrEmpty() && x.Note.Contains(y));
-            var predicates = ExpressionUtils.CreateListOfExpression(customerId,buildingId,storeId,orderInBatchId,note);
+            Expression<Func<LaundryOrder, bool>> date = x => x.CreationDate.IsInDateTime(entity);
+            var predicates = ExpressionUtils.CreateListOfExpression(customerId,buildingId,storeId,orderInBatchId,note,date);
             var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
             return result.AsEnumerable();
         }

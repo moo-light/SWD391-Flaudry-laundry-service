@@ -1,4 +1,5 @@
 ﻿using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface IPaymentRepository : IGenericRepository<Payment>
     {
-        IEnumerable<Payment> GetFilter(BaseFilterringModel entity);
+        IEnumerable<Payment> GetFilter(PaymentFilteringModel entity);
     }
 }

@@ -33,8 +33,9 @@ public class OrderInBatchRepository : GenericRepository<OrderInBatch>, IOrderInB
         Expression<Func<OrderInBatch, bool>> batchId = x => entity.BatchId.IsNullOrEmpty() || entity.BatchId.Any(y => x.BatchId != null && x.BatchId == y);
         Expression<Func<OrderInBatch, bool>> orderId = x => entity.OrderId.IsNullOrEmpty() || entity.OrderId.Any(y => x.OrderId != null && x.OrderId == y);
         Expression<Func<OrderInBatch, bool>> status = x => entity.Status.IsNullOrEmpty() || entity.Status.Any(y => !x.Status.IsNullOrEmpty()&& x.Status.Contains(y));
+        Expression<Func<OrderInBatch, bool>> date = x => x.CreationDate.IsInDateTime(entity);
 
-        var predicates = ExpressionUtils.CreateListOfExpression(batchId,orderId,status);
+        var predicates = ExpressionUtils.CreateListOfExpression(batchId,orderId,status,date);
 
         var query = _dbSet.AsEnumerable();
         foreach (var predicate in predicates)

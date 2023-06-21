@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 
 namespace Application.Services
@@ -34,7 +35,7 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public async Task<IEnumerable<Session>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<Session>> GetFilterAsync(SessionFilteringModel entity)
         {
             return  _unitOfWork.SessionRepository.GetFilter(entity);
         }
