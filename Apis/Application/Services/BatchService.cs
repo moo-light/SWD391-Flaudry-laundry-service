@@ -21,14 +21,11 @@ namespace Application.Services
         private readonly IClaimsService _claimsService;
         private readonly IMapper _mapper;
 
-        public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService)
-        {
-            _unitOfWork = unitOfWork;
-            _claimsService = claimsService;
-        }
 
         public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService, IMapper mapper)
         {
+            _unitOfWork = unitOfWork;
+            _claimsService = claimsService;
             _mapper = mapper;
         }
 
