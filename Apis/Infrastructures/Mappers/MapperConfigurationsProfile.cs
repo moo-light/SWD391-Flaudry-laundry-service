@@ -12,6 +12,7 @@ namespace Infrastructures.Mappers
         {
             //CreateMap<CreateChemicalViewModel, Order>();
             CreateMap(typeof(Pagination<>), typeof(Pagination<>));
+            CreateMap(typeof(Pagination<>), typeof(List<>)).ReverseMap();
             //CreateMap<Order, ChemicalViewModel>()
             //    .ForMember(dest => dest._Id, src => src.MapFrom(x => x.Id));
             //CreateMap<UserLoginDTO, UserLoginDTOResponse>()

@@ -48,7 +48,7 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public  async Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel entity)
+        public  async Task<IEnumerable<BaseUser>> GetFilterAsync(DriverFilteringModel entity)
         {
             return  _unitOfWork.UserRepository.GetFilter(entity);
         }

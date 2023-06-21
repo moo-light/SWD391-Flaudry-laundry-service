@@ -16,7 +16,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<BaseUser>> GetAllAsync();
         Task<BaseUser?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<IEnumerable<BaseUser>> GetFilterAsync(UserFilteringModel entity);
+        Task<IEnumerable<BaseUser>> GetFilterAsync(DriverFilteringModel entity);
         Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject);
         bool Remove(Guid entityId);
         bool Update(BaseUser entity);

@@ -16,5 +16,5 @@ public interface IDriverService
     Task<Driver?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<Driver>> GetAllAsync();
     Task<int> GetCountAsync();
-    Task<Pagination<Driver>> GetFilterAsync(UserFilteringModel driver);
+    Task<Pagination<Driver>> GetFilterAsync(DriverFilteringModel driver);
 }

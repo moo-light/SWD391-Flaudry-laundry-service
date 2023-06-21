@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.FilterModels
 {
-    public class BatchFilteringModel
+    public class BatchFilteringModel :BaseFilterringModel
     {
         public Guid?[]? DriverId { get; set; } 
         public Guid?[]? SessionId { get; set; }

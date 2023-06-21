@@ -8,10 +8,7 @@ namespace Application.ViewModels
 {
     public class BaseFilterringModel
     {
-        public Guid? Id { get; set; } 
-        public string? Search { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-        public string[]? Status { get; set; }
     }
 }

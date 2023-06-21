@@ -1,4 +1,5 @@
 ﻿using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<OrderInBatch>> GetAllAsync();
         Task<OrderInBatch?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<IEnumerable<OrderInBatch>> GetFilterAsync(BaseFilterringModel entity);
+        Task<IEnumerable<OrderInBatch>> GetFilterAsync(OrderInBatchFilteringModel entity);
         bool Remove(Guid entityId);
         bool Update(OrderInBatch entity);
     }

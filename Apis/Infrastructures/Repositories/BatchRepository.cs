@@ -21,17 +21,18 @@ namespace Infrastructures.Repositories
             _appDbContext = context;
         }
 
-        public IQueryable<Batch> GetFilter(BatchFilteringModel? entity)
+        public IEnumerable<Batch> GetFilter(BatchFilteringModel? entity)
         {
             entity ??= new();
             Expression<Func<Batch, bool>> driverId = x => entity.DriverId.EmptyOrEquals(x.DriverId);
             Expression<Func<Batch, bool>> sessionId = x => entity.SessionId.EmptyOrEquals(x.SessionId);
             Expression<Func<Batch, bool>> type = x => entity.Type.EmptyOrContainedIn(x.Type);
             Expression<Func<Batch, bool>> status = x => entity.Status.EmptyOrContainedIn(x.Status);
+            Expression<Func<Batch, bool>> dateFilter = x => x.CreationDate.IsInDateTime(entity.FromDate, entity.ToDate);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(driverId, sessionId, status, type);
+            var predicates = ExpressionUtils.CreateListOfExpression(driverId, sessionId, status, type, dateFilter);
 
-            var result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
+            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;  
         }
