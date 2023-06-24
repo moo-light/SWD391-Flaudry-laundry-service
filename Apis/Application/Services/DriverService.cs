@@ -79,7 +79,7 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<Pagination<Driver>> GetFilterAsync(UserFilteringModel driver)
+        public async Task<Pagination<Driver>> GetFilterAsync(DriverFilteringModel driver)
         {
             var o = _unitOfWork.DriverRepository.GetFilter(driver);
             return _mapper.Map<Pagination<Driver>>(o);

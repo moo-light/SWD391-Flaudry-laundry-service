@@ -3,6 +3,7 @@ using Application.Commons;
 using Domain.Entities;
 using Application.ViewModels.UserViewModels;
 using Application.Utils;
+using Application.ViewModels.FilterModels;
 
 namespace Infrastructures.Mappers
 {
@@ -12,6 +13,7 @@ namespace Infrastructures.Mappers
         {
             //CreateMap<CreateChemicalViewModel, Order>();
             CreateMap(typeof(Pagination<>), typeof(Pagination<>));
+            CreateMap(typeof(Pagination<>), typeof(List<>)).ReverseMap();
             //CreateMap<Order, ChemicalViewModel>()
             //    .ForMember(dest => dest._Id, src => src.MapFrom(x => x.Id));
             //CreateMap<UserLoginDTO, UserLoginDTOResponse>()
@@ -25,7 +27,17 @@ namespace Infrastructures.Mappers
                 .ForMember(dest => dest.PasswordHash, src =>src.MapFrom(x=>x.Password.Hash()))
                 .ReverseMap();
             CreateMap<CustomerRegisterDTO, Customer>()
+                .ForMember(dest => dest.FullName, src => src.MapFrom(x =>  x.FullName))
+                .ForMember(dest => dest.Email, src => src.MapFrom(x => x.Email))
+                .ForMember(dest => dest.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
                 .ForMember(dest => dest.PasswordHash, src => src.MapFrom(x => x.Password.Hash()))
+                .ForMember(dest => dest.Address, src => src.MapFrom(x => x.Address))
+                .ReverseMap();
+            CreateMap<CustomerFilteringModel, Customer>()
+                .ForMember(dest => dest.FullName, src => src.MapFrom(x => x.FullName))
+                .ForMember(dest => dest.Email, src => src.MapFrom(x => x.Email))
+                .ForMember(dest => dest.PhoneNumber, src => src.MapFrom(x => x.PhoneNumber))
+                .ForMember(dest => dest.Address, src => src.MapFrom(x => x.Address))
                 .ReverseMap();
         }
     }

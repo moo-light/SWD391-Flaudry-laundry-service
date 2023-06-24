@@ -1,4 +1,5 @@
-﻿using Application.ViewModels;
+﻿using Application.Commons;
+using Application.ViewModels;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
@@ -14,8 +15,8 @@ public interface ICustomerService
     bool Remove(Guid entityId);
     bool Update(Customer entity);
     Task<Customer?> GetByIdAsync(Guid entityId);
-    Task<IEnumerable<Customer>> GetAllAsync();
+    Task<Pagination<CustomerFilteringModel>> GetAllAsync(int pageIndex = 0, int pageSize = 10);
     Task<int> GetCountAsync();
-    Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel entity);
+    Task<Pagination<CustomerFilteringModel>> GetFilterAsync(CustomerFilteringModel entity);
     UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject);
 }

@@ -9,6 +9,7 @@ using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Eventing.Reader;
 
@@ -29,7 +30,11 @@ namespace Application.Services
             _configuration = configuration;
         }
         [Authorize(Roles = "Admin")]
-        public async Task<IEnumerable<Customer>> GetAllAsync() => await _unitOfWork.CustomerRepository.GetAllAsync();
+        public async Task<Pagination<CustomerFilteringModel>> GetAllAsync(int pageIndex = 0, int pageSize = 10)
+        {
+            var o = _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
+            return _mapper.Map<Pagination<CustomerFilteringModel>>(o);
+        }
         [Authorize(Roles = "Admin,Customer,Driver")]
         public async Task<Customer?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(Customer user)
@@ -82,9 +87,10 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
+        public async Task<Pagination<CustomerFilteringModel>> GetFilterAsync(CustomerFilteringModel user)
         {
-            return _unitOfWork.CustomerRepository.GetFilter(user);
+            var o = _unitOfWork.CustomerRepository.GetFilter(user).ToList();
+            return _mapper.Map<Pagination<CustomerFilteringModel>>(o);
         }
 
         public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)

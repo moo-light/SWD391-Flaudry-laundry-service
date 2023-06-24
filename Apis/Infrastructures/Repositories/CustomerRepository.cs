@@ -36,8 +36,9 @@ namespace Infrastructures.Repositories
             Expression<Func<Customer, bool>> email = x => entity.Email.IsNullOrEmpty() || entity.Email.Any(y => x.Email != null && x.Email.Contains(y));
             Expression<Func<Customer, bool>> phoneNumber = x => entity.PhoneNumber.IsNullOrEmpty() || entity.PhoneNumber.Any(y => x.PhoneNumber != null && x.PhoneNumber.Contains(y));
             Expression<Func<Customer, bool>> fullName = x => entity.FullName.IsNullOrEmpty() || entity.FullName.Any(y =>x.FullName!=null&&  x.FullName.Contains(y));
+            Expression<Func<Customer, bool>> date = x => x.CreationDate.IsInDateTime(entity);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName);
+            var predicates = ExpressionUtils.CreateListOfExpression(address, email, phoneNumber, fullName,date);
 
             IEnumerable<Customer> result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 

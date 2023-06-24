@@ -25,10 +25,10 @@ namespace Infrastructures.Repositories
         public IEnumerable<Building> GetFilter(BuildingFilteringModel entity)
         {
             entity ??= new();
-            Expression<Func<Building, bool>> nameFilter = x => entity.Search.IsNullOrEmpty() || x.Name.Contains(entity.Search);
-            Expression<Func<Building, bool>> addressFilter = x => entity.Search.IsNullOrEmpty() || x.Address.Contains(entity.Search);
-
-            var predicates = ExpressionUtils.CreateListOfExpression(nameFilter);
+            Expression<Func<Building, bool>> nameFilter = x => entity.Name.IsNullOrEmpty() || entity.Name.Any(y => x.Name != null && x.Name.Contains(y));
+            Expression<Func<Building, bool>> addressFilter = x => entity.Address.IsNullOrEmpty() || entity.Address.Any(y => x.Address != null && x.Address.Contains(y));
+            Expression<Func<Building, bool>> dateFilter = x => x.CreationDate.IsInDateTime(entity.FromDate,entity.ToDate);
+            var predicates = ExpressionUtils.CreateListOfExpression(nameFilter,addressFilter,dateFilter);
             var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, predicate) => a.Where(predicate.Compile()));
             return result;
         }

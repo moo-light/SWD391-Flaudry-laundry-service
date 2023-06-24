@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Services;
 using Application.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -58,7 +59,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles ="Customer,Admin")]
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(OrderDetailFilteringModel? entity)
         {
             var result = await _orderDetailService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

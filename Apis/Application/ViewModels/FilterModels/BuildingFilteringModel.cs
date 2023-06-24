@@ -8,6 +8,8 @@ namespace Application.ViewModels.FilterModels
 {
     public class BuildingFilteringModel :BaseFilterringModel
     {
-        public string? Search { get; set; }
+        public string?[]? Name { get; set; }
+
+        public string?[]? Address { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {
@@ -70,7 +71,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(LaundryOrderFilteringModel? entity)
         {
             var result = await _orderService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

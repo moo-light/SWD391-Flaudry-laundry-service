@@ -2,8 +2,11 @@
 using Application.Interfaces.Repositories;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
@@ -20,33 +23,21 @@ namespace Infrastructures.Repositories
         {
         }
 
-        public  IEnumerable<OrderDetail> GetFilter(BaseFilterringModel entity)
+        public IEnumerable<OrderDetail> GetFilter(OrderDetailFilteringModel entity)
         {
-            throw new NotImplementedException();
+            entity ??= new();
+
+            Expression<Func<OrderDetail, bool>> orderId = x => entity.OrderId.IsNullOrEmpty() || entity.OrderId.Any(y => x.OrderId != null && x.OrderId == y);
+            Expression<Func<OrderDetail, bool>> serviceId = x => entity.ServiceId.IsNullOrEmpty() || entity.ServiceId.Any(y => x.ServiceId != null && x.ServiceId == y);
+            Expression<Func<OrderDetail, bool>> weight = x => entity.Weight.IsNullOrEmpty() || entity.Weight.Any(y => x.Weight.ToString().Contains(y));
+            Expression<Func<OrderDetail, bool>> date = x => x.CreationDate.IsInDateTime(entity);
+            var predicates = ExpressionUtils.CreateListOfExpression(orderId, serviceId, weight);
+
+            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
+
+            return result;
+
         }
-
-        //public override async Task<IEnumerable<OrderDetail>> GetFilterAsync(BaseFilterringModel entity)
-        //{
-        //    throw new NotImplementedException();
-
-        //    //IQueryable<OrderDetail> result;
-
-        //    //Expression<Func<OrderDetail, bool>> batchId = x => entity.BatchId.EmptyOrEquals(x.BatchId);
-        //    //Expression<Func<OrderDetail, bool>> buildingId = x => entity.BuildingId.EmptyOrEquals(x.BuildingId);
-        //    //Expression<Func<OrderDetail, bool>> packageId = x => entity.PackageId.EmptyOrEquals(x.PackageId);
-        //    //Expression<Func<OrderDetail, bool>> paymentId = x => entity.PaymentId.EmptyOrEquals(x.PaymentId);
-        //    //Expression<Func<OrderDetail, bool>> storeId = x => entity.StoreId.EmptyOrEquals(x.StoreId);
-        //    //Expression<Func<OrderDetail, bool>> userId = x => entity.UserId.EmptyOrEquals(x.UserId);
-        //    //Expression<Func<OrderDetail, bool>> deliveringStatus = x => entity.DeliveringStatus.EmptyOrContainedIn(x.DeliveringStatus);
-        //    //Expression<Func<OrderDetail, bool>> totalPrice = x => entity.UserId.EmptyOrEquals(x.UserId);
-
-        //    //var predicates = ExpressionUtils.CreateListOfExpression(userId,buildingId,packageId,paymentId,storeId,userId,deliveringStatus,totalPrice);
-
-        //    //result = predicates.Aggregate(_dbSet.AsQueryable(), (a, b) => a.Where(b));
-
-        //    //return result.AsEnumerable();
-
-        //}
 
     }
 }

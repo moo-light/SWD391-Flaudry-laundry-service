@@ -86,11 +86,11 @@ namespace WebAPI.Controllers
             var result = await _customerService.GetCountAsync();
             return result>0 ? Ok(result) : BadRequest();
         }
-        [HttpPost]
+        [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(CustomerFilteringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(int pageIndex = 0, int pageSize = 10)
         {
-            var result = await _customerService.GetFilterAsync(entity);
+            var result = await _customerService.GetAllAsync(pageIndex, pageSize);
             return result != null? Ok(result) : BadRequest();
         }
 
