@@ -8,6 +8,7 @@ using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Domain.Enums;
+using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {
@@ -71,7 +72,7 @@ namespace WebAPI.Controllers
 
         //1. status = RequestChange
 
-        public async Task<IActionResult> GetListWithFilter(BaseFilterringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(OrderInBatchFilteringModel? entity)
         {
             var result = await _orderInBatchService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

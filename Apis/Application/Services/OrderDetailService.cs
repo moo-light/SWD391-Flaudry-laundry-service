@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Application.Services
            return await _unitOfWork.OrderDetailRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<OrderDetail>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<OrderDetail>> GetFilterAsync(OrderDetailFilteringModel entity)
         {
             return _unitOfWork.OrderDetailRepository.GetFilter(entity);
         }

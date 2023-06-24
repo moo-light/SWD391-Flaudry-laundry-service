@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.FilterModels
 {
-    public class CustomerFilteringModel
+    public class CustomerFilteringModel : BaseFilterringModel
     {
         ////1 là 1 object search thôi 
         //public string? Search { get; set; } = "a"
         //2 là tất cả lun
-        public string?[]? FullName { get; set; }  //ko check la tim tat ca
+        public string?[]? FullName { get; set; }  //ko check la tim tat ca 
         public string?[]? Email { get; set; } 
         public string?[]? PhoneNumber { get; set; }
         public string?[]? Address { get; set; } 

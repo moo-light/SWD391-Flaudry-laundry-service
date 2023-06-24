@@ -21,14 +21,11 @@ namespace Application.Services
         private readonly IClaimsService _claimsService;
         private readonly IMapper _mapper;
 
-        public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService)
-        {
-            _unitOfWork = unitOfWork;
-            _claimsService = claimsService;
-        }
 
         public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService, IMapper mapper)
         {
+            _unitOfWork = unitOfWork;
+            _claimsService = claimsService;
             _mapper = mapper;
         }
 
@@ -50,9 +47,10 @@ namespace Application.Services
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
 
-        public async Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel entity)
+        public async Task<Pagination<Batch>> GetFilterAsync(BatchFilteringModel driver)
         {
-            return await _unitOfWork.BatchRepository.GetFilter(entity).ToListAsync();
+            var o = _unitOfWork.BatchRepository.GetFilter(driver);
+            return _mapper.Map<Pagination<Batch>>(o);
         }
 
         public bool Remove(Guid entityId)

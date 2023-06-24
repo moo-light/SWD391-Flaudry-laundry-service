@@ -4,5 +4,5 @@ using Domain.Entities;
 namespace Application.Interfaces.Repositories;
 public interface IDriverRepository : IGenericRepository<Driver>
 {
-    IEnumerable<Driver> GetFilter(UserFilteringModel driver);
+    IEnumerable<Driver> GetFilter(DriverFilteringModel driver);
 }

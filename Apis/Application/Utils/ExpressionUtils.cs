@@ -1,5 +1,7 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels;
+using Domain.Entities;
 using Domain.Enums;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,13 +38,20 @@ namespace Application.Utils
         {
             if (theseId == null) return true;
 
-            return theseId.Any(x => x.EmptyOrEquals(thatId));
+            return theseId.Any(x => x != null && x.EmptyOrEquals(thatId));
         }
         public static bool EmptyOrContainedIn(this string? @this, string? that)
         {
             if (@this == null || @this == string.Empty) return true;
-            if (that?.Contains(@this) ?? false) return true;
+            if (that == null) return false;
+            if (that.Contains(@this)) return true;
             return false;
+        }
+        public static bool EmptyOrContainedIn(this string?[]? @this, string? that)
+        {
+
+            if (@this == null) return true;
+            return @this.Any(x=>!string.IsNullOrWhiteSpace(x) && x.EmptyOrContainedIn(that));
         }
         public static bool IsInDateTime(this DateTime? dateTime, DateTime? fromDate = default, DateTime? toDate = default)
         {
@@ -50,6 +59,10 @@ namespace Application.Utils
             DateTime timeStart = (fromDate ?? DateTime.MinValue);
             DateTime timeEnd = (toDate ?? DateTime.MaxValue);
             return timeStart <= dateTime && dateTime <= timeEnd;
+        }
+        public static bool IsInDateTime(this DateTime? dateTime, BaseFilterringModel entity)
+        {
+            return dateTime.IsInDateTime(entity.FromDate, entity.ToDate);
         }
         public static bool IsInEnumNames(this string current, string[]? enumNames, Type? enumType = null)
         {

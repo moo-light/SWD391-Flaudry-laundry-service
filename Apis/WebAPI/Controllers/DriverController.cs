@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(UserFilteringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(DriverFilteringModel? entity)
         {
             var result = await _driverService.GetFilterAsync(entity);
             return result != null? Ok(result) : BadRequest();

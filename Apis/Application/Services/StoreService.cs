@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 
 namespace Application.Services
@@ -39,10 +40,9 @@ namespace Application.Services
             return await _unitOfWork.StoreRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Store>> GetFilterAsync(BaseFilterringModel entity)
+        public async Task<IEnumerable<Store>> GetFilterAsync(StoreFilteringModel entity)
         {
             return _unitOfWork.StoreRepository.GetFilter(entity);
-
         }
     }
 }

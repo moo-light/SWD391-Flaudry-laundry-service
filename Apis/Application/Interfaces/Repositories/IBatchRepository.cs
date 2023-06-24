@@ -10,6 +10,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface IBatchRepository : IGenericRepository<Batch>
     {
-        IQueryable<Batch> GetFilter(BatchFilteringModel entity);
+        IEnumerable<Batch> GetFilter(BatchFilteringModel entity);
     }
 }

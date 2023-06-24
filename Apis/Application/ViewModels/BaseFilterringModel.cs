@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,10 +10,9 @@ namespace Application.ViewModels
 {
     public class BaseFilterringModel
     {
-        public Guid? Id { get; set; } 
-        public string? Search { get; set; }
+        [AllowNull]
         public DateTime? FromDate { get; set; }
+        [AllowNull]
         public DateTime? ToDate { get; set; }
-        public string[]? Status { get; set; }
     }
 }

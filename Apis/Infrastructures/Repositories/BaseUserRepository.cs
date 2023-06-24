@@ -6,6 +6,7 @@ using Application.ViewModels;
 using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,13 @@ namespace Infrastructures.Repositories
             return await _dbSet.AnyAsync(x => x.Email == email);
         }
 
-        public IEnumerable<BaseUser> GetFilter(UserFilteringModel? entity)
+        public IEnumerable<BaseUser> GetFilter(DriverFilteringModel? entity)
         {
             entity ??= new();
             //Expression<Func<BaseUser, bool>> address = x => entity.Search.EmptyOrContainedIn(x.);
-            Expression<Func<BaseUser, bool>> email = x => entity.Search.EmptyOrContainedIn(x.Email);
-            Expression<Func<BaseUser, bool>> phoneNumber = x => entity.Search.EmptyOrContainedIn(x.PhoneNumber);
-            Expression<Func<BaseUser, bool>> fullName = x => entity.Search.EmptyOrContainedIn(x.FullName);
+            Expression<Func<BaseUser, bool>> email = x => entity.Email.IsNullOrEmpty() || entity.Email.Any(y => !x.Email.IsNullOrEmpty() && x.Email.Contains(y));
+            Expression<Func<BaseUser, bool>> phoneNumber = x => entity.PhoneNumber.IsNullOrEmpty() || entity.PhoneNumber.Any(y => !x.PhoneNumber.IsNullOrEmpty() && x.PhoneNumber.Contains(y));
+            Expression<Func<BaseUser, bool>> fullName = x => entity.FullName.IsNullOrEmpty() || entity.FullName.Any(y => !x.FullName.IsNullOrEmpty() && x.FullName.Contains(y));
 
             var predicates = ExpressionUtils.CreateListOfExpression( email, phoneNumber, fullName);
 
