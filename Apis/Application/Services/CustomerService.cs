@@ -4,6 +4,7 @@ using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.Customer;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
@@ -29,12 +30,25 @@ namespace Application.Services
             _configuration = configuration;
         }
         [Authorize(Roles = "Admin")]
-        public async Task<IEnumerable<Customer>> GetAllAsync() => await _unitOfWork.CustomerRepository.GetAllAsync();
-        [Authorize(Roles = "Admin,Customer,Driver")]
-        public async Task<Customer?> GetByIdAsync(Guid entityId) => await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(Customer user)
+        public async Task<IEnumerable<CustomerResponseDTO>> GetAllAsync()
         {
-            await _unitOfWork.CustomerRepository.AddAsync(user);
+            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync();
+            return _mapper.Map<List<CustomerResponseDTO>>(customers);
+        }
+
+        [Authorize(Roles = "Admin,Customer,Driver")]
+        public async Task<CustomerResponseDTO?> GetByIdAsync(Guid entityId)
+        {
+            Customer? customer = await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
+            return _mapper.Map<CustomerResponseDTO>(customer);
+        }
+
+        public async Task<bool> AddAsync(CustomerRequestDTO customer)
+        {
+            var newCustomer = _mapper.Map<Customer>(customer);
+            if (newCustomer == null) return false;
+            if (await _unitOfWork.UserRepository.CheckEmailExisted(newCustomer.Email)) throw new InvalidDataException("Email Exist!");
+            await _unitOfWork.CustomerRepository.AddAsync(newCustomer);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
@@ -44,13 +58,17 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public bool Update(Customer entity)
+        public async Task<bool> UpdateAsync(Guid id, CustomerRequestDTO entity)
         {
-            _unitOfWork.CustomerRepository.Update(entity);
-            return _unitOfWork.SaveChange() > 0;
+            var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(id);
+            if (customer == null) return false;
+            if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
+            customer = _mapper.Map(entity, customer);
+            _unitOfWork.CustomerRepository.Update(customer);
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-     
+
 
         public async Task RegisterAsync(CustomerRegisterDTO customer)
         {
@@ -70,12 +88,13 @@ namespace Application.Services
 
         public async Task<int> GetCountAsync()
         {
-            return await _unitOfWork.UserRepository.GetCountAsync();
+            return await _unitOfWork.CustomerRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
+        public async Task<IEnumerable<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel user)
         {
-            return _unitOfWork.CustomerRepository.GetFilter(user);
+            List<Customer> customers = _unitOfWork.CustomerRepository.GetFilter(user).ToList();
+            return _mapper.Map<List<CustomerResponseDTO>>(customers);
         }
 
         public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)

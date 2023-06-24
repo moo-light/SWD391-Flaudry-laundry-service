@@ -65,7 +65,7 @@ namespace Infrastructures
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(databaseConnection).EnableSensitiveDataLogging());
             // this configuration just use in-memory for fast develop
 
-            services.AddAutoMapper(typeof(MapperConfigurationsProfile).Assembly);
+            services.AddAutoMapper(typeof(MapperConfigurationsProfile),typeof(CustomerMapperProfile));
 
             return services;
         }

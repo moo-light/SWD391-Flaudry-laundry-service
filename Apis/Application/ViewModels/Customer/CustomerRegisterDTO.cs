@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace Application.ViewModels.UserViewModels
+namespace Application.ViewModels.Customer
 {
     public class CustomerRegisterDTO
     {

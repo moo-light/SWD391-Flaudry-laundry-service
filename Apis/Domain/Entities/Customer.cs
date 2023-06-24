@@ -12,3 +12,4 @@ namespace Domain.Entities
         public ICollection<LaundryOrder> Orders { get; set; } = new List<LaundryOrder>();
     }
 }
+    

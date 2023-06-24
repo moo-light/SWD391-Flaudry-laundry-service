@@ -5,8 +5,8 @@ using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Application.ViewModels.UserViewModels;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.Customer;
 
 namespace WebAPI.Controllers
 {
@@ -24,16 +24,16 @@ namespace WebAPI.Controllers
         public async Task RegisterAsync(CustomerRegisterDTO registerObject) => await _customerService.RegisterAsync(registerObject);
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Add(Customer entity)
+        public async Task<IActionResult> Add(CustomerRequestDTO entity)
         {
             var result = await _customerService.AddAsync(entity);
             return result ? Ok() : BadRequest();
         }
-        [HttpPut]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
-        public IActionResult Update(Customer entity)
+        public async Task<IActionResult> Update(Guid id,CustomerRequestDTO entity)
         {
-            var result = _customerService.Update(entity);
+            var result = await _customerService.UpdateAsync(id,entity);
             return result ? Ok() : BadRequest();
         }
         [HttpGet("{id:guid}")]

@@ -1,4 +1,5 @@
 ﻿using Application.ViewModels;
+using Application.ViewModels.Customer;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
@@ -8,12 +9,12 @@ namespace Application.Interfaces.Services;
 public interface ICustomerService
 {
     public Task RegisterAsync(CustomerRegisterDTO userObject);
-    Task<bool> AddAsync(Customer user);
+    Task<bool> AddAsync(CustomerRequestDTO user);
     bool Remove(Guid entityId);
-    bool Update(Customer entity);
-    Task<Customer?> GetByIdAsync(Guid entityId);
-    Task<IEnumerable<Customer>> GetAllAsync();
+    Task<bool> UpdateAsync(Guid id, CustomerRequestDTO entity);
+    Task<CustomerResponseDTO?> GetByIdAsync(Guid entityId);
+    Task<IEnumerable<CustomerResponseDTO>> GetAllAsync();
     Task<int> GetCountAsync();
-    Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel entity);
+    Task<IEnumerable<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel entity);
     UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject);
 }
