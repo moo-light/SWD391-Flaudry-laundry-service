@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class OrderRepository : GenericRepository<LaundryOrder>, IOrderRepository
+    public class OrderRepository : GenericRepository<LaundryOrder>
     {
         public OrderRepository(AppDbContext dbContext,
             ICurrentTime timeService,
