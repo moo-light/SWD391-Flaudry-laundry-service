@@ -2,7 +2,9 @@
 using Application.Interfaces.Repositories;
 using Application.Utils;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
@@ -20,13 +22,17 @@ namespace Infrastructures.Repositories
         {
             _dbContext = dbContext;
         }
-        public IEnumerable<Session> GetFilter(BaseFilterringModel entity)
+        public IEnumerable<Session> GetFilter(SessionFilteringModel entity)
         {
+            entity ??= new();
+            IEnumerable<Session> result;
+            Expression<Func<Session, bool>> batchId = x => entity.BatchId.EmptyOrEquals(x.BatchId);
+            Expression<Func<Session, bool>> buildingId = x => entity.BuildingId.EmptyOrEquals(x.BuildingId);
+            Expression<Func<Session, bool>> date = x => x.CreationDate.IsInDateTime(entity);
 
-            Expression<Func<Session, bool>> dateTime = x => x.StartTime.IsInDateTime(entity.FromDate.Value.Date,entity.ToDate.Value.Date); 
-            var predicates = ExpressionUtils.CreateListOfExpression(dateTime);
+            var predicates = ExpressionUtils.CreateListOfExpression(batchId, buildingId, date);
 
-            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
+            result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;
         }

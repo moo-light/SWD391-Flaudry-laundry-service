@@ -11,6 +11,7 @@ namespace Application.ViewModels.FilterModels
 {
     public class PaymentFilteringModel : BaseFilterringModel
     {
+        public Guid?[]? OrderId { get; set; }
         public string?[]? PaymentMethod { get; set; }
         public string?[]? Amount { get; set; }
         public string?[]? Status { get; set; }

@@ -10,5 +10,7 @@ namespace Domain.Entities
     {
         public string? Address { get; set; }
         public ICollection<LaundryOrder> Orders { get; set; } = new List<LaundryOrder>();
+        public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
     }
 }
+    

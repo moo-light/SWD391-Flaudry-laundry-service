@@ -4,6 +4,7 @@ using Domain.Entities;
 using Application.ViewModels.UserViewModels;
 using Application.Utils;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.Customer;
 
 namespace Infrastructures.Mappers
 {

@@ -1,5 +1,6 @@
 ﻿using Application.Commons;
 using Application.ViewModels;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 
 namespace Application.Interfaces.Services
@@ -10,7 +11,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Service>> GetAllAsync();
         Task<Service?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<IEnumerable<Service>> GetFilterAsync(BaseFilterringModel entity);
+        Task<IEnumerable<Service>> GetFilterAsync(ServiceFilteringModel entity);
         bool Remove(Guid entityId);
         bool Update(Service entity);
         Task<Pagination<Service>> GetCustomerListPagi(int pageIndex, int pageSize);

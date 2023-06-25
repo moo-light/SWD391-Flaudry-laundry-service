@@ -83,5 +83,9 @@ namespace Application.Services
             _unitOfWork.BatchRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
         }
+        Task<IEnumerable<Batch>> IBatchService.GetBatchListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

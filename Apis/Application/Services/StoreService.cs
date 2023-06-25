@@ -44,7 +44,6 @@ namespace Application.Services
         public async Task<IEnumerable<Store>> GetFilterAsync(StoreFilteringModel entity)
         {
             return _unitOfWork.StoreRepository.GetFilter(entity);
-
         }
 
         public Task<Pagination<Store>> GetCustomerListPagi(int pageIndex, int pageSize)
