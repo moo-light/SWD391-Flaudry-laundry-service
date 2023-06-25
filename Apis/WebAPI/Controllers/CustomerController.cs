@@ -99,7 +99,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _customerService.GetAllAsync();
-            return result != null ? Ok(result) : BadRequest(result);
+            return result != null ? Ok(result) : NotFound(result);
         }
         [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
@@ -115,16 +115,19 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetCount()
         {
             var result = await _customerService.GetCountAsync();
-            return result > 0 ? Ok(result) : BadRequest();
+            return result > 0 ? Ok(result) : NotFound();
         }
-        [HttpPost]
+        [HttpPost("{pageIndex?}/{pageSize?}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(CustomerFilteringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(CustomerFilteringModel? entity,
+                                                           int pageIndex = 0,
+                                                           int pageSize = 10)
         {
-            var result = await _customerService.GetFilterAsync(entity);
-            return result.IsNullOrEmpty() ? BadRequest() : Ok(result);
+            var result = await _customerService.GetFilterAsync(entity,pageIndex,pageSize);
+            return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCustomerPagination(int pageIndex, int pageSize)
         {
             var customers = await _customerService.GetCustomerListPagi(pageIndex, pageSize);

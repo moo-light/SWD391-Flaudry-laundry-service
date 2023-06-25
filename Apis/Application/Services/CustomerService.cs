@@ -100,9 +100,18 @@ namespace Application.Services
             return await _unitOfWork.CustomerRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
+        public async Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer,int pageIndex,int pageSize)
         {
-            return _unitOfWork.CustomerRepository.GetFilter(user).ToList();
+            var query = _unitOfWork.CustomerRepository.GetFilter(customer);
+            var customers=  query.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+            var pagination = new Pagination<Customer>()
+            {
+                TotalItemsCount = query.Count(),
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Items = customers,
+            };
+            return _mapper.Map<Pagination<CustomerResponseDTO>>(pagination);
         }
 
         public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)
