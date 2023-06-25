@@ -2,16 +2,17 @@
 
 namespace Application.Commons
 {
-    public class Pagination<T> 
+    public class Pagination<T>
     {
         private int pageSize = 10;
+        private ICollection<T> _items;
 
         public int TotalItemsCount { get; set; }
         public int PageSize
         {
             get => pageSize; set
             {
-                if(value == 0) throw new InvalidDataException("PageSize equals 0");
+                if (value == 0) throw new InvalidDataException("PageSize equals 0");
                 pageSize = value;
             }
         }
@@ -20,12 +21,12 @@ namespace Application.Commons
             get
             {
                 //if (PageIndex == TotalPagesCount) throw new InvalidDataException($"PageIndex must be smaller than {TotalPagesCount}");
-                var temp = TotalItemsCount / PageSize;
+                var count = TotalItemsCount / PageSize;
                 if (TotalItemsCount % PageSize == 0)
                 {
-                    return temp;
+                    return count;
                 }
-                return temp + 1;
+                return count + 1;
             }
         }
         public int PageIndex { get; set; }
@@ -35,7 +36,15 @@ namespace Application.Commons
         /// </summary>
         public bool Next => PageIndex + 1 < TotalPagesCount;
         public bool Previous => PageIndex > 0;
-        public ICollection<T> Items { get; set; }
+        public ICollection<T> Items
+        {
+            get
+            {
+                if (PageIndex >= TotalItemsCount) throw new InvalidDataException("Max PageIndex Reached (try lower the pageIndex)");
+                return _items;
+            }
+            set => _items = value;
+        }
 
     }
 }

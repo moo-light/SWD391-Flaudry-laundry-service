@@ -30,14 +30,12 @@ namespace Application.Services
             _currentTime = currentTime;
             _configuration = configuration;
         }
-        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<CustomerResponseDTO>> GetAllAsync()
         {
             List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync();
             return _mapper.Map<List<CustomerResponseDTO>>(customers);
         }
 
-        [Authorize(Roles = "Admin,Customer,Driver")]// bruh service gan authorrize vl lun 
         public async Task<Customer?> GetByIdAsync(Guid entityId)
         {
             Customer? customer = await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
@@ -132,24 +130,10 @@ namespace Application.Services
                 }
             throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
         }
-        [HttpGet]
         public async Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
         {
-            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
-            var customerFilteringModels = new Pagination<Customer>
-            {
-                PageIndex = customers.PageIndex,
-                PageSize = customers.PageSize,
-                TotalItemsCount = customers.TotalItemsCount,
-                Items = customers.Items.Select(c => new Customer
-                {
-                    FullName = c.FullName,
-                    Email = c.Email,
-                    PhoneNumber = c.PhoneNumber,
-                    Address = c.Address
-                }).ToList()
-            };
-            return _mapper.Map<Pagination<CustomerResponseDTO>>(customerFilteringModels);
+            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex,pageSize);
+            return _mapper.Map<Pagination<CustomerResponseDTO>>(customers);
         }
     }
 }

@@ -22,5 +22,6 @@ namespace Application.Interfaces.Repositories
         bool SoftRemoveRange(List<TEntity> entities);
 
         Task<Pagination<TEntity>> ToPagination(int pageNumber = 0, int pageSize = 10);
+        Pagination<TEntity> ToPagination(IEnumerable<TEntity> list,int pageNumber = 0, int pageSize = 10);
     }
 }

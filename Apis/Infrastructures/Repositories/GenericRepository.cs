@@ -27,7 +27,7 @@ namespace Infrastructures.Repositories
             => await includes
            .Aggregate(_dbSet.AsQueryable(),
                (entity, property) => entity.Include(property))
-           .Where(x => x.IsDeleted == false)
+           .Where(x => x.IsDeleted == false).Take(200)
            .ToListAsync();
         public async Task<int> GetCountAsync(params Expression<Func<TEntity, object>>[] includes) =>
             await includes
@@ -95,24 +95,48 @@ namespace Infrastructures.Repositories
 
         public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10)
         {
-            var itemCount = await _dbSet.CountAsync();
-            var items = await _dbSet.OrderByDescending(x => x.CreationDate)
-                                    .Skip(pageIndex * pageSize)
-                                    .Take(pageSize)
-                                    .AsNoTracking()
-                                    .ToListAsync();
+            //var itemCount = await _dbSet.CountAsync();
+            //var items = await _dbSet.OrderByDescending(x => x.CreationDate)
+            //                        .Skip(pageIndex * pageSize)
+            //                        .Take(pageSize)
+            //                        .AsNoTracking()
+            //                        .ToListAsync();
             
-            var result = new Pagination<TEntity>()
+            //var result = new Pagination<TEntity>()
+            //{
+            //    PageIndex = pageIndex,
+            //    PageSize = pageSize,
+            //    TotalItemsCount = itemCount,
+            //    Items = items,
+            //};
+
+            return ToPagination(_dbSet,pageIndex,pageSize);
+        }
+        public Pagination<TEntity> ToPagination(IEnumerable<TEntity> list, int pageIndex = 0, int pageSize = 10)
+        {
+            //var customerFilteringModels = new Pagination<Customer>
+            //{
+            //    PageIndex = customers.PageIndex,
+            //    PageSize = customers.PageSize,
+            //    TotalItemsCount = customers.TotalItemsCount,
+            //    Items = customers.Items.Select(c => new Customer
+            //    {
+            //        FullName = c.FullName,
+            //        Email = c.Email,
+            //        PhoneNumber = c.PhoneNumber,
+            //        Address = c.Address
+            //    }).ToList()
+            //};
+            var result = new Pagination<TEntity>
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                TotalItemsCount = itemCount,
-                Items = items,
+                Items = list.Skip(pageIndex * pageSize).Take(pageSize).ToList(),
+                TotalItemsCount = list.Count()
             };
 
             return result;
         }
-
         public bool UpdateRange(List<TEntity> entities)
         {
             foreach (var entity in entities)

@@ -94,13 +94,7 @@ namespace WebAPI.Controllers
             var result = await _customerService.GetByIdAsync(id);
             return result != null ? Ok(result) : NotFound();
         }
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAsync()
-        {
-            var result = await _customerService.GetAllAsync();
-            return result != null ? Ok(result) : NotFound(result);
-        }
+       
         [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> DeleteAsync(Guid id)
@@ -127,13 +121,12 @@ namespace WebAPI.Controllers
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetCustomerPagination(int pageIndex, int pageSize)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllAsync(int pageIndex, int pageSize)
         {
-            var customers = await _customerService.GetCustomerListPagi(pageIndex, pageSize);
-            return Ok(customers);
+            var result = await _customerService.GetCustomerListPagi(pageIndex, pageSize);
+            return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
-
         private async Task<bool> ExistCustomer(Guid id)
         {
             var customer = await _customerService.GetByIdAsync(id);
