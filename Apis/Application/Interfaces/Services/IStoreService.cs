@@ -1,4 +1,5 @@
-﻿using Application.ViewModels.FilterModels;
+﻿using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System.Formats.Tar;
 
@@ -13,5 +14,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Store>> GetFilterAsync(StoreFilteringModel entity);
         bool Remove(Guid entityId);
         bool Update(Store entity);
+        Task<Pagination<Store>> GetCustomerListPagi(int pageIndex, int pageSize);
+
     }
 }

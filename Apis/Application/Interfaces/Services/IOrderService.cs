@@ -1,4 +1,5 @@
-﻿using Application.ViewModels;
+﻿using Application.Commons;
+using Application.ViewModels;
 using Application.ViewModels.FilterModels;
 using Domain.Entities;
 
@@ -13,4 +14,6 @@ public interface IOrderService
     Task<IEnumerable<LaundryOrder>> GetFilterAsync(LaundryOrderFilteringModel entity);
     bool Remove(Guid entityId);
     bool Update(LaundryOrder entity);
+    Task<Pagination<LaundryOrder>> GetCustomerListPagi(int pageIndex, int pageSize);
+
 }

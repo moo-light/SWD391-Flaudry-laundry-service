@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             return result > 0 ? Ok(result) : BadRequest();
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _userService.GetAllAsync();
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetListWithFilter(DriverFilteringModel? entity)
         {
             var result = await _userService.GetFilterAsync(entity);
-            return result != null ? Ok(result) : BadRequest();
+            return result != null ? Ok(result) : BadRequest(result);
         }
 
     }

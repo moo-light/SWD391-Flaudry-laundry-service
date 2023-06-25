@@ -51,7 +51,7 @@ namespace Application.Utils
         {
 
             if (@this == null) return true;
-            return @this.Any(x=>!string.IsNullOrWhiteSpace(x) && x.EmptyOrContainedIn(that));
+            return @this.Any(x=>!x.IsNullOrEmpty() && x.EmptyOrContainedIn(that));
         }
         public static bool IsInDateTime(this DateTime? dateTime, DateTime? fromDate = default, DateTime? toDate = default)
         {

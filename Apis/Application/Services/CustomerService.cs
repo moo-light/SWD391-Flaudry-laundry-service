@@ -1,5 +1,6 @@
 ﻿using Application.Commons;
 using Application.Interfaces;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels.Customer;
@@ -8,6 +9,9 @@ using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Eventing.Reader;
 
 namespace Application.Services
@@ -64,22 +68,31 @@ namespace Application.Services
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-
-
-        public async Task RegisterAsync(CustomerRegisterDTO customer)
+        public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
         {
-            // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(customer.Email);
-
+            var user = await _unitOfWork.UserRepository.GetUserByEmailAndPasswordHash(userObject.Email, userObject.Password);
+            return new UserLoginDTOResponse
+            {
+                UserId = user.Id,
+                JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+            };
+        }
+        public async Task<bool> CheckEmail(CustomerRegisterDTO userObject)
+        {
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(userObject.Email);
             if (isExited)
             {
-                throw new InvalidDataException("Username exited please try again");
+                return true;
             }
+            return false;
+        }
+        public async Task<bool> RegisterAsync(CustomerRegisterDTO customer)
+        {
 
             var newCustomer = _mapper.Map<Customer>(customer);
 
             await _unitOfWork.UserRepository.AddAsync(newCustomer);
-            await _unitOfWork.SaveChangeAsync();
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<int> GetCountAsync()
@@ -87,10 +100,9 @@ namespace Application.Services
             return await _unitOfWork.CustomerRepository.GetCountAsync();
         }
 
-        public async Task<IEnumerable<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel user)
+        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
         {
-            List<Customer> customers = _unitOfWork.CustomerRepository.GetFilter(user).ToList();
-            return _mapper.Map<List<CustomerResponseDTO>>(customers);
+            return _unitOfWork.CustomerRepository.GetFilter(user).ToList();
         }
 
         public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)
@@ -110,6 +122,25 @@ namespace Application.Services
                     };
                 }
             throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
+        }
+        [HttpGet]
+        public async Task<Pagination<Customer>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
+        {
+            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
+            var customerFilteringModels = new Pagination<Customer>
+            {
+                PageIndex = customers.PageIndex,
+                PageSize = customers.PageSize,
+                TotalItemsCount = customers.TotalItemsCount,
+                Items = customers.Items.Select(c => new Customer
+                {
+                    FullName = c.FullName,
+                    Email = c.Email,
+                    PhoneNumber = c.PhoneNumber,
+                    Address = c.Address
+                }).ToList()
+            };
+            return customerFilteringModels;
         }
     }
 }

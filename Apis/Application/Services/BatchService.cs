@@ -21,7 +21,6 @@ namespace Application.Services
         private readonly IClaimsService _claimsService;
         private readonly IMapper _mapper;
 
-
         public BatchService(IUnitOfWork unitOfWork, IClaimsService claimsService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -47,10 +46,30 @@ namespace Application.Services
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
 
-        public async Task<Pagination<Batch>> GetFilterAsync(BatchFilteringModel driver)
+        public async Task<Pagination<Batch>> GetBatchListPagi(int pageIndex, int pageSize)
         {
-            var o = _unitOfWork.BatchRepository.GetFilter(driver);
-            return _mapper.Map<Pagination<Batch>>(o);
+            var batchs = await _unitOfWork.BatchRepository.ToPagination(pageIndex, pageSize);
+            var batchListPagination = new Pagination<Batch>
+            {
+                PageIndex = batchs.PageIndex,
+                PageSize = batchs.PageSize,
+                TotalItemsCount = batchs.TotalItemsCount,
+                Items = batchs.Items.Select(b => new Batch
+                {
+                    Id = b.Id,
+                    SessionId = b.SessionId,
+                    Type = b.Type,
+                    Status = b.Status,
+                    Driver = b.Driver,
+                }).ToList(),
+            };
+            return batchListPagination;
+        }
+
+        public async Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel entity)
+        {
+            var o = _unitOfWork.BatchRepository.GetFilter(entity).ToList();
+            return _mapper.Map<IEnumerable<Batch>>(o);
         }
 
         public bool Remove(Guid entityId)
@@ -63,6 +82,10 @@ namespace Application.Services
         {
             _unitOfWork.BatchRepository.Update(entity);
             return _unitOfWork.SaveChange() > 0;
+        }
+        Task<IEnumerable<Batch>> IBatchService.GetBatchListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

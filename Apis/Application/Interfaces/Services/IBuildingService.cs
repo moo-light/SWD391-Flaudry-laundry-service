@@ -1,4 +1,5 @@
-﻿using Application.ViewModels;
+﻿using Application.Commons;
+using Application.ViewModels;
 using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System;
@@ -12,11 +13,13 @@ namespace Application.Interfaces.Services
     public interface IBuildingService
     {
         Task<bool> AddAsync(Building building);
-        Task<IEnumerable<Building>> GetAllAsync();
+        Task<Pagination<Building>> GetAllAsync();
         Task<Building?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<IEnumerable<Building>> GetFilterAsync(BuildingFilteringModel entity);
+        Task<Pagination<Building>> GetFilterAsync(BuildingFilteringModel entity);
         bool Remove(Guid entityId);
         bool Update(Building entity);
+        Task<Pagination<Building>> GetCustomerListPagi(int pageIndex, int pageSize);
+
     }
 }

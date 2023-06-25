@@ -6,9 +6,11 @@ using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Application.ViewModels.FilterModels;
-using Application.ViewModels.Customer;
+using Application.Services;
+using Application.Commons;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.UserViewModels;
+using Application.ViewModels.Customer;
 
 namespace WebAPI.Controllers
 {
@@ -25,7 +27,35 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(CustomerRegisterDTO registerObject) => await _customerService.RegisterAsync(registerObject);
+        public async Task<IActionResult> RegisterAsync(CustomerRegisterDTO registerObject)
+        {
+            var checkExist = await _customerService.CheckEmail(registerObject);
+            if (checkExist)
+            {
+                return BadRequest(new
+                {
+                    Message = "Email has existed, please try again"
+                });
+            }
+            else
+            {
+                var checkReg = await _customerService.RegisterAsync(registerObject);
+                if (checkReg)
+                {
+                    return Ok(new
+                    {
+                        Message = "Register Success"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Register fail"
+                    });
+                }
+            }
+        }
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(CustomerRequestDTO entity)
@@ -93,6 +123,12 @@ namespace WebAPI.Controllers
         {
             var result = await _customerService.GetFilterAsync(entity);
             return result.IsNullOrEmpty() ? BadRequest() : Ok(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCustomerPagination(int pageIndex, int pageSize)
+        {
+            var customers = await _customerService.GetCustomerListPagi(pageIndex, pageSize);
+            return Ok(customers);
         }
 
         private async Task<bool> ExistCustomer(Guid id)

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.FilterModels;
@@ -43,6 +44,11 @@ namespace Application.Services
         public async Task<int> GetCount()
         {
             return await _unitOfWork.SessionRepository.GetCountAsync();
+        }
+
+        public Task<Pagination<Session>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

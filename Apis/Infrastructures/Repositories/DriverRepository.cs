@@ -21,7 +21,7 @@ namespace Infrastructures.Repositories
         {
         }
 
-        public IEnumerable<Driver> GetFilter(DriverFilteringModel entity)
+        public  IEnumerable<Driver> GetFilter(DriverFilteringModel entity)
         {
             entity ??= new();
             Expression<Func<Driver, bool>> email = x => entity.Email.IsNullOrEmpty() || entity.Email.Any(y => x.Email != null && x.Email.Contains(y));
@@ -29,7 +29,7 @@ namespace Infrastructures.Repositories
             Expression<Func<Driver, bool>> fullName = x => entity.FullName.IsNullOrEmpty() || entity.FullName.Any(y => x.FullName != null && x.FullName.Contains(y));
             Expression<Func<Driver, bool>> date = x => x.CreationDate.IsInDateTime(entity);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(email, phoneNumber, fullName, date);
+            var predicates = ExpressionUtils.CreateListOfExpression( email, phoneNumber, fullName,date);
 
             IEnumerable<Driver> result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 

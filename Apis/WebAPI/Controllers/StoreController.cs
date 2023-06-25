@@ -67,7 +67,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> GetListWithFilter(StoreFilteringModel? entity)
+        public async Task<IActionResult> GetListWithFilter(StoreFilteringModel entity)
         {
             var result = await _storeService.GetFilterAsync(entity);
             return result != null ? Ok(result) : BadRequest();

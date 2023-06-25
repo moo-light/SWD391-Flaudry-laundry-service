@@ -56,21 +56,22 @@ namespace Application.Services
                 JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
             };
     }
-
-        public async Task RegisterAsync(DriverRegisterDTO driver)
+        public async Task<bool> CheckEmail(DriverRegisterDTO driverRegisterDTO)
         {
-            // check username exited
-            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(driver.Email);
-
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(driverRegisterDTO.Email);
             if (isExited)
             {
-                throw new InvalidDataException("Username exited please try again");
+                return true;
             }
+            else return false;
+        }
 
+        public async Task<bool> RegisterAsync(DriverRegisterDTO driver)
+        {
             var newDriver = _mapper.Map<Driver>(driver);
 
             await _unitOfWork.DriverRepository.AddAsync(newDriver);
-            await _unitOfWork.SaveChangeAsync();
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<int> GetCountAsync()
@@ -78,10 +79,14 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<Pagination<Driver>> GetFilterAsync(DriverFilteringModel driver)
+        public async Task<IEnumerable<Driver>> GetFilterAsync(DriverFilteringModel driver)
         {
-            var o = _unitOfWork.DriverRepository.GetFilter(driver);
-            return _mapper.Map<Pagination<Driver>>(o);
+            return _unitOfWork.DriverRepository.GetFilter(driver).ToList();
+        }
+
+        public Task<Pagination<Driver>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

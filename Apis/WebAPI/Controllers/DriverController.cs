@@ -21,7 +21,35 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task RegisterAsync(DriverRegisterDTO registerObject) => await _driverService.RegisterAsync(registerObject);
+        public async Task<IActionResult> RegisterAsync(DriverRegisterDTO registerObject)
+        {
+            var checkExist = await _driverService.CheckEmail(registerObject);
+            if (checkExist)
+            {
+                return BadRequest(new
+                {
+                    Message = "Email has existed, please try again"
+                });
+            }
+            else
+            {
+                var checkReg = await _driverService.RegisterAsync(registerObject);
+                if (checkReg)
+                {
+                    return Ok(new
+                    {
+                        Message = "Register Success"
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        Message = "Register fail"
+                    });
+                }
+            }
+        }
         [HttpPost]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Add(Driver entity)

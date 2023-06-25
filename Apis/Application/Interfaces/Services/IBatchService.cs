@@ -16,8 +16,10 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Batch>> GetAllAsync();
         Task<Batch?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
-        Task<Pagination<Batch>> GetFilterAsync(BatchFilteringModel driver);
+        Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel driver);
         bool Remove(Guid entityId);
         bool Update(Batch entity);
+        Task<IEnumerable<Batch>> GetBatchListPagi(int pageIndex, int pageSize);
+
     }
 }

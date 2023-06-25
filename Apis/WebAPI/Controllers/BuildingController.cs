@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _buildingService.GetAllAsync();
-            return result.Count() > 0 ? Ok(result) : BadRequest(result);
+            return result.Items.Count() > 0 ? Ok(result) : BadRequest(result);
         }
         [HttpGet("{entityId:guid}")]
         [Authorize]
