@@ -1,6 +1,7 @@
 ﻿using Application;
 using Application.Commons;
 using Application.Interfaces;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
@@ -9,6 +10,7 @@ using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Eventing.Reader;
@@ -87,10 +89,9 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<Pagination<CustomerFilteringModel>> GetFilterAsync(CustomerFilteringModel user)
+        public async Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel user)
         {
-            var o = _unitOfWork.CustomerRepository.GetFilter(user).ToList();
-            return _mapper.Map<Pagination<CustomerFilteringModel>>(o);
+            return _unitOfWork.CustomerRepository.GetFilter(user).ToList();
         }
 
         public UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject)
@@ -110,6 +111,25 @@ namespace Application.Services
                     };
                 }
             throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
+        }
+        [HttpGet]
+        public async Task<Pagination<Customer>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
+        {
+            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
+            var customerFilteringModels = new Pagination<Customer>
+            {
+                PageIndex = customers.PageIndex,
+                PageSize = customers.PageSize,
+                TotalItemsCount = customers.TotalItemsCount,
+                Items = customers.Items.Select(c => new Customer
+                {
+                    FullName = c.FullName,
+                    Email = c.Email,
+                    PhoneNumber = c.PhoneNumber,
+                    Address = c.Address
+                }).ToList()
+            };
+            return customerFilteringModels;
         }
     }
 }

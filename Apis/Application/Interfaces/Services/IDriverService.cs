@@ -18,5 +18,6 @@ public interface IDriverService
     Task<IEnumerable<Driver>> GetAllAsync();
     Task<int> GetCountAsync();
     Task<bool> CheckEmail(DriverRegisterDTO registerObject);
-    Task<Pagination<Driver>> GetFilterAsync(DriverFilteringModel driver);
+    Task<IEnumerable<Driver>> GetFilterAsync(DriverFilteringModel driver);
+    Task<Pagination<Driver>> GetCustomerListPagi(int pageIndex, int pageSize);
 }

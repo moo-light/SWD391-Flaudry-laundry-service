@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.FilterModels;
@@ -29,6 +30,11 @@ namespace Application.Services
         public async Task<OrderInBatch?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderInBatchRepository.GetByIdAsync(entityId);
 
         public async Task<int> GetCountAsync() => await _unitOfWork.OrderInBatchRepository.GetCountAsync();
+
+        public Task<Pagination<OrderInBatch>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<IEnumerable<OrderInBatch>> GetFilterAsync(OrderInBatchFilteringModel entity)
         {

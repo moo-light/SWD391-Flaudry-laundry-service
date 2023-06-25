@@ -79,10 +79,14 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public async Task<Pagination<Driver>> GetFilterAsync(DriverFilteringModel driver)
+        public async Task<IEnumerable<Driver>> GetFilterAsync(DriverFilteringModel driver)
         {
-            var o = _unitOfWork.DriverRepository.GetFilter(driver);
-            return _mapper.Map<Pagination<Driver>>(o);
+            return _unitOfWork.DriverRepository.GetFilter(driver).ToList();
+        }
+
+        public Task<Pagination<Driver>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

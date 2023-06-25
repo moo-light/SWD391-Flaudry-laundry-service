@@ -19,5 +19,7 @@ namespace Application.Interfaces.Services
         Task<Pagination<Building>> GetFilterAsync(BuildingFilteringModel entity);
         bool Remove(Guid entityId);
         bool Update(Building entity);
+        Task<Pagination<Building>> GetCustomerListPagi(int pageIndex, int pageSize);
+
     }
 }

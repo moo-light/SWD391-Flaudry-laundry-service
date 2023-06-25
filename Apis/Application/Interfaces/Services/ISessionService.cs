@@ -1,4 +1,5 @@
-﻿using Application.ViewModels;
+﻿using Application.Commons;
+using Application.ViewModels;
 using Domain.Entities;
 
 namespace Application.Interfaces.Services
@@ -12,5 +13,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Session>> GetFilterAsync(BaseFilterringModel entity);
         bool Remove(Guid entityId);
         bool Update(Session entity);
+        Task<Pagination<Session>> GetCustomerListPagi(int pageIndex, int pageSize);
+
     }
 }

@@ -46,10 +46,30 @@ namespace Application.Services
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
 
-        public async Task<Pagination<Batch>> GetFilterAsync(BatchFilteringModel entity)
+        public async Task<Pagination<Batch>> GetBatchListPagi(int pageIndex, int pageSize)
+        {
+            var batchs = await _unitOfWork.BatchRepository.ToPagination(pageIndex, pageSize);
+            var batchListPagination = new Pagination<Batch>
+            {
+                PageIndex = batchs.PageIndex,
+                PageSize = batchs.PageSize,
+                TotalItemsCount = batchs.TotalItemsCount,
+                Items = batchs.Items.Select(b => new Batch
+                {
+                    Id = b.Id,
+                    SessionId = b.SessionId,
+                    Type = b.Type,
+                    Status = b.Status,
+                    Driver = b.Driver,
+                }).ToList(),
+            };
+            return batchListPagination;
+        }
+
+        public async Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel entity)
         {
             var o = _unitOfWork.BatchRepository.GetFilter(entity).ToList();
-            return _mapper.Map<Pagination<Batch>>(o);
+            return _mapper.Map<IEnumerable<Batch>>(o);
         }
 
         public bool Remove(Guid entityId)

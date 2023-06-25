@@ -45,6 +45,11 @@ namespace Application.Services
             return await _unitOfWork.BuildingRepository.GetCountAsync();
         }
 
+        public Task<Pagination<Building>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Pagination<Building>> GetFilterAsync(BuildingFilteringModel entity)
         {
             var o = _unitOfWork.BuildingRepository.GetFilter(entity).ToList();

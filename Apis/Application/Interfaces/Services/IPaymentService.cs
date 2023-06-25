@@ -1,4 +1,5 @@
-﻿using Application.ViewModels;
+﻿using Application.Commons;
+using Application.ViewModels;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,7 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<Payment>> GetFilterAsync(BaseFilterringModel entity);
         bool Remove(Guid entityId);
         bool Update(Payment entity);
+        Task<Pagination<Payment>> GetCustomerListPagi(int pageIndex, int pageSize);
+
     }
 }

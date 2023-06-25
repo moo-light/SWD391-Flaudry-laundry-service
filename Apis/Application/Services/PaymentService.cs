@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Domain.Entities;
@@ -31,6 +32,11 @@ namespace Application.Services
         public async Task<int> GetCountAsync()
         {
             return await _unitOfWork.PaymentRepository.GetCountAsync();
+        }
+
+        public Task<Pagination<Payment>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Payment>> GetFilterAsync(BaseFilterringModel entity)

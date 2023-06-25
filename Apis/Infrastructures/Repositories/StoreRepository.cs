@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructures.Repositories
 {
-    public class StoreRepository : GenericRepository<Store>
+    public class StoreRepository : GenericRepository<Store>, IStoreRepository
     {
         private readonly AppDbContext _dbContext;
 

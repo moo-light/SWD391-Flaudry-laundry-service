@@ -17,6 +17,7 @@ public interface ICustomerService
     Task<Customer?> GetByIdAsync(Guid entityId);
     Task<Pagination<CustomerFilteringModel>> GetAllAsync(int pageIndex = 0, int pageSize = 10);
     Task<int> GetCountAsync();
-    Task<Pagination<CustomerFilteringModel>> GetFilterAsync(CustomerFilteringModel entity);
+    Task<IEnumerable<Customer>> GetFilterAsync(CustomerFilteringModel entity);
     UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject);
+    Task<Pagination<Customer>> GetCustomerListPagi(int pageIndex, int pageSize);
 }

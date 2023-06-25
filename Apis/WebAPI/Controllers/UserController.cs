@@ -19,37 +19,6 @@ namespace WebAPI.Controllers
             _userService = userService;
         }
 
-        //[HttpPost]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> RegisterAsync(CustomerRegisterDTO registerObject)
-        //{
-        //    var checkExist = await _userService.CheckEmail(registerObject);
-        //    if (checkExist)
-        //    {
-        //        return BadRequest(new 
-        //        { 
-        //            Message = "Email has existed, please try again" 
-        //        });
-        //    }
-        //    else
-        //    {
-        //        var checkReg = await _userService.RegisterAsync(registerObject);
-        //        if (checkReg)
-        //        {
-        //            return Ok(new
-        //            {
-        //                Message = "Register Success"
-        //            });
-        //        }
-        //        else
-        //        {
-        //            return BadRequest(new
-        //            {
-        //                Message = "Register fail"
-        //            });
-        //        }
-        //    }
-        //}
         [HttpPost]
         [AllowAnonymous]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject)

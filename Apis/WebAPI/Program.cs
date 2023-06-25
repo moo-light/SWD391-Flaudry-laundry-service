@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Infrastructures.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddSingleton(configuration);
 builder.Services.AddCors(options
         => options.AddDefaultPolicy(policy
             => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddAutoMapper(typeof(MapperConfigurationsProfile));
 
 builder.Services.AddSwaggerGen(opt =>
 {

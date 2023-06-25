@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.FilterModels;
@@ -44,6 +45,11 @@ namespace Application.Services
         {
             return _unitOfWork.StoreRepository.GetFilter(entity);
 
+        }
+
+        public Task<Pagination<Store>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

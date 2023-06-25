@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Application.ViewModels.UserViewModels;
 using Application.ViewModels.FilterModels;
 using Application.Services;
+using Application.Commons;
 
 namespace WebAPI.Controllers
 {
@@ -86,12 +87,18 @@ namespace WebAPI.Controllers
             var result = await _customerService.GetCountAsync();
             return result>0 ? Ok(result) : BadRequest();
         }
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(int pageIndex = 0, int pageSize = 10)
+        public async Task<IActionResult> GetListWithFilter(CustomerFilteringModel? customerFilteringModel)
         {
-            var result = await _customerService.GetAllAsync(pageIndex, pageSize);
-            return result != null? Ok(result) : BadRequest();
+            var users = await _customerService.GetFilterAsync(customerFilteringModel);
+            return Ok(users);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCustomerPagination(int pageIndex, int pageSize)
+        {
+            var customers = await _customerService.GetCustomerListPagi(pageIndex, pageSize);
+            return Ok(customers);
         }
 
     }

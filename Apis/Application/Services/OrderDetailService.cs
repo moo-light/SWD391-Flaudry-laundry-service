@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.FilterModels;
@@ -31,6 +32,11 @@ namespace Application.Services
         public async Task<int> GetCountAsync()
         {
            return await _unitOfWork.OrderDetailRepository.GetCountAsync();
+        }
+
+        public Task<Pagination<OrderDetail>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<OrderDetail>> GetFilterAsync(OrderDetailFilteringModel entity)

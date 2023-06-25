@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Commons;
+using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Application.ViewModels.FilterModels;
@@ -44,5 +45,9 @@ namespace Application.Services
             return _unitOfWork.OrderRepository.GetFilter(entity);
         }
 
+        public Task<Pagination<LaundryOrder>> GetCustomerListPagi(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
