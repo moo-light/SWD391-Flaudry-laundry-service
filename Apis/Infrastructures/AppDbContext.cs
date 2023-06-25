@@ -21,6 +21,7 @@ namespace Infrastructures
         public DbSet<Customer> Customers { get; set; }
         public DbSet<BaseUser> Users { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<LaundryOrder> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<OrderInBatch> OrderInBatches { get; set; }

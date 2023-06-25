@@ -10,7 +10,7 @@ public interface ICustomerService
 {
     public Task RegisterAsync(CustomerRegisterDTO userObject);
     Task<bool> AddAsync(CustomerRequestDTO user);
-    bool Remove(Guid entityId);
+    Task<bool> RemoveAsync(Guid entityId);
     Task<bool> UpdateAsync(Guid id, CustomerRequestDTO entity);
     Task<CustomerResponseDTO?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<CustomerResponseDTO>> GetAllAsync();

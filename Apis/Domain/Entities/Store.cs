@@ -11,5 +11,5 @@ public partial class Store : BaseEntity
     public string? Address { get; set; } 
     public virtual ICollection<LaundryOrder> Orders { get; } = new List<LaundryOrder>();
     public virtual ICollection<Service> Services { get; } = new List<Service>();
-
+    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 }

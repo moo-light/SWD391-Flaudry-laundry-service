@@ -1,16 +1,13 @@
-﻿using Application;
-using Application.Commons;
+﻿using Application.Commons;
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
-using Application.ViewModels;
 using Application.ViewModels.Customer;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Eventing.Reader;
 
 namespace Application.Services
@@ -52,7 +49,7 @@ namespace Application.Services
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public bool Remove(Guid entityId)
+        public async Task<bool> RemoveAsync(Guid entityId)
         {
             _unitOfWork.CustomerRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0;
