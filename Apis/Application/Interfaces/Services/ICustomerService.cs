@@ -11,8 +11,8 @@ public interface ICustomerService
     public Task RegisterAsync(CustomerRegisterDTO userObject);
     Task<bool> AddAsync(CustomerRequestDTO user);
     Task<bool> RemoveAsync(Guid entityId);
-    Task<bool> UpdateAsync(Guid id, CustomerRequestDTO entity);
-    Task<CustomerResponseDTO?> GetByIdAsync(Guid entityId);
+    Task<bool> UpdateAsync(Guid id, CustomerRequestUpdateDTO entity);
+    Task<Customer?> GetByIdAsync(Guid entityId);
     Task<IEnumerable<CustomerResponseDTO>> GetAllAsync();
     Task<int> GetCountAsync();
     Task<IEnumerable<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel entity);

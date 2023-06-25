@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Authorization;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.Customer;
 using Microsoft.IdentityModel.Tokens;
+using Application.ViewModels.UserViewModels;
 
 namespace WebAPI.Controllers
 {
     public class CustomerController : BaseController, IWebController<Customer>
     {
         private readonly ICustomerService _customerService;
+        private readonly IBaseUserService _userService;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerService customerService, IBaseUserService userService)
         {
             _customerService = customerService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -32,11 +35,26 @@ namespace WebAPI.Controllers
         }
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
-        public async Task<IActionResult> Update(Guid id, CustomerRequestDTO entity)
+        public async Task<IActionResult> Update(Guid id, CustomerRequestUpdateDTO entity)
         {
-            var exist = Exist(id);
+            var exist = await ExistCustomer(id);
             if (!exist) return NotFound();
-            var result = await _customerService.UpdateAsync(id, entity);
+            bool result;
+            if (HttpContext.User.Claims.Any(x => x.Type.Contains("role") && x.Value.Equals("Admin",StringComparison.OrdinalIgnoreCase)))
+            {
+                result = await _customerService.UpdateAsync(id, entity);
+            }
+            else
+            {
+                var user = new UserLoginDTO()
+                {
+                    Email = entity.LoginEmail,
+                    Password = entity.OldPassword
+                };
+                if (await _userService.LoginAsync(user) != null)
+                    result = await _customerService.UpdateAsync(id, entity);
+                else return BadRequest();
+            }
             return result ? Ok() : BadRequest();
         }
         [HttpGet("{id:guid}")]
@@ -57,9 +75,9 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var exist = Exist(id);
+            var exist = await ExistCustomer(id);
             if (!exist) return NotFound();
-            var result =await _customerService.RemoveAsync(id);
+            var result = await _customerService.RemoveAsync(id);
             return result ? Ok() : BadRequest();
         }
         [HttpGet]
@@ -77,9 +95,9 @@ namespace WebAPI.Controllers
             return result.IsNullOrEmpty() ? BadRequest() : Ok(result);
         }
 
-        private bool Exist(Guid id)
+        private async Task<bool> ExistCustomer(Guid id)
         {
-            var customer = _customerService.GetByIdAsync(id);
+            var customer = await _customerService.GetByIdAsync(id);
             if (customer == null) return false;
             return true;
         }

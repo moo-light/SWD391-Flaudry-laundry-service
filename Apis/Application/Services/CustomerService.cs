@@ -33,11 +33,11 @@ namespace Application.Services
             return _mapper.Map<List<CustomerResponseDTO>>(customers);
         }
 
-        [Authorize(Roles = "Admin,Customer,Driver")]
-        public async Task<CustomerResponseDTO?> GetByIdAsync(Guid entityId)
+        [Authorize(Roles = "Admin,Customer,Driver")]// bruh service gan authorrize vl lun 
+        public async Task<Customer?> GetByIdAsync(Guid entityId)
         {
             Customer? customer = await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
-            return _mapper.Map<CustomerResponseDTO>(customer);
+            return customer;
         }
 
         public async Task<bool> AddAsync(CustomerRequestDTO customer)
@@ -55,10 +55,9 @@ namespace Application.Services
             return _unitOfWork.SaveChange() > 0;
         }
 
-        public async Task<bool> UpdateAsync(Guid id, CustomerRequestDTO entity)
+        public async Task<bool> UpdateAsync(Guid id, CustomerRequestUpdateDTO entity)
         {
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(id);
-            if (customer == null) return false;
             if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
             customer = _mapper.Map(entity, customer);
             _unitOfWork.CustomerRepository.Update(customer);
