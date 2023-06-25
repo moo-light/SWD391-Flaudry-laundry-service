@@ -24,7 +24,7 @@ namespace Infrastructures.Repositories
 
         public async Task<bool> CheckEmailExisted(string email)
         {
-            return await _dbSet.AnyAsync(x => x.Email == email);
+            return await _dbSet.AsNoTracking().AnyAsync(x => x.Email == email);
         }
 
         public IEnumerable<BaseUser> GetFilter(DriverFilteringModel? entity)

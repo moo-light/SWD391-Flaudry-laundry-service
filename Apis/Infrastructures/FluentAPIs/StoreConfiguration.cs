@@ -15,6 +15,7 @@ namespace Infrastructures.FluentAPIs
 
             builder.HasMany(e => e.Services).WithOne(x => x.Store).HasForeignKey(x => x.StoreId);
             builder.HasMany(e => e.Orders).WithOne(x => x.Store).HasForeignKey(x => x.StoreId);
+            builder.HasMany(e => e.Feedbacks).WithOne(x => x.Store).HasForeignKey(x => x.StoreId);
 
         }
     }

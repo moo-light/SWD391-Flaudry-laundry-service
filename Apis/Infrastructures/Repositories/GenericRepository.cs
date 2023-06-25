@@ -37,7 +37,7 @@ namespace Infrastructures.Repositories
            .CountAsync();
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
-            var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             // todo should throw exception when not found
             return result;
         }
