@@ -8,7 +8,7 @@ public partial class Batch :BaseEntity
 {
 
     public Guid? DriverId { get; set; }
-    public Guid? SessionId { get; set; }
+    //public Guid? SessionId { get; set; }//??
     public string? Type { get; set; } 
     public string? Status { get; set; } 
     public virtual Driver? Driver { get; set; }

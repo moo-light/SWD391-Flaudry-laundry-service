@@ -25,12 +25,11 @@ namespace Infrastructures.Repositories
         {
             entity ??= new();
             Expression<Func<Batch, bool>> driverId = x => entity.DriverId.EmptyOrEquals(x.DriverId);
-            Expression<Func<Batch, bool>> sessionId = x => entity.SessionId.EmptyOrEquals(x.SessionId);
             Expression<Func<Batch, bool>> type = x => entity.Type.EmptyOrContainedIn(x.Type);
             Expression<Func<Batch, bool>> status = x => entity.Status.EmptyOrContainedIn(x.Status);
             Expression<Func<Batch, bool>> dateFilter = x => x.CreationDate.IsInDateTime(entity.FromDate, entity.ToDate);
 
-            var predicates = ExpressionUtils.CreateListOfExpression(driverId, sessionId, status, type, dateFilter);
+            var predicates = ExpressionUtils.CreateListOfExpression(driverId, status, type, dateFilter);
 
             var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 

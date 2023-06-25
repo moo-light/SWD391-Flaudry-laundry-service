@@ -7,6 +7,7 @@ using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Application.ViewModels.FilterModels;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI.Controllers
 {
@@ -19,7 +20,7 @@ namespace WebAPI.Controllers
             _storeService = storeService;
         }
 
-    
+
         [HttpPost]
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> Add(Store entity)
@@ -50,12 +51,12 @@ namespace WebAPI.Controllers
             var result = _storeService.Remove(entityId);
             return result ? Ok() : BadRequest();
         }
-        [HttpGet]
+        [HttpGet("{pageIndex}/{pageSize}")]
         [Authorize]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync(int pageIndex = 0, int pageSize = 10)
         {
-            var result = await _storeService.GetAllAsync();
-            return result.Count() > 0 ? Ok(result) : BadRequest(result);
+            var result = await _storeService.GetAllAsync(pageIndex,pageSize);
+            return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
         [HttpGet]
         [Authorize]

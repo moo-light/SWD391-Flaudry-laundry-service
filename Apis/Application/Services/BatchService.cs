@@ -57,7 +57,6 @@ namespace Application.Services
                 Items = batchs.Items.Select(b => new Batch
                 {
                     Id = b.Id,
-                    SessionId = b.SessionId,
                     Type = b.Type,
                     Status = b.Status,
                     Driver = b.Driver,

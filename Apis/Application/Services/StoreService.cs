@@ -16,7 +16,12 @@ namespace Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Store>> GetAllAsync() => await _unitOfWork.StoreRepository.GetAllAsync();
+        public async Task<Pagination<Store>> GetAllAsync(int pageindex, int pageSize)
+        {
+            //return await _unitOfWork.StoreRepository.GetAllAsync();
+            return null;
+        }
+
         public async Task<Store?> GetByIdAsync(Guid entityId) => await _unitOfWork.StoreRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(Store store)
         {

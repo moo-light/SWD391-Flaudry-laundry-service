@@ -8,7 +8,7 @@ namespace Application.Interfaces.Services
     public interface IStoreService
     {
         Task<bool> AddAsync(Store store);
-        Task<IEnumerable<Store>> GetAllAsync();
+        Task<Pagination<Store>> GetAllAsync(int pageIndex,int PageSize);
         Task<Store?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
         Task<IEnumerable<Store>> GetFilterAsync(StoreFilteringModel entity);
