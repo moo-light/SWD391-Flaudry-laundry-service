@@ -124,7 +124,7 @@ namespace Application.Services
             throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
         }
         [HttpGet]
-        public async Task<Pagination<Customer>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
+        public async Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
         {
             var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
             var customerFilteringModels = new Pagination<Customer>
@@ -140,7 +140,7 @@ namespace Application.Services
                     Address = c.Address
                 }).ToList()
             };
-            return customerFilteringModels;
+            return _mapper.Map<Pagination<CustomerResponseDTO>>(customerFilteringModels);
         }
     }
 }

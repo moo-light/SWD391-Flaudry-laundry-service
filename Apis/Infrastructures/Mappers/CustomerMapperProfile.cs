@@ -23,7 +23,9 @@ namespace Infrastructures.Mappers
                                      opt.MapFrom(x => x.NewPassword.Hash());
                                  }
                                  ).ReverseMap();
-            CreateMap<CustomerResponseDTO, Customer>().ReverseMap();
+            CreateMap<CustomerResponseDTO, Customer>()
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.CustomerId))
+                .ReverseMap();
             CreateMap<LaundryOrderResponseDTO, LaundryOrder>().ReverseMap();
         }
     }
