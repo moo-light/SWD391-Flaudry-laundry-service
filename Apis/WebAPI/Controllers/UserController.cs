@@ -6,6 +6,7 @@ using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
@@ -33,6 +34,14 @@ namespace WebAPI.Controllers
             var result = await _userService.GetByIdAsync(Id);
             return result != null ? Ok(result) : BadRequest(result);
         }
+        [HttpGet("{pageIndex}/{pageSize}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllAsync(int pageIndex = 0, int pageSize = 10)
+        {
+            var result = await _userService.GetAllAsync(pageIndex, pageSize);
+            return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCount()
@@ -40,20 +49,13 @@ namespace WebAPI.Controllers
             var result = await _userService.GetCountAsync();
             return result > 0 ? Ok(result) : BadRequest();
         }
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAsync()
-        {
-            var result = await _userService.GetAllAsync();
-            return result != null ? Ok(result) : BadRequest();
-        }
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetListWithFilter(DriverFilteringModel? entity)
-        {
-            var result = await _userService.GetFilterAsync(entity);
-            return result != null ? Ok(result) : BadRequest(result);
-        }
 
+        [HttpPost("{pageIndex}/{pageSize}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetListWithFilter(UserFilteringModel? entity, int pageIndex = 0, int pageSize = 10)
+        {
+            var result = await _userService.GetFilterAsync(entity, pageIndex, pageSize);
+            return result.Items.IsNullOrEmpty()? NotFound() : Ok(result);
+        }
     }
 }

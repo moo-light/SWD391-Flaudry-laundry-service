@@ -251,9 +251,6 @@ namespace Infrastructures.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("OrderInBatchId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("StoreId")
                         .HasColumnType("uniqueidentifier");
 

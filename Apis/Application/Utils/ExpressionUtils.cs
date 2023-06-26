@@ -1,4 +1,4 @@
-﻿using Application.ViewModels;
+﻿using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.IdentityModel.Tokens;

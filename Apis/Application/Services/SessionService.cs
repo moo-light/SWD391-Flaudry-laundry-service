@@ -1,8 +1,9 @@
 ﻿using Application.Commons;
 using Application.Interfaces;
 using Application.Interfaces.Services;
-using Application.ViewModels;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.Sessions;
+using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Services
@@ -10,35 +11,48 @@ namespace Application.Services
     public class SessionService : ISessionService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public SessionService(IUnitOfWork unitOfWork)
+        public SessionService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Session>> GetAllAsync() => await _unitOfWork.SessionRepository.GetAllAsync();
+        public async Task<Pagination<SessionResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
+        {
+            var stores = await _unitOfWork.StoreRepository.ToPagination(pageIndex, pageSize);
+            return _mapper.Map<Pagination<SessionResponseDTO>>(stores);
+        }
+
         public async Task<Session?> GetByIdAsync(Guid entityId) => await _unitOfWork.SessionRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(Session timeSlot)
+        public async Task<bool> AddAsync(SessionRequestDTO timeSlot)
         {
-            await _unitOfWork.SessionRepository.AddAsync(timeSlot);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            Session newTimeSlot = _mapper.Map<Session>(timeSlot);
+            await _unitOfWork.SessionRepository.AddAsync(newTimeSlot);
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        public bool Remove(Guid entityId)
+        public async Task<bool> RemoveAsync(Guid entityId)
         {
-            _unitOfWork.SessionRepository.SoftRemoveByID(entityId);
-            return _unitOfWork.SaveChange() > 0;
+            var result =  _unitOfWork.SessionRepository.SoftRemoveByID(entityId);
+            if (result == false) return false;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        public bool Update(Session entity)
+        public async Task<bool> UpdateAsync(Guid id, SessionRequestDTO sessionRequest)
         {
-            _unitOfWork.SessionRepository.Update(entity);
-            return _unitOfWork.SaveChange() > 0;
+            var session = await _unitOfWork.SessionRepository.GetByIdAsync(id);
+            session= _mapper.Map(sessionRequest, session);
+            _unitOfWork.SessionRepository.Update(session);
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<Session>> GetFilterAsync(SessionFilteringModel entity)
+        public async Task<Pagination<SessionResponseDTO>> GetFilterAsync(SessionFilteringModel entity, int pageIndex, int pageSize)
         {
-            return  _unitOfWork.SessionRepository.GetFilter(entity);
+            IEnumerable<Session> sessions = _unitOfWork.SessionRepository.GetFilter(entity);
+            var pagination = _unitOfWork.SessionRepository.ToPagination(sessions, pageIndex, pageSize);
+            return _mapper.Map<Pagination<SessionResponseDTO>>(pagination);
         }
 
         public async Task<int> GetCount()

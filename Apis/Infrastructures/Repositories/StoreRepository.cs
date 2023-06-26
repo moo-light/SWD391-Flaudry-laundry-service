@@ -1,8 +1,8 @@
-﻿using Application.Interfaces;
+﻿using Application.ViewModels.FilterModels;
+using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Utils;
 using Application.ViewModels;
-using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using System.Linq.Expressions;
 

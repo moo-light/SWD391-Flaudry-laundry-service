@@ -3,8 +3,8 @@ using Application.Commons;
 using Domain.Entities;
 using Application.ViewModels.UserViewModels;
 using Application.Utils;
-using Application.ViewModels.FilterModels;
 using Application.ViewModels.Customer;
+using Application.ViewModels.FilterModels;
 
 namespace Infrastructures.Mappers
 {

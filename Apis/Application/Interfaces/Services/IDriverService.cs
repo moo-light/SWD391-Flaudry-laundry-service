@@ -1,6 +1,6 @@
 ﻿using Application.Commons;
-using Application.ViewModels;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;

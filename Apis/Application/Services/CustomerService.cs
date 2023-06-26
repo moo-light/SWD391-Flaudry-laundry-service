@@ -1,10 +1,10 @@
 ﻿using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels.Customer;
-using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -48,7 +48,7 @@ namespace Application.Services
             if (newCustomer == null) return false;
             if (await _unitOfWork.UserRepository.CheckEmailExisted(newCustomer.Email)) throw new InvalidDataException("Email Exist!");
             await _unitOfWork.CustomerRepository.AddAsync(newCustomer);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> RemoveAsync(Guid entityId)
@@ -63,7 +63,7 @@ namespace Application.Services
             if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
             customer = _mapper.Map(entity, customer);
             _unitOfWork.CustomerRepository.Update(customer);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
@@ -90,7 +90,7 @@ namespace Application.Services
             var newCustomer = _mapper.Map<Customer>(customer);
 
             await _unitOfWork.UserRepository.AddAsync(newCustomer);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         public async Task<int> GetCountAsync()

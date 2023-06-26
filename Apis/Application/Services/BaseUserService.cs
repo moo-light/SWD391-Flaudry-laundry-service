@@ -1,9 +1,9 @@
 ﻿using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
-using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
@@ -23,12 +23,17 @@ namespace Application.Services
             _currentTime = currentTime;
         }
 
-        public async Task<IEnumerable<BaseUser>> GetAllAsync() => await _unitOfWork.UserRepository.GetAllAsync();
+        public async Task<Pagination<BaseUser>> GetAllAsync(int pageIndex,int pageSize)
+        {
+            var baseUsers = await _unitOfWork.UserRepository.ToPagination(pageIndex,pageSize);
+            return baseUsers;
+        }
+
         public async Task<BaseUser?> GetByIdAsync(Guid entityId) => await _unitOfWork.UserRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(BaseUser store)
         {
             await _unitOfWork.UserRepository.AddAsync(store);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         public bool Remove(Guid entityId)
@@ -48,9 +53,11 @@ namespace Application.Services
             return await _unitOfWork.UserRepository.GetCountAsync();
         }
 
-        public  async Task<IEnumerable<BaseUser>> GetFilterAsync(DriverFilteringModel entity)
+        public  async Task<Pagination<BaseUser>> GetFilterAsync(UserFilteringModel entity, int pageIndex, int pageSize)
         {
-            return  _unitOfWork.UserRepository.GetFilter(entity);
+            var baseUsers = _unitOfWork.UserRepository.GetFilter(entity);
+            var pagination = _unitOfWork.UserRepository.ToPagination(baseUsers, pageIndex, pageSize);
+            return pagination;
         }
 
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)

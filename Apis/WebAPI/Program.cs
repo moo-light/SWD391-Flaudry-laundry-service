@@ -26,8 +26,6 @@ builder.Services.AddSingleton(configuration);
 builder.Services.AddCors(options
         => options.AddDefaultPolicy(policy
             => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-builder.Services.AddAutoMapper(typeof(MapperConfigurationsProfile));
-
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend API", Version = "v1" });

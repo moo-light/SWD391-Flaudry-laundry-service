@@ -40,7 +40,6 @@ namespace Application.Commons
         {
             get
             {
-                if (PageIndex >= TotalItemsCount) throw new InvalidDataException("Max PageIndex Reached (try lower the pageIndex)");
                 return _items;
             }
             set => _items = value;

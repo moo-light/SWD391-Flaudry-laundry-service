@@ -1,6 +1,6 @@
 ﻿using Application.Utils;
 using Application.ViewModels.Customer;
-using Application.ViewModels.NewFolder;
+using Application.ViewModels.LaundryOrders;
 using AutoMapper;
 using Domain.Entities;
 
@@ -26,7 +26,6 @@ namespace Infrastructures.Mappers
             CreateMap<CustomerResponseDTO, Customer>()
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.CustomerId))
                 .ReverseMap();
-            CreateMap<LaundryOrderResponseDTO, LaundryOrder>().ReverseMap();
         }
     }
 }

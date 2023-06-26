@@ -1,8 +1,8 @@
 ﻿using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
-using Application.ViewModels.FilterModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +29,7 @@ namespace Application.Services
         public async Task<bool> AddAsync(Building building)
         {
             await _unitOfWork.BuildingRepository.AddAsync(building);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         public async Task<Pagination<Building>> GetAllAsync()

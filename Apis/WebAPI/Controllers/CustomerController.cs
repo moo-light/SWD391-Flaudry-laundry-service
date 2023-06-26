@@ -5,12 +5,12 @@ using Domain.Entities;
 using Application.Interfaces.Services;
 using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Application.ViewModels.FilterModels;
 using Application.Services;
 using Application.Commons;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.UserViewModels;
 using Application.ViewModels.Customer;
+using Application.ViewModels.FilterModels;
 
 namespace WebAPI.Controllers
 {
@@ -111,18 +111,20 @@ namespace WebAPI.Controllers
             var result = await _customerService.GetCountAsync();
             return result > 0 ? Ok(result) : NotFound();
         }
+
         [HttpPost("{pageIndex?}/{pageSize?}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetListWithFilter(CustomerFilteringModel? entity,
-                                                           int pageIndex = 0,
-                                                           int pageSize = 10)
+                                                    int pageIndex = 0,
+                                                    int pageSize = 10)
         {
-            var result = await _customerService.GetFilterAsync(entity,pageIndex,pageSize);
+            var result = await _customerService.GetFilterAsync(entity, pageIndex, pageSize);
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
-        [HttpGet]
+
+        [HttpGet("{pageIndex?}/{pageSize?}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAsync(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllAsync(int pageIndex = 0, int pageSize = 10)
         {
             var result = await _customerService.GetCustomerListPagi(pageIndex, pageSize);
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);

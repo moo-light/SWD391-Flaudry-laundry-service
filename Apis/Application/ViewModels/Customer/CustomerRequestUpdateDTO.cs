@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.Customer
 {
-    public class CustomerRequestUpdateDTO :CustomerRequestDTO
+    public class CustomerRequestUpdateDTO : CustomerRequestDTO
     {
         [AllowNull]
         public string? OldPassword { get; set; }
