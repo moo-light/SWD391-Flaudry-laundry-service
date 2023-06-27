@@ -1,20 +1,19 @@
 ﻿using Application.Commons;
-using Application.ViewModels;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.Sessions;
 using Domain.Entities;
 
 namespace Application.Interfaces.Services
 {
     public interface ISessionService
     {
-        Task<bool> AddAsync(Session timeSlot);
-        Task<IEnumerable<Session>> GetAllAsync();
+        Task<bool> AddAsync(SessionRequestDTO timeSlot);
+        Task<Pagination<SessionResponseDTO>> GetAllAsync(int pageIndex , int pageSize );
         Task<Session?> GetByIdAsync(Guid entityId);
         Task<int> GetCount();
-        Task<IEnumerable<Session>> GetFilterAsync(SessionFilteringModel entity);
-        bool Remove(Guid entityId);
-        bool Update(Session entity);
+        Task<Pagination<SessionResponseDTO>> GetFilterAsync(SessionFilteringModel entity, int pageIndex, int pageSize);
         Task<Pagination<Session>> GetCustomerListPagi(int pageIndex, int pageSize);
-
+        Task<bool> UpdateAsync(Guid id, SessionRequestDTO sessionRequest);
+        Task<bool> RemoveAsync(Guid entityId);
     }
 }

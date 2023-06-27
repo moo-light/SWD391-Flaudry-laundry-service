@@ -1,7 +1,7 @@
-﻿using Application.Interfaces.Services;
+﻿using Application.ViewModels.FilterModels;
+using Application.Interfaces.Services;
 using Application.Services;
 using Application.ViewModels;
-using Application.ViewModels.FilterModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

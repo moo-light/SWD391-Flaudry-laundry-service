@@ -1,8 +1,8 @@
 ﻿using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels;
-using Application.ViewModels.FilterModels;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace Application.Services
             batch.DriverId = driverId;
 
             await _unitOfWork.BatchRepository.AddAsync(batch);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
         public async Task<IEnumerable<Batch>> GetAllAsync() => await _unitOfWork.BatchRepository.GetAllAsync();
 

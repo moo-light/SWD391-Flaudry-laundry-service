@@ -1,10 +1,10 @@
 ﻿using Application;
 using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.Utils;
 using Application.ViewModels;
-using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -32,7 +32,7 @@ namespace Application.Services
         public async Task<bool> AddAsync(Driver user)
         {
             await _unitOfWork.DriverRepository.AddAsync(user);
-            return await _unitOfWork.SaveChangeAsync() >0;
+            return await _unitOfWork.SaveChangesAsync() >0;
         }
 
         public bool Remove(Guid entityId)
@@ -71,7 +71,7 @@ namespace Application.Services
             var newDriver = _mapper.Map<Driver>(driver);
 
             await _unitOfWork.DriverRepository.AddAsync(newDriver);
-            return await _unitOfWork.SaveChangeAsync() > 0;
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
         public async Task<int> GetCountAsync()

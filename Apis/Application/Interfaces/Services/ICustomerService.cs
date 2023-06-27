@@ -1,7 +1,7 @@
 ﻿using Application.Commons;
+using Application.ViewModels.FilterModels;
 using Application.ViewModels;
 using Application.ViewModels.Customer;
-using Application.ViewModels.FilterModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 
