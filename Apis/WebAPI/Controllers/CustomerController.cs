@@ -76,16 +76,22 @@ namespace WebAPI.Controllers
             }
             else
             {
-                var user = new UserLoginDTO()
-                {
-                    Email = entity.LoginEmail,
-                    Password = entity.OldPassword
-                };
-                if (await _userService.LoginAsync(user) != null)
-                    result = await _customerService.UpdateAsync(id, entity);
-                else return BadRequest();
+                //var user = new UserLoginDTO()
+                //{
+                //    Email = entity.LoginEmail,
+                //    Password = entity.OldPassword
+                //};
+                //if (await _userService.LoginAsync(user) != null)
+                //    result = await _customerService.UpdateAsync(id, entity);
+                //else
+                //{
+                    return BadRequest();
+                //}
             }
-            return result ? Ok() : BadRequest();
+            return result ? Ok(new
+            {
+                message = "Update Successfully"
+            }) : BadRequest();
         }
         [HttpGet("{id:guid}")]
         [Authorize]

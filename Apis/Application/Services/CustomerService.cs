@@ -60,7 +60,16 @@ namespace Application.Services
         public async Task<bool> UpdateAsync(Guid id, CustomerRequestUpdateDTO entity)
         {
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(id);
-            if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
+            if (customer.Email != entity.Email)
+            {
+                if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
+            }
+
+            if (entity.FullName == null) entity.FullName = customer.FullName;
+            if (entity.Email == null) entity.Email = customer.Email;
+            if (entity.Address == null) entity.Address = customer.Address;
+            if (entity.PhoneNumber == null) entity.PhoneNumber = customer.PhoneNumber;
+
             customer = _mapper.Map(entity, customer);
             _unitOfWork.CustomerRepository.Update(customer);
             return await _unitOfWork.SaveChangeAsync() > 0;
@@ -101,10 +110,10 @@ namespace Application.Services
         public async Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer,int pageIndex,int pageSize)
         {
             var query = _unitOfWork.CustomerRepository.GetFilter(customer);
-            var customers=  query.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+            var customers=  query.Where(c => c.IsDeleted == false).Skip(pageIndex*pageSize).Take(pageSize).ToList();
             var pagination = new Pagination<Customer>()
             {
-                TotalItemsCount = query.Count(),
+                TotalItemsCount = query.Where(c => c.IsDeleted == false).Count(),
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 Items = customers,

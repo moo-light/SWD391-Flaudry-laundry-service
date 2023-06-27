@@ -5,17 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.ViewModels.Customer
+namespace Application.ViewModels.Drivers
 {
-    public class CustomerRequestDTO
+    public class DriverRequestDTO
     {
-        [StringLength(int.MaxValue,MinimumLength = 5)]
+        [StringLength(int.MaxValue, MinimumLength = 5)]
         public string? FullName { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
         [Phone]
         public string? PhoneNumber { get; set; }
-        [StringLength(int.MaxValue, MinimumLength = 5)]
-        public string? Address { get; set; }
     }
 }

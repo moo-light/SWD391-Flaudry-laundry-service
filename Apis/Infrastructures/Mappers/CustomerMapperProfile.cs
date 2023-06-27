@@ -16,13 +16,14 @@ namespace Infrastructures.Mappers
                 .ReverseMap();
             CreateMap<CustomerRequestDTO, Customer>().ReverseMap();
             CreateMap<CustomerRequestUpdateDTO, Customer>()
-                     .ForMember(dest => dest.PasswordHash,
-                                 opt =>
-                                 {
-                                     opt.PreCondition(x => x.NewPassword != null);//if(newpassword is null) then dont map
-                                     opt.MapFrom(x => x.NewPassword.Hash());
-                                 }
-                                 ).ReverseMap();
+                     //.ForMember(dest => dest.PasswordHash,
+                     //            opt =>
+                     //            {
+                     //                opt.PreCondition(x => x.NewPassword != null);//if(newpassword is null) then dont map
+                     //                opt.MapFrom(x => x.NewPassword.Hash());
+                     //            }
+                     //            )
+                     .ReverseMap();
             CreateMap<CustomerResponseDTO, Customer>()
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.CustomerId))
                 .ReverseMap();

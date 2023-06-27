@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var result = await _batchService.GetAllAsync();
-            return result.Count() >= 0 ? Ok() : BadRequest();
+            return result.Count() >= 0 ? Ok(result) : NotFound();
         }
         [HttpGet("{entityId:guid}")]
         [Authorize(Roles = "Driver,Customer,Admin")]

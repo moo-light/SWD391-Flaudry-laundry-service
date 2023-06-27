@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.ViewModels.Customer
+namespace Application.ViewModels.Drivers
 {
-    public class CustomerRequestUpdateDTO :CustomerRequestDTO
+    public class DriverRequestUpdateDTO : DriverRequestDTO
     {
         //[AllowNull]
         //public string? OldPassword { get; set; }
-        //[AllowNull]
+        //[Required]
         //public string LoginEmail { get; set; } // uses for user Login check old password
         //[AllowNull]
         //public string? NewPassword { get; set; }
