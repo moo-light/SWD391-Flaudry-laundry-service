@@ -30,7 +30,10 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> AddAsync(LaundryOrderRequestDTO entity)
         {
             var result = await _orderService.AddAsync(entity);
-            return result ? Ok() : BadRequest();
+            return result ? Ok(new
+            {
+                message = "Add Successfully"
+            }) : BadRequest();
         }
         [HttpPut("{id:guid}")]
 
@@ -39,14 +42,17 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateAsync(Guid id,LaundryOrderRequestDTO entity)
         {
             var result = await _orderService.UpdateAsync(id,entity);
-            return result ? Ok() : BadRequest();
+            return result ? Ok(new
+            {
+                message = "Update Successfully"
+            }) : BadRequest();
         }
         [HttpGet("{entityId:guid}")]
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> GetByIDAsync(Guid entityId)
         {
             var result = await _orderService.GetByIdAsync(entityId);
-            return result != null ? Ok(result) : BadRequest(result);
+            return result != null ? Ok(result) : NotFound();
         }
 
         [HttpDelete("{entityId:guid}")]
@@ -54,7 +60,10 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteAsync(Guid entityId)
         {
             var result = await _orderService.RemoveAsync(entityId);
-            return result ? Ok() : NoContent();
+            return result ? Ok(new
+            {
+                message = "Delete Successfully"
+            }) : NoContent();
         }
         [HttpGet("{pageIndex?}/{pageSize?}")]
         [Authorize(Roles = "Admin")]
@@ -68,7 +77,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetCount()
         {
             var result = await _orderService.GetCountAsync();
-            return result > 0 ? Ok(result) : BadRequest();
+            return result > 0 ? Ok(result) : NotFound();
         }
 
         [HttpPost("{pageIndex?}/{pageSize?}")]

@@ -1,4 +1,4 @@
-﻿using Application.ViewModels.Batch;
+﻿using Application.ViewModels.Batchs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.Drivers
 {
-    public class DriverResponseDTO
+    public class DriverResponseDTO : DriverRequestDTO
     {
+        public Guid? DriverId { get; set; }
         public ICollection<BatchResponseDTO> BatchResponses { get; set; }
     }
 }

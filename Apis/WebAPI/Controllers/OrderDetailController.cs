@@ -22,14 +22,20 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Add(OrderDetailRequestDTO entity)
         {
             var result = await _orderDetailService.AddAsync(entity);
-            return result ? Ok() : BadRequest();
+            return result ? Ok(new
+            {
+                message = "Add successfully"
+            }) : BadRequest();
         }
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> UpdateAsync(Guid id, OrderDetailRequestDTO entity)
         {
             var result = await _orderDetailService.UpdateAsync(id, entity);
-            return result ? Ok(result) : NotFound();
+            return result ? Ok(new
+            {
+                message = "Update Successfully"
+            }) : NotFound();
         }
         [HttpDelete("{entityId:guid}")]
         [Authorize(Roles = "Customer,Admin")]
@@ -43,7 +49,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetByIDAsync(Guid entityId)
         {
             var result = await _orderDetailService.GetByIdAsync(entityId);
-            return (result != null ? Ok() : NotFound());
+            return (result != null ? Ok(result) : NotFound());
         }
         [HttpGet]
         [Authorize(Roles ="Customer,Admin")]

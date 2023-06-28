@@ -12,6 +12,9 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
+using Application.ViewModels.Batchs;
+using Application.ViewModels.Customer;
+using Application.ViewModels.Buildings;
 
 namespace Application.Services
 {
@@ -28,7 +31,7 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(Batch batchDTO)
+        public async Task<bool> AddAsync(BatchRequestDTO batchDTO)
         {
             if (_claimsService.GetCurrentUserId == Guid.Empty) throw new AuthenticationException("User not login");
             var batchId = Guid.NewGuid();
@@ -40,29 +43,20 @@ namespace Application.Services
             await _unitOfWork.BatchRepository.AddAsync(batch);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
-        public async Task<IEnumerable<Batch>> GetAllAsync() => await _unitOfWork.BatchRepository.GetAllAsync();
+        public async Task<IEnumerable<BatchResponseDTO>> GetAllAsync()
+        {
+            var batch = _unitOfWork.BatchRepository.GetAllAsync().ToString();
+            return _mapper.Map<List<BatchResponseDTO>>(batch);
+        }
 
         public async Task<Batch?> GetByIdAsync(Guid entityId) => await _unitOfWork.BatchRepository.GetByIdAsync(entityId);
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
 
-        public async Task<Pagination<Batch>> GetBatchListPagi(int pageIndex, int pageSize)
+        public async Task<Pagination<BatchResponseDTO>> GetBatchListPagi(int pageIndex = 0, int pageSize = 1)
         {
             var batchs = await _unitOfWork.BatchRepository.ToPagination(pageIndex, pageSize);
-            var batchListPagination = new Pagination<Batch>
-            {
-                PageIndex = batchs.PageIndex,
-                PageSize = batchs.PageSize,
-                TotalItemsCount = batchs.TotalItemsCount,
-                Items = batchs.Items.Select(b => new Batch
-                {
-                    Id = b.Id,
-                    Type = b.Type,
-                    Status = b.Status,
-                    Driver = b.Driver,
-                }).ToList(),
-            };
-            return batchListPagination;
+            return _mapper.Map<Pagination<BatchResponseDTO>>(batchs);
         }
 
         public async Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel entity)
@@ -76,15 +70,35 @@ namespace Application.Services
            _unitOfWork.BatchRepository.SoftRemoveByID(entityId);
             return _unitOfWork.SaveChange() > 0; 
         }
+        public async Task<bool> Update(Guid id, BatchRequestDTO entity)
+        {
+            var customer = await _unitOfWork.BatchRepository.GetByIdAsync(id);
+            //if (customer.Email != entity.Email)
+            //{
+            //    if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
+            //}
 
-        public bool Update(Batch entity)
-        {
-            _unitOfWork.BatchRepository.Update(entity);
-            return _unitOfWork.SaveChange() > 0;
+            //if (entity.FullName == null) entity.FullName = customer.FullName;
+            //if (entity.Email == null) entity.Email = customer.Email;
+            //if (entity.Address == null) entity.Address = customer.Address;
+            //if (entity.PhoneNumber == null) entity.PhoneNumber = customer.PhoneNumber;
+
+            customer = _mapper.Map(entity, customer);
+            _unitOfWork.BatchRepository.Update(customer);
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
-        Task<IEnumerable<Batch>> IBatchService.GetBatchListPagi(int pageIndex, int pageSize)
+        public async Task<Pagination<BatchResponseDTO>> GetFilterAsync(BatchFilteringModel batch, int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            var query = _unitOfWork.BatchRepository.GetFilter(batch);
+            var batchs = query.Where(c => c.IsDeleted == false).Skip(pageIndex * pageSize).Take(pageSize).ToList();
+            var pagination = new Pagination<Batch>()
+            {
+                TotalItemsCount = query.Where(c => c.IsDeleted == false).Count(),
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Items = batchs
+            };
+            return _mapper.Map<Pagination<BatchResponseDTO>>(pagination);
         }
     }
 }
