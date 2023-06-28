@@ -33,14 +33,12 @@ namespace Application.Services
 
         public async Task<bool> AddAsync(BatchRequestDTO batchDTO)
         {
-            if (_claimsService.GetCurrentUserId == Guid.Empty) throw new AuthenticationException("User not login");
-            var batchId = Guid.NewGuid();
-            Guid driverId = _claimsService.GetCurrentUserId;
-            var batch = _mapper.Map<Batch>(batchDTO);
-            batch.Id = batchId;
-            batch.DriverId = driverId;
+            var newBuilding = _mapper.Map<Batch>(batchDTO);
+            if (newBuilding == null) return false;
+            //await _unitOfWork.BuildingRepository.AddAsync(newBuilding);
+            //return await _unitOfWork.SaveChangesAsync() > 0;
 
-            await _unitOfWork.BatchRepository.AddAsync(batch);
+            await _unitOfWork.BatchRepository.AddAsync(newBuilding);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
         public async Task<IEnumerable<BatchResponseDTO>> GetAllAsync()
