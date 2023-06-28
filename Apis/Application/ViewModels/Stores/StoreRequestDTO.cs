@@ -10,8 +10,10 @@ namespace Application.ViewModels.Stores
     public class StoreRequestDTO
     {
         [Required]
-        public string? Name { get; set; }
+        public string? StoreName { get; set; }
         [Required]
-        public string? Address { get; set; }
+        public string? StoreAddress { get; set; }
+        //[Required]
+        //public decimal? Price { get; set; } 
     }
 }

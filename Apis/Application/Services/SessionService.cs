@@ -25,10 +25,10 @@ namespace Application.Services
             return _mapper.Map<Pagination<SessionResponseDTO>>(stores);
         }
 
-        public async Task<Session?> GetByIdAsync(Guid entityId) => await _unitOfWork.SessionRepository.GetByIdAsync(entityId);
+        public async Task<BatchOfBuilding?> GetByIdAsync(Guid entityId) => await _unitOfWork.SessionRepository.GetByIdAsync(entityId);
         public async Task<bool> AddAsync(SessionRequestDTO timeSlot)
         {
-            Session newTimeSlot = _mapper.Map<Session>(timeSlot);
+            BatchOfBuilding newTimeSlot = _mapper.Map<BatchOfBuilding>(timeSlot);
             await _unitOfWork.SessionRepository.AddAsync(newTimeSlot);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
@@ -50,7 +50,7 @@ namespace Application.Services
 
         public async Task<Pagination<SessionResponseDTO>> GetFilterAsync(SessionFilteringModel entity, int pageIndex, int pageSize)
         {
-            IEnumerable<Session> sessions = _unitOfWork.SessionRepository.GetFilter(entity);
+            IEnumerable<BatchOfBuilding> sessions = _unitOfWork.SessionRepository.GetFilter(entity);
             var pagination = _unitOfWork.SessionRepository.ToPagination(sessions, pageIndex, pageSize);
             return _mapper.Map<Pagination<SessionResponseDTO>>(pagination);
         }
@@ -60,7 +60,7 @@ namespace Application.Services
             return await _unitOfWork.SessionRepository.GetCountAsync();
         }
 
-        public Task<Pagination<Session>> GetCustomerListPagi(int pageIndex, int pageSize)
+        public Task<Pagination<BatchOfBuilding>> GetCustomerListPagi(int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
         }

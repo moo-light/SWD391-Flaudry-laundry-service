@@ -13,7 +13,7 @@ using Application.ViewModels.Sessions;
 
 namespace WebAPI.Controllers
 {
-    public class SessionController : BaseController, IWebController<Session>
+    public class SessionController : BaseController, IWebController<BatchOfBuilding>
     {
         private readonly ISessionService _sessionService;
 

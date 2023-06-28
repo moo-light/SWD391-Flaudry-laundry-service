@@ -4,8 +4,8 @@ using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface ISessionRepository : IGenericRepository<Session>
+    public interface ISessionRepository : IGenericRepository<BatchOfBuilding>
     {
-        IEnumerable<Session> GetFilter(SessionFilteringModel entity);
+        IEnumerable<BatchOfBuilding> GetFilter(SessionFilteringModel entity);
     }
 }

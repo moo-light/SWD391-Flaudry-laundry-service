@@ -10,8 +10,8 @@ namespace Infrastructures.Mappers
         public SessionMapperProfile()
         {
 
-            CreateMap<SessionRequestDTO, Session>().ReverseMap();
-            CreateMap<SessionResponseDTO, Session>()
+            CreateMap<SessionRequestDTO, BatchOfBuilding>().ReverseMap();
+            CreateMap<SessionResponseDTO, BatchOfBuilding>()
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.SessionId))
                 .ReverseMap();
         }
