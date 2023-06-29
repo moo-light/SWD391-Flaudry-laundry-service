@@ -13,8 +13,8 @@ namespace Application.ViewModels.Batchs
     {
         public Guid? BatchId { get; set; }
         //public Driver? Driver { get; set; }
-        public ICollection<SessionResponseDTO> sessionResponses { get; set; } = null;
-        public ICollection<OrderInBatchResponseDTO> orderInBatchResponses { get; set; } = null;
+        public ICollection<SessionResponseDTO> sessionResponses { get; set; }
+        public ICollection<OrderInBatchResponseDTO> orderInBatchResponses { get; set; }
 
     }
 }
