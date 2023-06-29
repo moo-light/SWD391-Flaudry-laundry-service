@@ -39,7 +39,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<BuildingResponseDTO>> GetAllAsync()
         {
-            var o = _unitOfWork.CustomerRepository.GetAllAsync().ToString();
+            var o = _unitOfWork.BuildingRepository.GetAllAsync(x=>x.Orders,x=>x.BatchOfBuildings).ToString();
             return _mapper.Map<List<BuildingResponseDTO>>(o);
         }
 
@@ -52,7 +52,7 @@ namespace Application.Services
 
         public async Task<Pagination<BuildingResponseDTO>> GetCustomerListPagi(int pageIndex, int pageSize)
         {
-            var building = await _unitOfWork.BuildingRepository.ToPagination(pageIndex, pageSize);
+            var building = await _unitOfWork.BuildingRepository.ToPagination(pageIndex, pageSize, x => x.Orders, x => x.BatchOfBuildings);
             return _mapper.Map<Pagination<BuildingResponseDTO>>(building);
         }
 

@@ -1,5 +1,5 @@
 ﻿using Application.ViewModels.OrderInBatch;
-using Application.ViewModels.Sessions;
+using Application.ViewModels.BatchOfBuildings;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,8 +13,7 @@ namespace Application.ViewModels.Batchs
     {
         public Guid? BatchId { get; set; }
         //public Driver? Driver { get; set; }
-        public ICollection<SessionResponseDTO> sessionResponses { get; set; }
-        public ICollection<OrderInBatchResponseDTO> orderInBatchResponses { get; set; }
+        public ICollection<OrderInBatchResponseDTO> orderInBatchResponses { get; set; } = null;
 
     }
 }

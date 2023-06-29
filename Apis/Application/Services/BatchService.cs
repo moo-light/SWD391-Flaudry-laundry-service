@@ -52,7 +52,7 @@ namespace Application.Services
         }
         public async Task<IEnumerable<BatchResponseDTO>> GetAllAsync()
         {
-            var batch = _unitOfWork.BatchRepository.GetAllAsync().ToString();
+            var batch = _unitOfWork.BatchRepository.GetAllAsync(x=>x.OrderInBatches,x=>x.BatchOfBuildings,x=>x.Driver).ToString();
             return _mapper.Map<List<BatchResponseDTO>>(batch);
         }
 
@@ -62,7 +62,11 @@ namespace Application.Services
 
         public async Task<Pagination<BatchResponseDTO>> GetBatchListPagi(int pageIndex = 0, int pageSize = 1)
         {
-            var batchs = await _unitOfWork.BatchRepository.ToPagination(pageIndex, pageSize);
+            var batchs = await _unitOfWork.BatchRepository.ToPagination(pageIndex,
+                                                                        pageSize,
+                                                                        x => x.OrderInBatches,
+                                                                        x => x.BatchOfBuildings,
+                                                                        x => x.Driver);
             return _mapper.Map<Pagination<BatchResponseDTO>>(batchs);
         }
 

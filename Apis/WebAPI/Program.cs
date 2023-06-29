@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Infrastructures.Mappers;
+using Hangfire;
+using WebAPI.Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +40,7 @@ builder.Services.AddSwaggerGen(opt =>
         BearerFormat = "JWT",
         Scheme = "bearer",
     });
-
+    opt.OperationFilter<AuthorizeOperationFilter>();
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
@@ -88,14 +90,18 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapHealthChecks("/healthchecks");
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization();
 // todo authentication
 app.UseAuthorization();
-
+app.MapHangfireDashboard("/dashboard");
 app.MapControllers();
+await app.StartAsync();
+RecurringJob.AddOrUpdate<HangFireService>(util => util.AddBatchesForThisSession(),
+    "0 5,11,17 * * *", TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"));
+await app.WaitForShutdownAsync();
 
 app.Run();
 
 // this line tell intergrasion test
 // https://stackoverflow.com/questions/69991983/deps-file-missing-for-dotnet-6-integration-tests
-public partial class Program { }
+public partial class Program {
+}

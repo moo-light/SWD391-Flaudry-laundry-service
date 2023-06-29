@@ -47,7 +47,7 @@ namespace Application.Services
 
         public async Task<Pagination<PaymentResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
         {
-            var payments = await _unitOfWork.PaymentRepository.ToPagination(pageIndex, pageSize);
+            var payments = await _unitOfWork.PaymentRepository.ToPagination(pageIndex, pageSize,x=>x.Order);
             return _mapper.Map<Pagination<PaymentResponseDTO>>(payments);
         }
 

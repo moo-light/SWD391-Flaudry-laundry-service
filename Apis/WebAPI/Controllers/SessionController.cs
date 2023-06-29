@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.FilterModels;
-using Application.ViewModels.Sessions;
+using Application.ViewModels.BatchOfBuildings;
 
 namespace WebAPI.Controllers
 {
-    public class SessionController : BaseController, IWebController<Session>
+    public class SessionController : BaseController, IWebController<BatchOfBuilding>
     {
         private readonly ISessionService _sessionService;
 
@@ -23,7 +23,7 @@ namespace WebAPI.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddAsync(SessionRequestDTO entity)
+        public async Task<IActionResult> AddAsync(BatchOfBuildingRequestDTO entity)
         {
             var result = await _sessionService.AddAsync(entity);
             return result ? Ok() : BadRequest();
@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
 
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateAsync(Guid id, SessionRequestDTO entity)
+        public async Task<IActionResult> UpdateAsync(Guid id, BatchOfBuildingRequestDTO entity)
         {
             var result = await _sessionService.UpdateAsync(id, entity);
             return result ? Ok() : NotFound();

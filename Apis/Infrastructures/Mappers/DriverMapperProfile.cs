@@ -20,7 +20,8 @@ namespace Infrastructures.Mappers
             CreateMap<DriverRegisterDTO, Driver>()
                 .ForMember(dest => dest.PasswordHash, src => src.MapFrom(x => x.Password.Hash()))
                 .ReverseMap();
-            CreateMap<DriverRequestDTO, Driver>().ReverseMap();
+            CreateMap<DriverRequestDTO, Driver>()
+                .ReverseMap();
             CreateMap<DriverRequestUpdateDTO, Driver>()
                      //.ForMember(dest => dest.PasswordHash,
                      //            opt =>
@@ -31,6 +32,7 @@ namespace Infrastructures.Mappers
                      //            )
                      .ReverseMap();
             CreateMap<DriverResponseDTO, Driver>()
+                .ForMember(dest => dest.Batches, src => src.MapFrom(x => x.BatchResponses))
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.DriverId))
                 .ReverseMap();
         }

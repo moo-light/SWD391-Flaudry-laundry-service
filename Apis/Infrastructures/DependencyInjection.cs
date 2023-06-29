@@ -4,6 +4,7 @@ using Application.Interfaces.Services;
 using Application.Services;
 using Application.Utils;
 using AutoMapper;
+using Hangfire;
 using Infrastructures.Mappers;
 using Infrastructures.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,7 @@ namespace Infrastructures
 
             //   services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IUserService, UserService>();
+            //
 
             services.AddSingleton<ICurrentTime, CurrentTime>();
 
@@ -80,6 +82,13 @@ namespace Infrastructures
                 typeof(StoreMapperProfile),
             };
             services.AddAutoMapper(mapperTypes);
+
+            services.AddHangfire(config => config
+                 .UseSimpleAssemblyNameTypeSerializer()
+                 .UseRecommendedSerializerSettings()
+                 .UseSqlServerStorage(databaseConnection)
+
+                  ); 
 
             return services;
         }

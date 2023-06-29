@@ -21,7 +21,7 @@ namespace Application.Services
 
         public async Task<Pagination<ServiceResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
         {
-            var services = await _unitOfWork.ServiceRepository.ToPagination(pageIndex, pageSize);
+            var services = await _unitOfWork.ServiceRepository.ToPagination(pageIndex, pageSize, x=>x.Store,x=>x.OrderDetails);
             return _mapper.Map<Pagination<ServiceResponseDTO>>(services);
         }
         public async Task<Service?> GetByIdAsync(Guid entityId) => await _unitOfWork.ServiceRepository.GetByIdAsync(entityId);

@@ -1,5 +1,6 @@
-﻿using Application.ViewModels.LaundryOrders;
-using Application.ViewModels.Sessions;
+﻿using Application.ViewModels.BatchOfBuildings;
+using Application.ViewModels.LaundryOrders;
+using Application.ViewModels.BatchOfBuildings;
 using AutoMapper;
 using Domain.Entities;
 
@@ -10,9 +11,9 @@ namespace Infrastructures.Mappers
         public SessionMapperProfile()
         {
 
-            CreateMap<SessionRequestDTO, Session>().ReverseMap();
-            CreateMap<SessionResponseDTO, Session>()
-                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.SessionId))
+            CreateMap<BatchOfBuildingRequestDTO, BatchOfBuilding>().ReverseMap();
+            CreateMap<BatchOfBuildingResponseDTO, BatchOfBuilding>()
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.BatchOfBuildingId))
                 .ReverseMap();
         }
     }

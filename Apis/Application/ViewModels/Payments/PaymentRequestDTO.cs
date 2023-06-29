@@ -5,6 +5,7 @@ namespace Application.ViewModels.Payments
 {
     public class PaymentRequestDTO
     {
+        public Guid?  OrderId { get; set; }
         public decimal? Amount { get; set; }
         [EnumDataType(typeof(PaymentMethodEnum))]
         public string? PaymentMethod { get; set; }

@@ -7,6 +7,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructures.Repositories
 {
@@ -29,7 +30,8 @@ namespace Infrastructures.Repositories
             Expression<Func<LaundryOrder, bool>> note = x => entity.Note.IsNullOrEmpty() || entity.Note.Any(y => !x.Note.IsNullOrEmpty() && x.Note.Contains(y));
             Expression<Func<LaundryOrder, bool>> date = x => x.CreationDate.IsInDateTime(entity);
             var predicates = ExpressionUtils.CreateListOfExpression(customerId,buildingId,storeId,note,date);
-            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
+            var seed =  Includes(_dbSet.AsNoTracking(), x => x.Building, x => x.OrderDetails, x => x.OrderInBatches, x => x.Customer, x => x.Store, x => x.Payments);
+            var result = predicates.Aggregate(seed.AsEnumerable(), (a, b) => a.Where(b.Compile()));
             return result.AsEnumerable();
         }
 

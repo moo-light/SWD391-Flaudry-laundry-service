@@ -1,4 +1,5 @@
-﻿using Application.ViewModels.Sessions;
+﻿using Domain.CustomValidations;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,8 +12,11 @@ namespace Application.ViewModels.Batchs
 {
     public class BatchRequestDTO
     {
+        //public Guid? DriverId { get; set; }
+        [EnumValidation(typeof(BatchType))]
         public string? Type { get; set; }
-        public ICollection<SessionRequestDTO> sessions { get; set; }
-
+        [EnumValidation(typeof(BatchStatus))]
+        public string? Status { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

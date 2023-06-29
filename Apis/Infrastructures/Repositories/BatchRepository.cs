@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructures.Repositories
 {
@@ -31,7 +32,8 @@ namespace Infrastructures.Repositories
 
             var predicates = ExpressionUtils.CreateListOfExpression(driverId, status, type, dateFilter);
 
-            var result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
+            var seed = _dbSet.Include(x=>x.Driver).Include(x=>x.BatchOfBuildings).Include(x=>x.OrderInBatches).Include(x=>x.Driver).AsNoTracking();
+            var result = predicates.Aggregate(seed.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result;  
         }

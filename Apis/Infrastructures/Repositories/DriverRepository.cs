@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructures.Repositories
 {
@@ -30,8 +31,9 @@ namespace Infrastructures.Repositories
             Expression<Func<Driver, bool>> date = x => x.CreationDate.IsInDateTime(entity);
 
             var predicates = ExpressionUtils.CreateListOfExpression( email, phoneNumber, fullName,date);
+            IQueryable<Driver> seed = Includes(_dbSet.AsNoTracking(), x => x.Batches);
 
-            IEnumerable<Driver> result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
+            IEnumerable<Driver> result = predicates.Aggregate(seed.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
             return result.ToList();
         }

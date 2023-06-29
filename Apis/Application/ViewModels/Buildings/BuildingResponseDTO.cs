@@ -1,5 +1,5 @@
 ﻿using Application.ViewModels.LaundryOrders;
-using Application.ViewModels.Sessions;
+using Application.ViewModels.BatchOfBuildings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Application.ViewModels.Buildings
     public class BuildingResponseDTO : BuildingRequestDTO
     {
         public Guid? BuildingId { get; set; }
-        public ICollection<SessionResponseDTO> Sessions { get; set; } = null;
+        public ICollection<BatchOfBuildingResponseDTO> BatchOfBuildings { get; set; } = null;
         public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = null;
     }
 }
