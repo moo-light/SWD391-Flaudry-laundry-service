@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.ViewModels.Sessions
+namespace Application.ViewModels.BatchOfBuildings
 {
-    public class SessionResponseDTO : SessionRequestDTO
+    public class BatchOfBuildingResponseDTO : BatchOfBuildingRequestDTO
     {
-        public Guid? SessionId { get; set; }
+        public Guid? BatchOfBuildingId { get; set; }
       
     }
 }

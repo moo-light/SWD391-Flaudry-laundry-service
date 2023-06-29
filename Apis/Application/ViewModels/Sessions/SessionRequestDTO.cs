@@ -1,8 +1,12 @@
-﻿namespace Application.ViewModels.Sessions
+﻿using Domain.Entities;
+
+namespace Application.ViewModels.Sessions
 {
-    public class SessionRequestDTO
+    public class BatchOfBuildingRequestDTO
     {
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public Guid? BatchId { get; set; }
+        public Guid? BuildingId { get; set; }
+        public virtual Batch? Batch { get; set; }
+        public virtual Building? Building { get; set; }
     }
 }

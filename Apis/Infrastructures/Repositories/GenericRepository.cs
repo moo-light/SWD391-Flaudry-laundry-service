@@ -35,9 +35,12 @@ namespace Infrastructures.Repositories
                (entity, property) => entity.Include(property))
            .Where(x => x.IsDeleted == false)
            .CountAsync();
-        public async Task<TEntity?> GetByIdAsync(Guid id)
+        public async Task<TEntity?> GetByIdAsync(Guid id, params Expression<Func<TEntity, object>>[] includes)
         {
-            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            var result = await includes
+           .Aggregate(_dbSet.AsQueryable(),
+               (entity, property) => entity.Include(property))
+           .Where(x => x.IsDeleted == false).FirstOrDefaultAsync(x => x.Id == id);
             // todo should throw exception when not found
             return result;
         }
@@ -93,12 +96,17 @@ namespace Infrastructures.Repositories
             return true;
         }
 
-        public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10)
+        public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10, params Expression<Func<TEntity, object>>[] includes)
         {
-            return ToPagination(_dbSet, pageIndex, pageSize);
+            IQueryable<TEntity> list = includes.Aggregate(_dbSet.AsNoTracking(), (entity, property) => entity.Include(property));
+            return ToPagination(list, pageIndex, pageSize);
         }
-        public Pagination<TEntity> ToPagination(IEnumerable<TEntity> list, int pageIndex = 0, int pageSize = 10)
+        public Pagination<TEntity> ToPagination(IEnumerable<TEntity> list, int pageIndex = 0, int pageSize = 10, params Expression<Func<TEntity, object>>[] includes)
         {
+            if(list is IQueryable<TEntity> query)
+            {
+                list = includes.Aggregate(query, (entity, property) => entity.Include(property));
+            }
             var result = new Pagination<TEntity>
             {
                 PageIndex = pageIndex,
@@ -120,6 +128,9 @@ namespace Infrastructures.Repositories
             return true;    
         }
 
-      
+        public IQueryable<TEntity> Includes(IQueryable<TEntity> entities,params Expression<Func<TEntity, object>>[] includes)
+        {
+            return includes.Aggregate(entities, (entity, property) => entity.Include(property));
+        }
     }
 }

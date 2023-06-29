@@ -51,7 +51,14 @@ namespace Application.Services
 
         public async Task<Pagination<LaundryOrderResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
         {
-            var orders = await _unitOfWork.OrderRepository.ToPagination(pageIndex, pageSize);
+            var orders = await _unitOfWork.OrderRepository.ToPagination(pageIndex,
+                                                                        pageSize,
+                                                                        x => x.OrderInBatches,
+                                                                        x => x.OrderDetails,
+                                                                        x => x.Payments,
+                                                                        x => x.Customer,
+                                                                        x => x.Store,
+                                                                        x => x.Building);
             return _mapper.Map<Pagination<LaundryOrderResponseDTO>>(orders);
         }
 

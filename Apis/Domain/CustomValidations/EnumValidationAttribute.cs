@@ -15,7 +15,7 @@ namespace Domain.CustomValidations
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value != null && !Enum.IsDefined(_enumType, value))
+            if (!Enum.IsDefined(_enumType, value))
             {
                 var enumValues = Enum.GetValues(_enumType);
                 var allowedValues = string.Join(", ", enumValues.Cast<object>());

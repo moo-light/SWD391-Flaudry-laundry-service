@@ -32,7 +32,7 @@ namespace Application.Services
 
         public async Task<IEnumerable<DriverResponseDTO>> GetAllAsync()
         {
-            List<Driver> drivers = await _unitOfWork.DriverRepository.GetAllAsync();
+            List<Driver> drivers = await _unitOfWork.DriverRepository.GetAllAsync(x=>x.Batches);
             return _mapper.Map<List<DriverResponseDTO>>(drivers);
         }
 

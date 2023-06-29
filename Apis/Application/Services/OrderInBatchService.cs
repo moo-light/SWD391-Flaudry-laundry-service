@@ -36,7 +36,7 @@ namespace Application.Services
 
         public async Task<Pagination<OrderInBatchResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
         {
-            var ordersInBatch = await _unitOfWork.OrderInBatchRepository.ToPagination(pageIndex, pageSize);
+            var ordersInBatch = await _unitOfWork.OrderInBatchRepository.ToPagination(pageIndex, pageSize, x => x.Order, x => x.Batch);
             return _mapper.Map<Pagination<OrderInBatchResponseDTO>>(ordersInBatch);
         }
 

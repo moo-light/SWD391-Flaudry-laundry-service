@@ -32,7 +32,7 @@ namespace Application.Services
         }
         public async Task<IEnumerable<CustomerResponseDTO>> GetAllAsync()
         {
-            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync();
+            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync(x=>x.Feedbacks,x=>x.Orders);
             return _mapper.Map<List<CustomerResponseDTO>>(customers);
         }
 

@@ -22,7 +22,7 @@ namespace Application.Services
 
         public async Task<Pagination<StoreResponseDTO>> GetAllAsync(int pageindex, int pageSize)
         {
-            var stores =  await _unitOfWork.StoreRepository.ToPagination(pageindex,pageSize);
+            var stores =  await _unitOfWork.StoreRepository.ToPagination(pageindex,pageSize,x=>x.Feedbacks,x=>x.Services,x=>x.Orders);
             return _mapper.Map<Pagination<StoreResponseDTO>>(stores);
         }
 

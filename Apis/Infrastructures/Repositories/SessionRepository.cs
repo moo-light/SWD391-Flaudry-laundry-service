@@ -6,6 +6,7 @@ using Application.ViewModels;
 using Domain.Entities;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructures.Repositories
 {
@@ -31,6 +32,7 @@ namespace Infrastructures.Repositories
             Expression<Func<BatchOfBuilding, bool>> date = x => x.CreationDate.IsInDateTime(entity);
 
             var predicates = ExpressionUtils.CreateListOfExpression(batchId, buildingId, date);
+            var seed = Includes(_dbSet.AsNoTracking(), x => x.Building, x => x.Batch);
 
             result = predicates.Aggregate(_dbSet.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 

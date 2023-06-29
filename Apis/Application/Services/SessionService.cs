@@ -21,7 +21,7 @@ namespace Application.Services
 
         public async Task<Pagination<SessionResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
         {
-            var stores = await _unitOfWork.StoreRepository.ToPagination(pageIndex, pageSize);
+            var stores = await _unitOfWork.StoreRepository.ToPagination(pageIndex, pageSize,x=>x.Feedbacks,x=>x.Orders,x=>x.Services);
             return _mapper.Map<Pagination<SessionResponseDTO>>(stores);
         }
 

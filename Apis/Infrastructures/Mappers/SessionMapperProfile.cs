@@ -12,7 +12,7 @@ namespace Infrastructures.Mappers
 
             CreateMap<SessionRequestDTO, BatchOfBuilding>().ReverseMap();
             CreateMap<SessionResponseDTO, BatchOfBuilding>()
-                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.SessionId))
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.BatchOfBuildingId))
                 .ReverseMap();
         }
     }
