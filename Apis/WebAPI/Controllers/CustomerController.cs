@@ -18,11 +18,13 @@ namespace WebAPI.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IBaseUserService _userService;
+        private readonly IClaimsService _claimService;
 
-        public CustomerController(ICustomerService customerService, IBaseUserService userService)
+        public CustomerController(ICustomerService customerService, IBaseUserService userService, IClaimsService claimService)
         {
             _customerService = customerService;
             _userService = userService;
+            _claimService = claimService;
         }
 
         [HttpPost]
@@ -67,26 +69,24 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> Update(Guid id, CustomerRequestUpdateDTO entity)
         {
-            var exist = await ExistCustomer(id);
-            if (!exist) return NotFound();
-            bool result;
-            if (HttpContext.User.Claims.Any(x => x.Type.Contains("role") && x.Value.Equals("Admin",StringComparison.OrdinalIgnoreCase)))
+            bool result = false;
+            var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+            if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
                 result = await _customerService.UpdateAsync(id, entity);
             }
-            else
+            else if (role.Value.Equals("Customer", StringComparison.OrdinalIgnoreCase))
             {
-                //var user = new UserLoginDTO()
-                //{
-                //    Email = entity.LoginEmail,
-                //    Password = entity.OldPassword
-                //};
-                //if (await _userService.LoginAsync(user) != null)
-                //    result = await _customerService.UpdateAsync(id, entity);
-                //else
-                //{
-                    return BadRequest();
-                //}
+                if (id == Guid.Empty) id = _claimService.GetCurrentUserId;
+                var currentCustomer = await _customerService.GetByIdAsync(id);
+                if (currentCustomer == null) return BadRequest();
+                if (currentCustomer.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                {
+                    Message = "Can't update other user profile"
+                });
+
+
+                result = await _customerService.UpdateAsync(id, entity);
             }
             return result ? Ok(new
             {
@@ -100,14 +100,27 @@ namespace WebAPI.Controllers
             var result = await _customerService.GetByIdAsync(id);
             return result != null ? Ok(result) : NotFound();
         }
-       
+
         [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var exist = await ExistCustomer(id);
-            if (!exist) return NotFound();
-            var result = await _customerService.RemoveAsync(id);
+            var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+            var result = false;
+            if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                result = await _customerService.RemoveAsync(id);
+            }
+            else if (role.Value.Equals("Customer", StringComparison.OrdinalIgnoreCase))
+            {
+                var currentCustomer = await _customerService.GetByIdAsync(id);
+                if (currentCustomer == null) return BadRequest();
+                if (currentCustomer.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                {
+                    Message = "Can't delete other user"
+                });
+                result = await _customerService.RemoveAsync(id);
+            }
             return result ? Ok() : BadRequest();
         }
         [HttpGet]
