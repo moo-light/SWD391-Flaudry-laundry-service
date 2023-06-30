@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
             {
                 return Forbid("Change password is forbidden");
             }
-            return result? Accepted() : BadRequest();
+            return result? Ok() : BadRequest();
         }
         [HttpGet]
         [Authorize(Roles = "Admin")]
