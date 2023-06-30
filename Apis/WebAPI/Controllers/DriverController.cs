@@ -9,16 +9,19 @@ using Microsoft.AspNetCore.Authorization;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.Drivers;
 using Application.Services;
+using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
     public class DriverController : BaseController, IWebController<Driver>
     {
         private readonly IDriverService _driverService;
+        private readonly IClaimsService _claimService;
 
-        public DriverController(IDriverService driverService)
+        public DriverController(IDriverService driverService, IClaimsService claimService)
         {
             _driverService = driverService;
+            _claimService = claimService;
         }
 
         [HttpPost]
@@ -66,26 +69,23 @@ namespace WebAPI.Controllers
         [Authorize(Roles ="Admin,Driver")]
         public async Task<IActionResult> Update(Guid id, DriverRequestUpdateDTO entity)
         {
-            var exist = await ExistCustomer(id);
-            if (!exist) return NotFound();
-            bool result;
-            if (HttpContext.User.Claims.Any(x => x.Type.Contains("role") && x.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase)))
+            bool result = false;
+            var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+            if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
                 result = await _driverService.Update(id, entity);
             }
-            else
+            else if (role.Value.Equals("Driver", StringComparison.OrdinalIgnoreCase))
             {
-                //var user = new UserLoginDTO()
-                //{
-                //    Email = entity.LoginEmail,
-                //    Password = entity.OldPassword
-                //};
-                //if (await _userService.LoginAsync(user) != null)
-                //    result = await _customerService.UpdateAsync(id, entity);
-                //else
-                //{
-                return BadRequest();
-                //}
+                if (id == Guid.Empty) id = _claimService.GetCurrentUserId;
+                var currentDriver = await _driverService.GetByIdAsync(id);
+                if (currentDriver == null) return BadRequest();
+                if (currentDriver.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                {
+                    Message = "Can't update other driver profile"
+                });
+
+                result = await _driverService.Update(id, entity);
             }
             return result ? Ok(new
             {
@@ -103,14 +103,23 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Admin,Driver")]
         public async Task<IActionResult> DeleteById(Guid id)
         {
-            var exist = await ExistCustomer(id);
-            if (!exist) return NotFound();
-
-            var result = await _driverService.RemoveAsync(id);
-            return result ? Ok(new
+            var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
+            var result = false;
+            if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
-                message = "Delete Successfully"
-            }) : BadRequest();
+                result = await _driverService.RemoveAsync(id);
+            }
+            else if (role.Value.Equals("Driver", StringComparison.OrdinalIgnoreCase))
+            {
+                var currentDriver = await _driverService.GetByIdAsync(id);
+                if (currentDriver == null) return BadRequest();
+                if (currentDriver.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                {
+                    Message = "Can't delete other driver"
+                });
+                result = await _driverService.RemoveAsync(id);
+            }
+            return result ? Ok() : BadRequest();
         }
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -128,11 +137,6 @@ namespace WebAPI.Controllers
             var result = await _driverService.GetFilterAsync(entity, pageIndex, pageSize);
             return result != null? Ok(result) : NotFound();
         }
-        private async Task<bool> ExistCustomer(Guid id)
-        {
-            var customer = await _driverService.GetByIdAsync(id);
-            if (customer == null) return false;
-            return true;
-        }
+   
     }
 }

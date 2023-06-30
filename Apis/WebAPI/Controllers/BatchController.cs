@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Driver,Admin")]
+        [Authorize(Roles = "Driver")]
         public async Task<IActionResult> Add(BatchRequestDTO entity)
         {
             var result = await _batchService.AddAsync(entity);

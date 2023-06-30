@@ -21,15 +21,16 @@ namespace Infrastructures.Mappers
                 .ForMember(dest => dest.PasswordHash, src => src.MapFrom(x => x.Password.Hash()))
                 .ReverseMap();
             CreateMap<DriverRequestDTO, Driver>()
+                 .ForMember(dest => dest.PasswordHash,
+                                 opt =>
+                                 {
+                                     opt.Condition(x => x.Password != null);//if(newpassword is null) then dont map
+                                     opt.MapFrom(x => x.Password.Hash());
+                                 }
+                                 )
                 .ReverseMap();
             CreateMap<DriverRequestUpdateDTO, Driver>()
-                     //.ForMember(dest => dest.PasswordHash,
-                     //            opt =>
-                     //            {
-                     //                opt.PreCondition(x => x.NewPassword != null);//if(newpassword is null) then dont map
-                     //                opt.MapFrom(x => x.NewPassword.Hash());
-                     //            }
-                     //            )
+                    
                      .ReverseMap();
             CreateMap<DriverResponseDTO, Driver>()
                 .ForMember(dest => dest.Batches, src => src.MapFrom(x => x.BatchResponses))

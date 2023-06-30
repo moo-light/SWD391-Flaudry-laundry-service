@@ -59,6 +59,8 @@ namespace Application.Services
 
         public async Task<bool> UpdateAsync(Guid id, CustomerRequestUpdateDTO entity)
         {
+            
+
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(id);
             if (customer.Email != entity.Email)
             {

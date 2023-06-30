@@ -13,6 +13,7 @@ namespace Application.ViewModels.Customer
         public string? FullName { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
+        public string? Password { get; set; }
         [Phone]
         public string? PhoneNumber { get; set; }
         [StringLength(int.MaxValue, MinimumLength = 5)]

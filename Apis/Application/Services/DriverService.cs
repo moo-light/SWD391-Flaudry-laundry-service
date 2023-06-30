@@ -53,18 +53,18 @@ namespace Application.Services
 
         public async Task<bool> Update(Guid id, DriverRequestUpdateDTO entity)
         {
-            var customer = await _unitOfWork.DriverRepository.GetByIdAsync(id);
-            //if (customer.Email != entity.Email)
-            //{
-            //    if (await _unitOfWork.DriverRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
-            //}
+            var driver = await _unitOfWork.DriverRepository.GetByIdAsync(id);
+            if (driver.Email != entity.Email)
+            {
+                if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
+            }
 
-            if (entity.FullName == null) entity.FullName = customer.FullName;
-            if (entity.Email == null) entity.Email = customer.Email;
-            if (entity.PhoneNumber == null) entity.PhoneNumber = customer.PhoneNumber;
+            if (entity.FullName == null) entity.FullName = driver.FullName;
+            if (entity.Email == null) entity.Email = driver.Email;
+            if (entity.PhoneNumber == null) entity.PhoneNumber = driver.PhoneNumber;
 
-            customer = _mapper.Map(entity, customer);
-            _unitOfWork.DriverRepository.Update(customer);
+            driver = _mapper.Map(entity, driver);
+            _unitOfWork.DriverRepository.Update(driver);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
