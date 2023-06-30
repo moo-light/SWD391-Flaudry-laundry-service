@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(DriverRequestDTO entity)
         {
             var result = await _driverService.AddAsync(entity);
@@ -66,9 +66,13 @@ namespace WebAPI.Controllers
             }) : BadRequest();
         }
         [HttpPut("{id:guid}")]
-        [Authorize(Roles ="Admin,Driver")]
+        [Authorize(Roles = "Admin,Driver")]
         public async Task<IActionResult> Update(Guid id, DriverRequestUpdateDTO entity)
         {
+            if (id == Guid.Empty) id = _claimService.GetCurrentUserId;
+            var exist = await ExistDriver(id);
+            if (!exist) return BadRequest();
+
             bool result = false;
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
             if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
@@ -77,10 +81,7 @@ namespace WebAPI.Controllers
             }
             else if (role.Value.Equals("Driver", StringComparison.OrdinalIgnoreCase))
             {
-                if (id == Guid.Empty) id = _claimService.GetCurrentUserId;
-                var currentDriver = await _driverService.GetByIdAsync(id);
-                if (currentDriver == null) return BadRequest();
-                if (currentDriver.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                if (id != _claimService.GetCurrentUserId) return Unauthorized(new
                 {
                     Message = "Can't update other driver profile"
                 });
@@ -103,6 +104,9 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Admin,Driver")]
         public async Task<IActionResult> DeleteById(Guid id)
         {
+            var exist = await ExistDriver(id);
+            if (!exist) return BadRequest();
+
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
             var result = false;
             if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
@@ -111,9 +115,7 @@ namespace WebAPI.Controllers
             }
             else if (role.Value.Equals("Driver", StringComparison.OrdinalIgnoreCase))
             {
-                var currentDriver = await _driverService.GetByIdAsync(id);
-                if (currentDriver == null) return BadRequest();
-                if (currentDriver.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                if (id != _claimService.GetCurrentUserId) return Unauthorized(new
                 {
                     Message = "Can't delete other driver"
                 });
@@ -126,7 +128,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetCount()
         {
             var result = await _driverService.GetCountAsync();
-            return result>0 ? Ok(result) : NotFound();
+            return result > 0 ? Ok(result) : NotFound();
         }
         [HttpPost("{pageIndex?}/{pageSize?}")]
         [Authorize(Roles = "Admin")]
@@ -135,8 +137,13 @@ namespace WebAPI.Controllers
                                                     int pageSize = 10)
         {
             var result = await _driverService.GetFilterAsync(entity, pageIndex, pageSize);
-            return result != null? Ok(result) : NotFound();
+            return result != null ? Ok(result) : NotFound();
         }
-   
+        private async Task<bool> ExistDriver(Guid id)
+        {
+            var driver = await _driverService.GetByIdAsync(id);
+            if (driver == null) return false;
+            return true;
+        }
     }
 }

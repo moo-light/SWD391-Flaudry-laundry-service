@@ -8,16 +8,19 @@ using Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.FilterModels;
+using Application.Utils;
 
 namespace WebAPI.Controllers
 {
     public class UserController : BaseController
     {
         private readonly IBaseUserService _userService;
+        private readonly IClaimsService _claimService;
 
-        public UserController(IBaseUserService userService)
+        public UserController(IBaseUserService userService, IClaimsService claimService)
         {
             _userService = userService;
+            _claimService = claimService;
         }
 
         [HttpPost]
@@ -41,7 +44,28 @@ namespace WebAPI.Controllers
             var result = await _userService.GetAllAsync(pageIndex, pageSize);
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
+        [HttpPost("{id:guid}")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(Guid id , string newPassword)
+        {
+            if (id == Guid.Empty) id = _claimService.GetCurrentUserId;
+            var user = await _userService.GetByIdAsync(id);
+            if (user == null) return NotFound();
 
+            var result = false;
+            var roleClaim = HttpContext.User.Claims.FirstOrDefault(x => x.ToString().Contains("role"));
+            if (roleClaim.Value.Equals("Admin",StringComparison.OrdinalIgnoreCase)
+                || _claimService.GetCurrentUserId == id) 
+            {
+                user.PasswordHash = newPassword.Hash();
+                result = _userService.Update(user);
+            }
+            else
+            {
+                return Forbid("Change password is forbidden");
+            }
+            return result? Accepted() : BadRequest();
+        }
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCount()
