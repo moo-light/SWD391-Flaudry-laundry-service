@@ -6,6 +6,7 @@ using Application.ViewModels;
 using Application.ViewModels.LaundryOrders;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Services
 {
@@ -13,16 +14,27 @@ namespace Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IClaimsService _claimService;
 
-        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, IClaimsService claimService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _claimService = claimService;
         }
         public async Task<LaundryOrder?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderRepository.GetByIdAsync(entityId);
-        public async Task<bool> AddAsync(LaundryOrderRequestDTO orderRequest)
+        public async Task<bool> AddAsync(LaundryOrderRequestAddDTO orderRequest)
         {
             LaundryOrder newOrder = _mapper.Map<LaundryOrder>(orderRequest);
+            newOrder.CustomerId = _claimService.GetCurrentUserId;
+             for(int i = 0; i < orderRequest.NumberOfPackages; i++)
+            {
+                newOrder.OrderDetails.Add(new OrderDetail
+                {
+                    Weight = default,
+                    Status = nameof(OrderDetailStatus.Pending)
+                });
+            }
             await _unitOfWork.OrderRepository.AddAsync(newOrder);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }

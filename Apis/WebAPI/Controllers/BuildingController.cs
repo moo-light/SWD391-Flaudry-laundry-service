@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
             return (result != null ? Ok(result) : BadRequest());
         }
         [HttpPut]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> Update(Guid id, BuildingRequestDTO entity)
         {
             var exist = await IsExisted(id);
@@ -67,14 +67,14 @@ namespace WebAPI.Controllers
             }) : BadRequest();
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetCount()
         {
             var result = await _buildingService.GetCountAsync();
             return result > 0 ? Ok(result) : NotFound();
         }
         [HttpPost("{pageIndex?}/{pageSize?}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetListWithFilter(BuildingFilteringModel? entity, 
                                                         int pageIndex = 0,
                                                         int pageSize = 10)
@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
         [HttpGet("{pageIndex?}/{pageSize?}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> GetAllAsync(int pageIndex = 0, int pageSize = 10)
         {
             var result = await _buildingService.GetCustomerListPagi(pageIndex, pageSize);

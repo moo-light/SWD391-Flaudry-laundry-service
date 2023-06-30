@@ -27,8 +27,9 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Customer,Admin")]
-        public async Task<IActionResult> AddAsync(LaundryOrderRequestDTO entity)
+        public async Task<IActionResult> AddAsync(LaundryOrderRequestAddDTO entity)
         {
+
             var result = await _orderService.AddAsync(entity);
             return result ? Ok(new
             {

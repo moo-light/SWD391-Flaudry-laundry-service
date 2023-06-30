@@ -15,5 +15,5 @@ public interface IOrderService
     Task<Pagination<LaundryOrderResponseDTO>> GetFilterAsync(LaundryOrderFilteringModel entity, int pageIndex, int pageSize);
     Task<bool> RemoveAsync(Guid entityId);
     Task<bool> UpdateAsync(Guid id, LaundryOrderRequestDTO orderRequest);
-    Task<bool> AddAsync(LaundryOrderRequestDTO orderRequest);
+    Task<bool> AddAsync(LaundryOrderRequestAddDTO orderRequest);
 }
