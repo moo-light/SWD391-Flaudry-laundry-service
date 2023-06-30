@@ -4,6 +4,7 @@ using Application.ViewModels;
 using Application.ViewModels.Customer;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Interfaces.Services;
 
@@ -21,4 +22,5 @@ public interface ICustomerService
     Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer, int pageIndex, int pageSize);
     UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject);
     Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex, int pageSize);
+    Task<string> RefreshAdminToken(string refreshToken);
 }

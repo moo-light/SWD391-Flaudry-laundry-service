@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Application.Services
 {
@@ -23,6 +27,17 @@ namespace Application.Services
         private readonly ICurrentTime _currentTime;
         private readonly AppConfiguration _configuration;
 
+        private readonly string _jwtSecretKey;
+        private readonly string _issuer;
+        private readonly string _audience;
+
+        public CustomerService(string jwtSecretKey, string issuer, string audience)
+        {
+            _jwtSecretKey = jwtSecretKey;
+            _issuer = issuer;
+            _audience = audience;
+        }
+
         public CustomerService(IUnitOfWork unitOfWork, IMapper mapper, ICurrentTime currentTime, AppConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
@@ -32,7 +47,7 @@ namespace Application.Services
         }
         public async Task<IEnumerable<CustomerResponseDTO>> GetAllAsync()
         {
-            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync(x=>x.Feedbacks,x=>x.Orders);
+            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync(x => x.Feedbacks, x => x.Orders);
             return _mapper.Map<List<CustomerResponseDTO>>(customers);
         }
 
@@ -107,10 +122,10 @@ namespace Application.Services
             return await _unitOfWork.CustomerRepository.GetCountAsync();
         }
 
-        public async Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer,int pageIndex,int pageSize)
+        public async Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer, int pageIndex, int pageSize)
         {
             var query = _unitOfWork.CustomerRepository.GetFilter(customer);
-            var customers=  query.Where(c => c.IsDeleted == false).Skip(pageIndex*pageSize).Take(pageSize).ToList();
+            var customers = query.Where(c => c.IsDeleted == false).Skip(pageIndex * pageSize).Take(pageSize).ToList();
             var pagination = new Pagination<Customer>()
             {
                 TotalItemsCount = query.Where(c => c.IsDeleted == false).Count(),
@@ -141,8 +156,74 @@ namespace Application.Services
         }
         public async Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
         {
-            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex,pageSize);
+            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
             return _mapper.Map<Pagination<CustomerResponseDTO>>(customers);
+        }
+
+        public async Task<string> RefreshAdminToken(string refreshToken)
+        {
+            try
+            {
+                var claimsPrincipal = ValidateRefreshToken(refreshToken);
+
+                var adminAccount = claimsPrincipal.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+                var newAccessToken = GenerateAccessToken(adminAccount);
+
+                return newAccessToken;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to refresh admin token.", ex);
+            }
+        }
+        private ClaimsPrincipal ValidateRefreshToken(string refreshToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                // Set your validation parameters here
+            };
+
+            SecurityToken validatedToken;
+            ClaimsPrincipal claimsPrincipal;
+
+            try
+            {
+                claimsPrincipal = tokenHandler.ValidateToken(refreshToken, validationParameters, out validatedToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid refresh token.", ex);
+            }
+
+            if (claimsPrincipal == null)
+            {
+                throw new Exception("Invalid refresh token.");
+            }
+
+            return claimsPrincipal;
+        }
+
+        private string GenerateAccessToken(string adminAccount)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, adminAccount),
+                // Add any additional claims as needed
+            };
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(30), // Set the access token expiration time (e.g., 30 minutes)
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSecretKey)),
+                    SecurityAlgorithms.HmacSha256)
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
     }
 }

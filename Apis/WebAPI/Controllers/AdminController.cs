@@ -22,5 +22,18 @@ namespace WebAPI.Controllers
         {
             return _customerService.LoginAdmin(loginObject);
         }
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken(string refreshtoken)
+        {
+            var newToken = await _customerService.RefreshAdminToken(refreshtoken);
+            if (newToken == null)
+            {
+                return BadRequest();
+            }
+            return Ok(new
+            {
+                AccessToken = newToken,
+            });
+        }
     }
 }

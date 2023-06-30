@@ -19,6 +19,8 @@ namespace Application.Utils
                 new Claim(ClaimTypes.Role ,(user.IsAdmin??false)?"Admin": user.GetType().Name),
             };
             var token = new JwtSecurityToken(
+                issuer: secretKey,
+                audience: secretKey,
                 claims: claims,
                 expires: now.AddMinutes(30),
                 signingCredentials: credentials);
