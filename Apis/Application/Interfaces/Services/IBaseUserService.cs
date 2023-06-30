@@ -19,6 +19,7 @@ namespace Application.Interfaces.Services
         Task<int> GetCountAsync();
         Task<Pagination<BaseUser>> GetFilterAsync(UserFilteringModel entity,int pageIndex,int pageSize);
         Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject);
+        Task<UserToken> RefreshToken(string accessToken, string refreshToken);
         bool Remove(Guid entityId);
         bool Update(BaseUser entity);
     }

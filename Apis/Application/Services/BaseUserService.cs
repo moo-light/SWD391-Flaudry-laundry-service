@@ -7,6 +7,8 @@ using Application.ViewModels;
 using Application.ViewModels.UserViewModels;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace Application.Services
 {
@@ -63,11 +65,55 @@ namespace Application.Services
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject)
         {
             var user = await _unitOfWork.UserRepository.GetUserByEmailAndPasswordHash(userObject.Email, userObject.Password);
+
+
+            var refreshToken = RefreshTokenString.GetRefreshToken();
+            var accessToken = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime());
+            var expireRefreshTokenTime = DateTime.Now.AddHours(24);
+
+            user.RefreshToken = refreshToken;
+            user.ExpireTokenTime = expireRefreshTokenTime;
+            _unitOfWork.UserRepository.Update(user);
+            await _unitOfWork.SaveChangesAsync();
             return new UserLoginDTOResponse
             {
                 UserId = user.Id,
-                JWT = user.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+                JWT =accessToken ,
+                RefreshToken = refreshToken, 
             };
         }
+
+        public async Task<UserToken> RefreshToken(string accessToken, string refreshToken)
+        {
+            if (accessToken.IsNullOrEmpty() || refreshToken.IsNullOrEmpty())
+            {
+                return null;
+            }
+            var principal = accessToken.GetPrincipalFromExpiredToken(_configuration.JWTSecretKey);
+
+            var id = principal?.FindFirstValue("userID");
+            _ = Guid.TryParse(id, out Guid userID);
+            var userLogin = await _unitOfWork.UserRepository.GetByIdAsync(userID);
+            if (userLogin == null || userLogin.RefreshToken != refreshToken || userLogin.ExpireTokenTime <= DateTime.Now)
+            {
+                return null;
+            }
+
+            var newAccessToken = userLogin.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime());
+            var newRefreshToken = RefreshTokenString.GetRefreshToken();
+
+            userLogin.RefreshToken = newRefreshToken;
+            userLogin.ExpireTokenTime = DateTime.Now.AddDays(1);
+            _unitOfWork.UserRepository.Update(userLogin);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UserToken
+            {
+                Email = userLogin.Email,
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            };
+        }
+
     }
 }
