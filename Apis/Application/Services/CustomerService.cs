@@ -67,6 +67,7 @@ namespace Application.Services
             
 
             var customer = await _unitOfWork.CustomerRepository.GetByIdAsync(id);
+
             if (customer.Email != entity.Email)
             {
                 if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");

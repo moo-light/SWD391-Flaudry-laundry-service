@@ -69,6 +69,11 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> Update(Guid id, CustomerRequestUpdateDTO entity)
         {
+            if (id == Guid.Empty) id = _claimService.GetCurrentUserId;//Update self
+
+            var exist = await ExistCustomer(id);
+            if (!exist) return BadRequest();// if customer exist proceed
+
             bool result = false;
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
             if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
@@ -77,10 +82,7 @@ namespace WebAPI.Controllers
             }
             else if (role.Value.Equals("Customer", StringComparison.OrdinalIgnoreCase))
             {
-                if (id == Guid.Empty) id = _claimService.GetCurrentUserId;
-                var currentCustomer = await _customerService.GetByIdAsync(id);
-                if (currentCustomer == null) return BadRequest();
-                if (currentCustomer.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                if (id != _claimService.GetCurrentUserId) return Unauthorized(new
                 {
                     Message = "Can't update other user profile"
                 });
@@ -105,6 +107,9 @@ namespace WebAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
+            var exist = await ExistCustomer(id);
+            if (!exist) return BadRequest();// if customer exist proceed
+
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Contains("role"));
             var result = false;
             if (role.Value.Equals("Admin", StringComparison.OrdinalIgnoreCase))
@@ -113,9 +118,7 @@ namespace WebAPI.Controllers
             }
             else if (role.Value.Equals("Customer", StringComparison.OrdinalIgnoreCase))
             {
-                var currentCustomer = await _customerService.GetByIdAsync(id);
-                if (currentCustomer == null) return BadRequest();
-                if (currentCustomer.Id != _claimService.GetCurrentUserId) return Unauthorized(new
+                if (id != _claimService.GetCurrentUserId) return Unauthorized(new
                 {
                     Message = "Can't delete other user"
                 });
