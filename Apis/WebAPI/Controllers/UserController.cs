@@ -57,5 +57,17 @@ namespace WebAPI.Controllers
             var result = await _userService.GetFilterAsync(entity, pageIndex, pageSize);
             return result.Items.IsNullOrEmpty()? NotFound() : Ok(result);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken(string accessToken, string refreshtoken)
+        {
+            var newToken = await _userService.RefreshToken(accessToken, refreshtoken);
+            if (newToken == null)
+            {
+                return BadRequest();
+            }
+            return Ok(newToken);
+        }
     }
 }
