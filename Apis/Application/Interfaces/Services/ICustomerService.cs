@@ -22,5 +22,5 @@ public interface ICustomerService
     Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer, int pageIndex, int pageSize);
     UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject);
     Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex, int pageSize);
-    Task<string> RefreshAdminToken(string refreshToken);
+    AdminToken RefreshToken(string refreshToken);
 }

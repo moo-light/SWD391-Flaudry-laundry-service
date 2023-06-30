@@ -25,15 +25,12 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> RefreshToken(string refreshtoken)
         {
-            var newToken = await _customerService.RefreshAdminToken(refreshtoken);
+            var newToken = _customerService.RefreshToken(refreshtoken);
             if (newToken == null)
             {
                 return BadRequest();
             }
-            return Ok(new
-            {
-                AccessToken = newToken,
-            });
+            return Ok(newToken);
         }
     }
 }

@@ -33,13 +33,13 @@ namespace WebAPI.Controllers
             return result ? Ok() : NotFound();
         }
 
-        [HttpDelete("{entityId:guid}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteByIdAsync(Guid entityId)
-        {
-            var result = await _paymentService.RemoveAsync(entityId);
-            return result ? Ok() : NoContent();
-        }
+        //[HttpDelete("{entityId:guid}")]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> DeleteByIdAsync(Guid entityId)
+        //{
+        //    var result = await _paymentService.RemoveAsync(entityId);
+        //    return result ? Ok() : NoContent();
+        //}
 
         [HttpGet("{entityId:guid}")]
         [Authorize]

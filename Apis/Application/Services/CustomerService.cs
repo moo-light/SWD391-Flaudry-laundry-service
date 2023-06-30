@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace Application.Services
 {
@@ -26,17 +27,6 @@ namespace Application.Services
         private readonly IMapper _mapper;
         private readonly ICurrentTime _currentTime;
         private readonly AppConfiguration _configuration;
-
-        private readonly string _jwtSecretKey;
-        private readonly string _issuer;
-        private readonly string _audience;
-
-        public CustomerService(string jwtSecretKey, string issuer, string audience)
-        {
-            _jwtSecretKey = jwtSecretKey;
-            _issuer = issuer;
-            _audience = audience;
-        }
 
         public CustomerService(IUnitOfWork unitOfWork, IMapper mapper, ICurrentTime currentTime, AppConfiguration configuration)
         {
@@ -141,6 +131,8 @@ namespace Application.Services
             if (loginObject.Email.CheckPassword(_configuration.AdminAccount.Email))
                 if (loginObject.Password.CheckPassword(_configuration.AdminAccount.Password))
                 {
+                    var refreshToken = GenerateRefreshToken();
+
                     return new UserLoginDTOResponse
                     {
                         UserId = Guid.NewGuid(),
@@ -149,81 +141,42 @@ namespace Application.Services
                             IsAdmin = true,
                             Email = _configuration.AdminAccount.Email,
                             Id = Guid.NewGuid()//admin want to be anonymous
-                        }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+                        }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime()),
+                        RefreshToken = refreshToken
                     };
                 }
             throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
         }
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
         public async Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
         {
             var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
             return _mapper.Map<Pagination<CustomerResponseDTO>>(customers);
         }
 
-        public async Task<string> RefreshAdminToken(string refreshToken)
+        public AdminToken RefreshToken(string refreshToken)
         {
-            try
+            return new AdminToken
             {
-                var claimsPrincipal = ValidateRefreshToken(refreshToken);
-
-                var adminAccount = claimsPrincipal.FindFirstValue(JwtRegisteredClaimNames.Sub);
-
-                var newAccessToken = GenerateAccessToken(adminAccount);
-
-                return newAccessToken;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to refresh admin token.", ex);
-            }
-        }
-        private ClaimsPrincipal ValidateRefreshToken(string refreshToken)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = new TokenValidationParameters
-            {
-                // Set your validation parameters here
+                Id = Guid.NewGuid(),
+                JwtToken = new BaseUser()
+                {
+                    IsAdmin = true,
+                    Email = _configuration.AdminAccount.Email,
+                    Id = Guid.NewGuid()
+                }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime()),
+                RefreshToken = GenerateRefreshToken()
             };
-
-            SecurityToken validatedToken;
-            ClaimsPrincipal claimsPrincipal;
-
-            try
-            {
-                claimsPrincipal = tokenHandler.ValidateToken(refreshToken, validationParameters, out validatedToken);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Invalid refresh token.", ex);
-            }
-
-            if (claimsPrincipal == null)
-            {
-                throw new Exception("Invalid refresh token.");
-            }
-
-            return claimsPrincipal;
-        }
-
-        private string GenerateAccessToken(string adminAccount)
-        {
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, adminAccount),
-                // Add any additional claims as needed
-            };
-
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: _issuer,
-                audience: _audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(30), // Set the access token expiration time (e.g., 30 minutes)
-                signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSecretKey)),
-                    SecurityAlgorithms.HmacSha256)
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
     }
 }
