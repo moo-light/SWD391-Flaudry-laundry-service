@@ -38,7 +38,7 @@ namespace Application.Services
 
         public async Task<Customer?> GetByIdAsync(Guid entityId)
         {
-            Customer? customer = await _unitOfWork.CustomerRepository.GetByIdAsync(entityId);
+            Customer? customer = await _unitOfWork.CustomerRepository.GetByIdAsync(entityId, x=>x.Feedbacks,x=>x.Orders);
             return customer;
         }
 

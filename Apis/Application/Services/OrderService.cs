@@ -22,7 +22,17 @@ namespace Application.Services
             _mapper = mapper;
             _claimService = claimService;
         }
-        public async Task<LaundryOrder?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderRepository.GetByIdAsync(entityId);
+        public async Task<LaundryOrder?> GetByIdAsync(Guid entityId)
+        {
+            LaundryOrder? laundryOrder = await _unitOfWork.OrderRepository.GetByIdAsync(entityId,
+                                                                                        x => x.OrderInBatches,
+                                                                                        x => x.OrderDetails,
+                                                                                        x => x.Payments,
+                                                                                        x => x.Customer,
+                                                                                        x => x.Store,
+                                                                                        x => x.Building);
+            return laundryOrder;
+        }
         public async Task<bool> AddAsync(LaundryOrderRequestAddDTO orderRequest)
         {
             LaundryOrder newOrder = _mapper.Map<LaundryOrder>(orderRequest);

@@ -32,7 +32,10 @@ namespace Application.Services
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        public async Task<OrderDetail?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderDetailRepository.GetByIdAsync(entityId);
+        public async Task<OrderDetail?> GetByIdAsync(Guid entityId)
+        {
+            return await _unitOfWork.OrderDetailRepository.GetByIdAsync(entityId,x=>x.Order,x=>x.Service);
+        }
 
         public async Task<int> GetCountAsync()
         {

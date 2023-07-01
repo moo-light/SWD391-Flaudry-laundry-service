@@ -56,7 +56,10 @@ namespace Application.Services
             return _mapper.Map<List<BatchResponseDTO>>(batch);
         }
 
-        public async Task<Batch?> GetByIdAsync(Guid entityId) => await _unitOfWork.BatchRepository.GetByIdAsync(entityId);
+        public async Task<Batch?> GetByIdAsync(Guid entityId)
+        {
+            return await _unitOfWork.BatchRepository.GetByIdAsync(entityId, x=>x.BatchOfBuildings,x=>x.Driver,x=>x.OrderInBatches);
+        }
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
 

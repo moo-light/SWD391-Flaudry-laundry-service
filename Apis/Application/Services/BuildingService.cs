@@ -43,7 +43,10 @@ namespace Application.Services
             return _mapper.Map<List<BuildingResponseDTO>>(o);
         }
 
-        public async Task<Building?> GetByIdAsync(Guid entityId) => await _unitOfWork.BuildingRepository.GetByIdAsync(entityId);
+        public async Task<Building?> GetByIdAsync(Guid entityId)
+        {
+            return await _unitOfWork.BuildingRepository.GetByIdAsync(entityId,x=>x.BatchOfBuildings,x=>x.Orders);
+        }
 
         public async Task<int> GetCountAsync()
         {
