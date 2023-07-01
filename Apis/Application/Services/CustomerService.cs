@@ -13,6 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Eventing.Reader;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Application.Services
 {
@@ -32,7 +37,7 @@ namespace Application.Services
         }
         public async Task<IEnumerable<CustomerResponseDTO>> GetAllAsync()
         {
-            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync(x=>x.Feedbacks,x=>x.Orders);
+            List<Customer> customers = await _unitOfWork.CustomerRepository.GetAllAsync(x => x.Feedbacks, x => x.Orders);
             return _mapper.Map<List<CustomerResponseDTO>>(customers);
         }
 
@@ -110,10 +115,10 @@ namespace Application.Services
             return await _unitOfWork.CustomerRepository.GetCountAsync();
         }
 
-        public async Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer,int pageIndex,int pageSize)
+        public async Task<Pagination<CustomerResponseDTO>> GetFilterAsync(CustomerFilteringModel customer, int pageIndex, int pageSize)
         {
             var query = _unitOfWork.CustomerRepository.GetFilter(customer);
-            var customers=  query.Where(c => c.IsDeleted == false).Skip(pageIndex*pageSize).Take(pageSize).ToList();
+            var customers = query.Where(c => c.IsDeleted == false).Skip(pageIndex * pageSize).Take(pageSize).ToList();
             var pagination = new Pagination<Customer>()
             {
                 TotalItemsCount = query.Where(c => c.IsDeleted == false).Count(),
@@ -129,6 +134,8 @@ namespace Application.Services
             if (loginObject.Email.CheckPassword(_configuration.AdminAccount.Email))
                 if (loginObject.Password.CheckPassword(_configuration.AdminAccount.Password))
                 {
+                    var refreshToken = GenerateRefreshToken();
+
                     return new UserLoginDTOResponse
                     {
                         UserId = Guid.NewGuid(),
@@ -137,15 +144,42 @@ namespace Application.Services
                             IsAdmin = true,
                             Email = _configuration.AdminAccount.Email,
                             Id = Guid.NewGuid()//admin want to be anonymous
-                        }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime())
+                        }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime()),
+                        RefreshToken = refreshToken
                     };
                 }
             throw new EventLogInvalidDataException("Warning after 5 more tries this page will be disabled");
         }
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+            }
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
         public async Task<Pagination<CustomerResponseDTO>> GetCustomerListPagi(int pageIndex = 0, int pageSize = 10)
         {
-            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex,pageSize);
+            var customers = await _unitOfWork.CustomerRepository.ToPagination(pageIndex, pageSize);
             return _mapper.Map<Pagination<CustomerResponseDTO>>(customers);
+        }
+
+        public AdminToken RefreshToken(string refreshToken)
+        {
+            return new AdminToken
+            {
+                Id = Guid.NewGuid(),
+                JwtToken = new BaseUser()
+                {
+                    IsAdmin = true,
+                    Email = _configuration.AdminAccount.Email,
+                    Id = Guid.NewGuid()
+                }.GenerateJsonWebToken(_configuration.JWTSecretKey, _currentTime.GetCurrentTime()),
+                RefreshToken = GenerateRefreshToken()
+            };
         }
     }
 }

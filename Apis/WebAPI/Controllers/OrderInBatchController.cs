@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             return result ? StatusCode(201) : BadRequest();
         }
 
-        [HttpPut("{id:guid}")]
+        [HttpPut]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateAsync(Guid id, OrderInBatchRequestDTO entity)
         {
@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
             var result = await _orderInBatchService.RemoveAsync(entityId);
             return result ? Ok() : NoContent();
         }
-        [HttpGet("{id:guid}")]
+        [HttpGet]
         [Authorize(Roles = "Driver,Admin")]
         public async Task<IActionResult> GetByIDAsync(Guid entityId)
         {
