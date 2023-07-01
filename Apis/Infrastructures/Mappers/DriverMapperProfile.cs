@@ -28,6 +28,13 @@ namespace Infrastructures.Mappers
             CreateMap<DriverResponseDTO, Driver>()
                 .ForMember(dest => dest.Batches, src => src.MapFrom(x => x.BatchResponses))
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.DriverId))
+                .AfterMap((src, dest, context) =>
+                {
+                    if (dest.Batches != null)
+                    {
+                        dest.Batches.Select(x => x.Driver == null);
+                    }
+                })
                 .ReverseMap();
         }
     }

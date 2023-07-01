@@ -12,7 +12,7 @@ namespace Application.ViewModels.Batchs
 {
     public class BatchRequestDTO
     {
-        //public Guid? DriverId { get; set; }
+        public Guid? DriverId { get; set; }
         [EnumValidation(typeof(BatchType))]
         public string? Type { get; set; }
         [EnumValidation(typeof(BatchStatus))]

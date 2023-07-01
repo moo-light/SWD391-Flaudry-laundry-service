@@ -33,7 +33,11 @@ namespace Application.Services
         }
 
 
-        public async Task<Payment?> GetByIdAsync(Guid entityId) => await _unitOfWork.PaymentRepository.GetByIdAsync(entityId);
+        public async Task<Payment?> GetByIdAsync(Guid entityId)
+        {
+            Payment? payment = await _unitOfWork.PaymentRepository.GetByIdAsync(entityId,x=>x.Order);
+            return payment;
+        }
 
         public async Task<int> GetCountAsync()
         {

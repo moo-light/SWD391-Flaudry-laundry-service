@@ -36,7 +36,11 @@ namespace Application.Services
             return _mapper.Map<List<DriverResponseDTO>>(drivers);
         }
 
-        public async Task<Driver?> GetByIdAsync(Guid entityId) => await _unitOfWork.DriverRepository.GetByIdAsync(entityId);
+        public async Task<Driver?> GetByIdAsync(Guid entityId)
+        {
+            return await _unitOfWork.DriverRepository.GetByIdAsync(entityId,x=>x.Batches);
+        }
+
         public async Task<bool> AddAsync(DriverRequestDTO driver)
         {
             var newDriver = _mapper.Map<Driver>(driver);

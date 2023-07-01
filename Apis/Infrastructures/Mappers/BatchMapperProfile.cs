@@ -16,9 +16,16 @@ namespace Infrastructures.Mappers
         public BatchMapperProfile() 
         {
             CreateMap<BatchRequestDTO, Batch>().ReverseMap();
-            CreateMap<BatchResponseDTO, Batch>()
-                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.BatchId))
-                .ForMember(dest => dest.OrderInBatches, src => src.MapFrom(x => x.orderInBatchResponses))
+            CreateMap<Batch, BatchResponseDTO>()
+                .ForMember(dest => dest.BatchId, src => src.MapFrom(x => x.Id))
+                .ForMember(dest => dest.orderInBatchResponses, src => src.MapFrom(x => x.OrderInBatches))
+                .AfterMap((src, dest, context) =>
+                {
+                    if (dest.Driver != null)
+                    {
+                        dest.Driver.BatchResponses = null;
+                    }
+                })
                 .ReverseMap();
         }
     }

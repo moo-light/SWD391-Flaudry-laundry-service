@@ -26,7 +26,7 @@ namespace Application.Utils
 
             if (thatId == null) return false;
             
-            return thisId.Equals(thatId);
+            return thisId.Equals(thatId );
         }
         /// <summary>
         /// check if any of the list is equal thatId
@@ -44,7 +44,7 @@ namespace Application.Utils
         {
             if (@this == null || @this == string.Empty) return true;
             if (that == null) return false;
-            if (that.Contains(@this)) return true;
+            if (that.Contains(@this,StringComparison.OrdinalIgnoreCase)) return true;
             return false;
         }
         public static bool EmptyOrContainedIn(this string?[]? @this, string? that)

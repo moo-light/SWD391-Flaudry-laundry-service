@@ -25,7 +25,10 @@ namespace Application.Services
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        public async Task<OrderInBatch?> GetByIdAsync(Guid entityId) => await _unitOfWork.OrderInBatchRepository.GetByIdAsync(entityId);
+        public async Task<OrderInBatch?> GetByIdAsync(Guid entityId)
+        {
+            return await _unitOfWork.OrderInBatchRepository.GetByIdAsync(entityId,x=>x.Order,x=>x.Batch);
+        }
 
         public async Task<int> GetCountAsync() => await _unitOfWork.OrderInBatchRepository.GetCountAsync();
 
