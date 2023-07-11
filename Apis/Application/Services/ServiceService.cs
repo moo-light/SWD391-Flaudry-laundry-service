@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.Services;
 using Application.ViewModels.Stores;
 using AutoMapper;
 using Domain.Entities;
@@ -42,7 +43,7 @@ namespace Application.Services
             if (result == false) return false;
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
-        public async Task<bool> UpdateAsync(Guid id, ServiceRequestDTO serviceRequest)
+        public async Task<bool> UpdateAsync(Guid id, ServiceRequestUpdateDTO serviceRequest)
         {
             var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
             service = _mapper.Map(serviceRequest, service);

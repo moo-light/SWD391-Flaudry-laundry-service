@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.Stores;
+using Application.ViewModels.Services;
 
 namespace WebAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace WebAPI.Controllers
 
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "Customer,Admin")]
-        public async Task<IActionResult> UpdateAsync(Guid id, ServiceRequestDTO entity)
+        public async Task<IActionResult> UpdateAsync(Guid id, ServiceRequestUpdateDTO entity)
         {
             var result = await _serviceService.UpdateAsync(id, entity);
             return result ? Ok() : BadRequest();

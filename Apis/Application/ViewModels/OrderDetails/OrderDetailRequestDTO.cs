@@ -6,8 +6,8 @@ namespace Application.ViewModels.OrderDetails
 {
     public class OrderDetailRequestDTO
     {
-        public Guid? OrderId { get; set; } = null;
-        public Guid? ServiceId { get; set; } = null;
+        //public Guid? OrderId { get; set; } = null;
+        public Guid? ServiceId { get; set; }
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public decimal Weight { get; set; }
