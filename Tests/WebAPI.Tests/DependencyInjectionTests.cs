@@ -20,7 +20,7 @@ namespace WebAPI.Tests
         public DependencyInjectionTests()
         {
             var service = new ServiceCollection();
-            service.AddWebAPIService();
+            service.AddWebAPIService("Any");
             service.AddInfrastructuresService("mock");
             service.AddDbContext<AppDbContext>(
                 option => option.UseInMemoryDatabase("test"));
