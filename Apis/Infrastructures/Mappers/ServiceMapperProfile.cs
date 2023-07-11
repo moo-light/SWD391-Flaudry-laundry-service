@@ -12,7 +12,7 @@ namespace Infrastructures.Mappers
 
             CreateMap<ServiceRequestDTO, Service>().ReverseMap();
             CreateMap<ServiceResponseDTO, Service>()
-                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.ServiceId))
+                //.ForMember(dest => dest.Id, src => src.MapFrom(x => x.ServiceId))
                 .ReverseMap();
         }
     }

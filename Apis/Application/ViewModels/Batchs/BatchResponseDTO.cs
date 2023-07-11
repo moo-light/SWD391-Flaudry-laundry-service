@@ -14,7 +14,7 @@ namespace Application.ViewModels.Batchs
     {
         public Guid? BatchId { get; set; }
         public DriverResponseDTO? Driver { get; set; }
-        public ICollection<OrderInBatchResponseDTO> orderInBatchResponses { get; set; } = null;
+        //public ICollection<OrderInBatchResponseDTO> orderInBatchResponses { get; set; } = null;
 
     }
 }

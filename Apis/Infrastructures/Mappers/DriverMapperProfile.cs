@@ -26,7 +26,7 @@ namespace Infrastructures.Mappers
                     
                      .ReverseMap();
             CreateMap<DriverResponseDTO, Driver>()
-                .ForMember(dest => dest.Batches, src => src.MapFrom(x => x.BatchResponses))
+                //.ForMember(dest => dest.Batches, src => src.MapFrom(x => x.BatchResponses))
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.DriverId))
                 .AfterMap((src, dest, context) =>
                 {
