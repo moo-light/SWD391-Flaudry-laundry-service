@@ -18,7 +18,7 @@ namespace Domain.Tests
         protected readonly Mock<IClaimsService> _claimsServiceMock;
         protected readonly Mock<ICurrentTime> _currentTimeMock;
         protected readonly Mock<IOrderRepository> _orderRepositoryMock;
-        protected readonly Mock<IUserRepository> _userRepository;
+        protected readonly Mock<IBaseUserRepository> _userRepository;
         protected readonly AppDbContext _dbContext;
 
         public SetupTest()
@@ -32,7 +32,7 @@ namespace Domain.Tests
             _unitOfWorkMock = new Mock<IUnitOfWork>();
             _claimsServiceMock = new Mock<IClaimsService>();
             _currentTimeMock = new Mock<ICurrentTime>();
-            _userRepository = new Mock<IUserRepository>();
+            _userRepository = new Mock<IBaseUserRepository>();
             _orderRepositoryMock = new Mock<IOrderRepository>();
 
             var options = new DbContextOptionsBuilder<AppDbContext>()
