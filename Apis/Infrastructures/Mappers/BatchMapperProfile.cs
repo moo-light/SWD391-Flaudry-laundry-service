@@ -1,6 +1,7 @@
 ﻿using Application.ViewModels.Batchs;
 using Application.ViewModels.Feedbacks;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.OrderInBatch;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -16,6 +17,7 @@ namespace Infrastructures.Mappers
         public BatchMapperProfile() 
         {
             CreateMap<BatchRequestDTO, Batch>().ReverseMap();
+            CreateMap<BatchRequestDTO_V2, Batch>().ReverseMap();
             CreateMap<Batch, BatchResponseDTO>()
                 .ForMember(dest => dest.BatchId, src => src.MapFrom(x => x.Id))
 

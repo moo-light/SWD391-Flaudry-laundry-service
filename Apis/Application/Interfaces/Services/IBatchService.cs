@@ -14,13 +14,13 @@ namespace Application.Interfaces.Services
 {
     public interface IBatchService
     {
-        Task<bool> AddAsync(BatchRequestDTO batch);
+        Task<bool> AddAsync(BatchRequestDTO_V2 batchDTO, Guid? driverId);
+        Task<bool> Update(Guid id, BatchRequestDTO_V2 batchDTO);
         Task<IEnumerable<BatchResponseDTO>> GetAllAsync();
         Task<Batch?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
         Task<IEnumerable<Batch>> GetFilterAsync(BatchFilteringModel driver);
         bool Remove(Guid entityId);
-        Task<bool> Update(Guid id, BatchRequestDTO entity);
         Task<Pagination<BatchResponseDTO>> GetBatchListPagi(int pageIndex, int pageSize);
         Task<Pagination<BatchResponseDTO>> GetFilterAsync(BatchFilteringModel batch, int pageIndex, int pageSize);
     }

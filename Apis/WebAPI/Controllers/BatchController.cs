@@ -10,25 +10,46 @@ using System.Diagnostics.CodeAnalysis;
 using Application.ViewModels.Batchs;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.Customer;
+using Application.Interfaces;
 
 namespace WebAPI.Controllers
 {
     public class BatchController : BaseController, IWebController<Batch>
     {
         private readonly IBatchService _batchService;
-        public BatchController(IBatchService batchService)
+        private readonly IClaimsService _claimsService;
+        public BatchController(IBatchService batchService, IClaimsService claimsService)
         {
             _batchService = batchService;
+            _claimsService = claimsService;
         }
 
         [HttpPost]
-        [Authorize(Roles = "Driver")]
-        public async Task<IActionResult> Add(BatchRequestDTO entity)
+        [Authorize(Roles = "Admin,Driver")]
+        public async Task<IActionResult> Add(BatchRequestDTO_V2 batchRequestDTO, string? driverId = default)
         {
-            var result = await _batchService.AddAsync(entity);
+            if (driverId != null && _claimsService.GetCurrentUserRole != "Admin") return Forbid();
+            if (driverId == null && _claimsService.GetCurrentUserRole != "Driver") return Forbid("Please input DriverId");
+            Guid.TryParse(driverId, out Guid driverGUID);
+
+            var result = await _batchService.AddAsync(batchRequestDTO,driverGUID == Guid.Empty? null: driverGUID);
             return result ? Ok(new
             {
                 message = "Add successfully"
+            }) : BadRequest();
+        }
+        [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Driver,Admin")]
+        public async Task<IActionResult> Update(Guid id, BatchRequestDTO_V2 entity)
+        {
+            var exist = await ExistBatch(id);
+            if (!exist) return NotFound();
+            bool result;
+
+            result = await _batchService.Update(id, entity);
+            return result ? Ok(new
+            {
+                message = "Update Successfully"
             }) : BadRequest();
         }
         [HttpDelete("{entityId:guid}")]
@@ -56,19 +77,7 @@ namespace WebAPI.Controllers
             var result = await _batchService.GetByIdAsync(entityId);
             return (result != null ? Ok(result) : NotFound());
         }
-        [HttpPut]
-        [Authorize(Roles = "Driver,Admin")]
-        public async Task<IActionResult> Update(Guid id, BatchRequestDTO entity)
-        {
-            var exist = await ExistCustomer(id);
-            if (!exist) return NotFound();
-            bool result;
-            result = await _batchService.Update(id, entity);
-            return result ? Ok(new
-            {
-                message = "Update Successfully"
-            }) : BadRequest();
-        }
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetCount()
@@ -85,7 +94,7 @@ namespace WebAPI.Controllers
             var result = await _batchService.GetFilterAsync(entity, pageIndex, pageSize);
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
-        private async Task<bool> ExistCustomer(Guid id)
+        private async Task<bool> ExistBatch(Guid id)
         {
             var customer = await _batchService.GetByIdAsync(id);
             if (customer == null) return false;
