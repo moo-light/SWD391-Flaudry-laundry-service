@@ -13,7 +13,7 @@ namespace Application.ViewModels.Stores
     {
         public Guid? StoreId { get; set; }
         //public virtual ICollection<LaundryOrderResponseDTO>? Orders { get; set; } = null;
-        public virtual ICollection<ServiceResponseDTO>? Services { get; set; }
+        public virtual ICollection<ServiceResponseDTO>? Services { get; set; } = new List<ServiceResponseDTO>();
         //public virtual ICollection<FeedbackResponseDTO>? Feedbacks { get; set; } = null;
     }
 }
