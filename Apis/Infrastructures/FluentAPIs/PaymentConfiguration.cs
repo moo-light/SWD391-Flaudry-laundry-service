@@ -10,6 +10,7 @@ namespace Infrastructures.FluentAPIs
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(e => e.Amount).HasPrecision(18, 2);
 
             builder.HasOne(d => d.Order).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.OrderId)

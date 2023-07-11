@@ -42,7 +42,7 @@ namespace Application.Services
                 newOrder.OrderDetails.Add(new OrderDetail
                 {
                     Weight = default,
-                    Status = nameof(OrderDetailStatus.Pending)
+                    Status = nameof(OrderStatus.Pending)
                 });
             }
             await _unitOfWork.OrderRepository.AddAsync(newOrder);

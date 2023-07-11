@@ -98,7 +98,7 @@ namespace Infrastructures.Repositories
 
         public async Task<Pagination<TEntity>> ToPagination(int pageIndex = 0, int pageSize = 10, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> list = includes.Aggregate(_dbSet.AsNoTracking(), (entity, property) => entity.Include(property));
+            IQueryable<TEntity> list = includes.Aggregate(_dbSet.OrderBy(x=>x.Id).AsNoTracking(), (entity, property) => entity.Include(property));
             return ToPagination(list, pageIndex, pageSize);
         }
         public Pagination<TEntity> ToPagination(IEnumerable<TEntity> list, int pageIndex = 0, int pageSize = 10, params Expression<Func<TEntity, object>>[] includes)

@@ -15,5 +15,7 @@ namespace Application.ViewModels.Drivers
         public string? Email { get; set; }
         [Phone]
         public string? PhoneNumber { get; set; }
+           public decimal Wallet { get; set; }
+        public decimal COD { get; set; }
     }
 }

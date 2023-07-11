@@ -8,7 +8,7 @@ namespace Application.ViewModels.FilterModels
         public Guid?[]? OrderId { get; set; }
         public Guid?[]? ServiceId { get; set; }
         public string?[]? Weight { get; set; }
-        [EnumValidation(typeof(OrderDetailStatus))]
+        [EnumValidation(typeof(OrderStatus))]
         public string? Status { get; set; }
     }
 }

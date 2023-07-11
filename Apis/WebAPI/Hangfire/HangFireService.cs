@@ -27,15 +27,13 @@ namespace WebAPI.Hangfire
             var orders = await _unitOfWork.OrderRepository.GetAllAsync(x => x.OrderInBatches);
             var drivers = await _unitOfWork.DriverRepository.GetAllAsync(x => x.Batches);
 
-            var pendingOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Pending))).ToList();
+            var pendingOrders = orders.Where(x => x.Status == nameof(OrderStatus.Pending)).ToList();
             var nextPendingDriverSession = drivers.Where(x => !x.IsDeleted)
                                            .OrderBy(x => x.Batches.Any())
                                            .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
                                            .ToList();
             await AddBatches(pendingOrders, drivers, nextPendingDriverSession, nameof(BatchType.Pickup));
-          
-            
-            var washedOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Washed))).ToList();
+            var washedOrders = orders.Where(x => x.Status == nameof(OrderStatus.Washed)).ToList();
             var nextWashedDriverSession = drivers.Where(x => !x.IsDeleted)
                                            .OrderBy(x => x.Batches.Any())
                                            .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
@@ -66,7 +64,7 @@ namespace WebAPI.Hangfire
             int index = 0;
             int j = 0;
             Batch? batch = null;
-            for (index = 0; index < 3; index++)
+            for (index = 0; index < 3 && nextDriverSession.Count>0; index++)
             {
 
                 batch = new Batch()
