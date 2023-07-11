@@ -31,34 +31,43 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> AddAsync(BatchRequestDTO batchDTO)
+        public async Task<bool> AddAsync(BatchRequestDTO_V2 batchDTO,Guid? driverId)
         {
 
             //var newBuilding = _mapper.Map<Building>(building);
             //if (newBuilding == null) return false;
             //await _unitOfWork.BuildingRepository.AddAsync(newBuilding);
             //return await _unitOfWork.SaveChangesAsync() > 0;
+            if (_claimsService.GetCurrentUserId == Guid.Empty) throw new AuthenticationException("User not logged in");// you know it's impossible that something can reach this
 
 
-            if (_claimsService.GetCurrentUserId == Guid.Empty) throw new AuthenticationException("User not login");
-            var batchId = Guid.NewGuid();
-            Guid driverId = _claimsService.GetCurrentUserId;
+            // if driverId is inputted from admin then skip this line
+            driverId ??= _claimsService.GetCurrentUserId;
             var batch = _mapper.Map<Batch>(batchDTO);
-            batch.Id = batchId;
-            batch.DriverId = driverId;
 
-            await _unitOfWork.BatchRepository.AddAsync(batch);
+            batch.DriverId = driverId;
+            // Add order in batch
+            foreach (var orderId in batchDTO.OrderIds)
+            {
+                batch.OrderInBatches.Add(new OrderInBatch()
+                {
+                    OrderId = orderId,
+                    BatchId = batch.Id
+                });
+            }
+            await _unitOfWork.BatchRepository.AddAsync(batch);// auto generate ID
+
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
         public async Task<IEnumerable<BatchResponseDTO>> GetAllAsync()
         {
-            var batch = _unitOfWork.BatchRepository.GetAllAsync(x=>x.OrderInBatches,x=>x.BatchOfBuildings,x=>x.Driver).ToString();
+            var batch = _unitOfWork.BatchRepository.GetAllAsync(x => x.OrderInBatches, x => x.BatchOfBuildings, x => x.Driver).ToString();
             return _mapper.Map<List<BatchResponseDTO>>(batch);
         }
 
         public async Task<Batch?> GetByIdAsync(Guid entityId)
         {
-            return await _unitOfWork.BatchRepository.GetByIdAsync(entityId, x=>x.BatchOfBuildings,x=>x.Driver,x=>x.OrderInBatches);
+            return await _unitOfWork.BatchRepository.GetByIdAsync(entityId, x => x.BatchOfBuildings, x => x.Driver, x => x.OrderInBatches);
         }
 
         public async Task<int> GetCountAsync() => await _unitOfWork.BatchRepository.GetCountAsync();
@@ -81,12 +90,12 @@ namespace Application.Services
 
         public bool Remove(Guid entityId)
         {
-           _unitOfWork.BatchRepository.SoftRemoveByID(entityId);
-            return _unitOfWork.SaveChange() > 0; 
+            _unitOfWork.BatchRepository.SoftRemoveByID(entityId);
+            return _unitOfWork.SaveChange() > 0;
         }
-        public async Task<bool> Update(Guid id, BatchRequestDTO entity)
+        public async Task<bool> Update(Guid id, BatchRequestDTO_V2 batchDTO)
         {
-            var customer = await _unitOfWork.BatchRepository.GetByIdAsync(id);
+            var batch = await _unitOfWork.BatchRepository.GetByIdAsync(id);
             //if (customer.Email != entity.Email)
             //{
             //    if (await _unitOfWork.UserRepository.CheckEmailExisted(entity.Email)) throw new InvalidDataException("Email Exist!");
@@ -97,8 +106,23 @@ namespace Application.Services
             //if (entity.Address == null) entity.Address = customer.Address;
             //if (entity.PhoneNumber == null) entity.PhoneNumber = customer.PhoneNumber;
 
-            customer = _mapper.Map(entity, customer);
-            _unitOfWork.BatchRepository.Update(customer);
+            batch = _mapper.Map(batchDTO, batch);
+            // Add order in batch
+            foreach (var orderInBatch in batch.OrderInBatches.Where(x=>x.IsDeleted == false))
+            {
+                _unitOfWork.OrderInBatchRepository.SoftRemove(orderInBatch);
+            }
+
+            foreach (var orderId in batchDTO.OrderIds)
+            {
+                batch.OrderInBatches.Add(new OrderInBatch()
+                {
+                    OrderId = orderId,
+                    BatchId = batch.Id
+                });
+            }
+            _unitOfWork.BatchRepository.Update(batch);
+
             return await _unitOfWork.SaveChangesAsync() > 0;
         }
         public async Task<Pagination<BatchResponseDTO>> GetFilterAsync(BatchFilteringModel batch, int pageIndex, int pageSize)
