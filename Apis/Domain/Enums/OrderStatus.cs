@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums
 {
-    public enum OrderDetailStatus
+    public enum OrderStatus
     {
         Pending,
         Shipping,

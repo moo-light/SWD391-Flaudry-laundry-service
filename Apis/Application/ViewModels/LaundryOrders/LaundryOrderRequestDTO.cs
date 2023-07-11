@@ -4,7 +4,9 @@ using Application.ViewModels.OrderDetails;
 using Application.ViewModels.OrderInBatch;
 using Application.ViewModels.Payments;
 using Application.ViewModels.Stores;
+using Domain.CustomValidations;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.ViewModels.LaundryOrders
 {
@@ -14,5 +16,7 @@ namespace Application.ViewModels.LaundryOrders
         public Guid? StoreId { get; set; } = null;
         public Guid? BuildingId { get; set; } = null;
         public string? Note { get; set; } = null;
+        [EnumValidation(typeof(OrderStatus))]
+        public string? Status { get; set; }
     }
 }

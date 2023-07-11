@@ -8,6 +8,9 @@ namespace Domain.Entities
 {
     public class Driver : BaseUser
     {
+        public decimal Wallet { get; set; }
+        public decimal COD { get; set; }
         public virtual ICollection<Batch> Batches { get; } = new List<Batch>();
+
     }
 }

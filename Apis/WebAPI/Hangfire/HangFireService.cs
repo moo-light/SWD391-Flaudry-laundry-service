@@ -27,20 +27,18 @@ namespace WebAPI.Hangfire
             var orders = await _unitOfWork.OrderRepository.GetAllAsync(x => x.OrderInBatches);
             var drivers = await _unitOfWork.DriverRepository.GetAllAsync(x => x.Batches);
 
-            var pendingOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Pending))).ToList();
-            var nextPendingDriverSession = drivers.Where(x => !x.IsDeleted)
-                                           .OrderBy(x => x.Batches.Any())
-                                           .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
-                                           .ToList();
-            await AddBatches(pendingOrders, drivers, nextPendingDriverSession, nameof(BatchType.Pickup));
-          
-            
-            var washedOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Washed))).ToList();
-            var nextWashedDriverSession = drivers.Where(x => !x.IsDeleted)
-                                           .OrderBy(x => x.Batches.Any())
-                                           .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
-                                           .ToList();
-            await AddBatches(washedOrders, drivers, nextWashedDriverSession, nameof(BatchType.Return));
+            //var pendingOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Pending))).ToList();
+            //var nextPendingDriverSession = drivers.Where(x => !x.IsDeleted)
+            //                               .OrderBy(x => x.Batches.Any())
+            //                               .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
+            //                               .ToList();
+            //await AddBatches(pendingOrders, drivers, nextPendingDriverSession, nameof(BatchType.Pickup));
+            //var washedOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Washed))).ToList();
+            //var nextWashedDriverSession = drivers.Where(x => !x.IsDeleted)
+            //                               .OrderBy(x => x.Batches.Any())
+            //                               .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
+            //                               .ToList();
+            //await AddBatches(washedOrders, drivers, nextWashedDriverSession, nameof(BatchType.Return));
 
             //var batchReturn = new BatchRequestDTO()
             //{

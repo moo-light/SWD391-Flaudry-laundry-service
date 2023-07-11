@@ -1,4 +1,6 @@
-﻿using Domain.Entitiess;
+﻿using Domain.CustomValidations;
+using Domain.Entitiess;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -13,6 +15,8 @@ public partial class LaundryOrder : BaseEntity
     public Guid? BuildingId { get; set; } = null;
     [AllowNull]
     public string? Note { get; set; } = null;
+    [EnumValidation(typeof(OrderStatus))]
+    public string? Status { get; set; } = null;
     public virtual Customer? Customer { get; set; }
     public virtual Building? Building{ get; set; }
     public virtual Store? Store { get; set; } 

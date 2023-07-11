@@ -17,8 +17,6 @@ namespace Domain.Entities
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N2}")]
         public decimal Weight { get; set; }
-        [EnumValidation(typeof(OrderDetailStatus))]
-        public string? Status { get; set; }
         public virtual LaundryOrder? Order { get; set; } // Order status = 
         public virtual Service? Service { get; set; } 
     }
