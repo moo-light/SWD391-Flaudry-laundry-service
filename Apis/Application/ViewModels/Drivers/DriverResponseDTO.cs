@@ -10,6 +10,6 @@ namespace Application.ViewModels.Drivers
     public class DriverResponseDTO : DriverRequestDTO
     {
         public Guid? DriverId { get; set; }
-       // public ICollection<BatchResponseDTO> BatchResponses { get; set; } = new List<BatchResponseDTO>();
+        //public ICollection<BatchResponseDTO> BatchResponses { get; set; } = null;
     }
 }

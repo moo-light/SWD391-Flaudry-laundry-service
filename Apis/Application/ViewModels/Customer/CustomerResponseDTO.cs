@@ -12,7 +12,7 @@ namespace Application.ViewModels.Customer
     public class CustomerResponseDTO: CustomerRequestDTO
     {
         public Guid? CustomerId { get; set; }
-       // public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = new List<LaundryOrderResponseDTO>();
-       // public ICollection<FeedbackResponseDTO> FeedbackResponses { get; set; } = new List<FeedbackResponseDTO>();
+        //public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = null;
+        //public ICollection<FeedbackResponseDTO> FeedbackResponses { get; set; } = null;
     }
 }

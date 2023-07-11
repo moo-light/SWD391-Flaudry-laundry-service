@@ -11,7 +11,7 @@ namespace Application.ViewModels.Buildings
     public class BuildingResponseDTO : BuildingRequestDTO
     {
         public Guid? BuildingId { get; set; }
-        public ICollection<BatchOfBuildingResponseDTO> BatchOfBuildings { get; set; } = new List<BatchOfBuildingResponseDTO>();
-        public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = new List<LaundryOrderResponseDTO>();
+        //public ICollection<BatchOfBuildingResponseDTO> BatchOfBuildings { get; set; } = new List<BatchOfBuildingResponseDTO>();
+        //public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = new List<LaundryOrderResponseDTO>();
     }
 }
