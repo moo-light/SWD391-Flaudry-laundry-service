@@ -12,8 +12,8 @@ namespace Application.ViewModels.Stores
     public class StoreResponseDTO : StoreRequestDTO
     {
         public Guid? StoreId { get; set; }
-        public virtual ICollection<LaundryOrderResponseDTO>? Orders { get; set; } = new List<LaundryOrderResponseDTO>();
+  //      public virtual ICollection<LaundryOrderResponseDTO>? Orders { get; set; } = new List<LaundryOrderResponseDTO>();
         public virtual ICollection<ServiceResponseDTO>? Services { get; set; } = new List<ServiceResponseDTO>();
-        public virtual ICollection<FeedbackResponseDTO>? Feedbacks { get; set; } =  new List<FeedbackResponseDTO>();
+   //     public virtual ICollection<FeedbackResponseDTO>? Feedbacks { get; set; } =  new List<FeedbackResponseDTO>();
     }
 }

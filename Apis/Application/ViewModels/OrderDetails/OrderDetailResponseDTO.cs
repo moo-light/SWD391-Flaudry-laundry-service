@@ -13,7 +13,7 @@ namespace Application.ViewModels.OrderDetails
     public class OrderDetailResponseDTO : OrderDetailRequestDTO
     {
         public Guid? OrderDetailId { get; set; }
-        public virtual LaundryOrderResponseDTO? Order { get; set; } = null;// Order status = 
-        public virtual ServiceResponseDTO? Service { get; set; } = null;
+        //public virtual LaundryOrderResponseDTO? Order { get; set; } = null;// Order status = 
+        //public virtual ServiceResponseDTO? Service { get; set; } = null;
     }
 }
