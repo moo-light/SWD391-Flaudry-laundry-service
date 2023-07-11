@@ -13,6 +13,6 @@ namespace Application.ViewModels.Customer
     {
         public Guid? CustomerId { get; set; }
         public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = new List<LaundryOrderResponseDTO>();
-        public ICollection<FeedbackResponseDTO> FeedbackResponses { get; set; } = new List<FeedbackResponseDTO>()
+        public ICollection<FeedbackResponseDTO> FeedbackResponses { get; set; } = new List<FeedbackResponseDTO>();
     }
 }
