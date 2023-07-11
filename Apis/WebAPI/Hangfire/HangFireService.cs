@@ -5,12 +5,13 @@ using Domain.Entities;
 using Domain.Enums;
 using Hangfire;
 using Microsoft.Extensions.Hosting;
+using System.Net;
 
 namespace WebAPI.Hangfire
 {
     public class HangFireService
     {
-        private const int BatchSize = 20;
+        private const int BatchSize = 10;
         public IUnitOfWork _unitOfWork;
         private ICurrentTime _currentTime;
 
@@ -26,28 +27,21 @@ namespace WebAPI.Hangfire
             var orders = await _unitOfWork.OrderRepository.GetAllAsync(x => x.OrderInBatches);
             var drivers = await _unitOfWork.DriverRepository.GetAllAsync(x => x.Batches);
 
-            var pendingOrders = orders.Where(x => x.OrderDetails.Any(x => x.Status == nameof(OrderDetailStatus.Pending))).ToList();
+            var pendingOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Pending))).ToList();
             var nextPendingDriverSession = drivers.Where(x => !x.IsDeleted)
                                            .OrderBy(x => x.Batches.Any())
                                            .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
                                            .ToList();
-            if (pendingOrders.Any())
-                await AddBatches(pendingOrders, drivers, nextPendingDriverSession, nameof(BatchType.Pickup));
-            else
-            {
-                await Console.Out.WriteLineAsync("There currently no pending orders");
-            }
-            var washedOrders = orders.Where(x => x.OrderDetails.Any(x => x.Status == nameof(OrderDetailStatus.Washed))).ToList();
+            await AddBatches(pendingOrders, drivers, nextPendingDriverSession, nameof(BatchType.Pickup));
+          
+            
+            var washedOrders = orders.Where(x => x.OrderDetails.Any(y => y.Status == nameof(OrderDetailStatus.Washed))).ToList();
             var nextWashedDriverSession = drivers.Where(x => !x.IsDeleted)
                                            .OrderBy(x => x.Batches.Any())
                                            .ThenBy(x => (x.Batches.FirstOrDefault()?.CreationDate))
                                            .ToList();
-            if (washedOrders.Any())
-                await AddBatches(washedOrders, drivers, nextWashedDriverSession, nameof(BatchType.Return));
-            else
-            {
-                await Console.Out.WriteLineAsync("There currently no washed orders");
-            }
+            await AddBatches(washedOrders, drivers, nextWashedDriverSession, nameof(BatchType.Return));
+
             //var batchReturn = new BatchRequestDTO()
             //{
             //    Type = nameof(BatchType.Return),
@@ -67,30 +61,39 @@ namespace WebAPI.Hangfire
 
         private async Task AddBatches(List<LaundryOrder> pendingOrders, List<Driver> drivers, List<Driver> nextDriverSession, string batchType)
         {
+            //int count = pendingOrders.Count();            
             int count = pendingOrders.Count();
             int index = 0;
+            int j = 0;
             Batch? batch = null;
-            do
+            for (index = 0; index < 3; index++)
             {
-                if (index % BatchSize == 0)
+
+                batch = new Batch()
                 {
-                    batch = new Batch()
-                    {
-                        Type = batchType,
-                        Status = nameof(BatchStatus.Pending),
-                        DriverId = nextDriverSession.First().Id
-                    };
-                    nextDriverSession.RemoveAt(0);
-                }
-                OrderInBatch orderInBatch = new OrderInBatch()
-                {
-                    BatchId = batch.Id,
-                    OrderId = pendingOrders[index].Id
+                    Type = batchType,
+                    Status = nameof(BatchStatus.Pending),
+                    DriverId = nextDriverSession.First().Id
                 };
-                batch.OrderInBatches.Add(orderInBatch);
+                nextDriverSession.RemoveAt(0);
+                //iterate from 0 to batch size
+                while (j <= BatchSize * index)
+                {
+                    // if pending order exist then add to batch
+                    if (pendingOrders.ElementAtOrDefault(j) != null)
+                    {
+                        OrderInBatch orderInBatch = new()
+                        {
+                            BatchId = batch.Id,
+                            OrderId = pendingOrders[j].Id
+                        };
+                        batch.OrderInBatches.Add(orderInBatch);// add order in batch
+                    }
+                    j++;
+                }
                 await _unitOfWork.BatchRepository.AddAsync(batch);
-                index++;
-            } while (index != count || drivers.Count > 0);
+            }
+            //af ter 3 batch added savechanges
             await _unitOfWork.SaveChangesAsync();
         }
     }

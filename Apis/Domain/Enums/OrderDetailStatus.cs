@@ -4,7 +4,7 @@
     {
         Pending,
         Shipping,
-        Washed,
-        Done
+        Done,
+        Washed
     }
 }
