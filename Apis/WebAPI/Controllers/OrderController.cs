@@ -10,6 +10,7 @@ using System.Data;
 using Application.ViewModels.FilterModels;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.LaundryOrders;
+using Domain.Enums;
 
 namespace WebAPI.Controllers
 {
@@ -17,11 +18,13 @@ namespace WebAPI.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IClaimsService _claimsService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OrderController(IOrderService orderService, IClaimsService claimsService)
+        public OrderController(IOrderService orderService, IClaimsService claimsService, IUnitOfWork unitOfWork)
         {
             _orderService = orderService;
             _claimsService = claimsService;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -87,6 +90,22 @@ namespace WebAPI.Controllers
         {
             var result = await _orderService.GetFilterAsync(entity, pageIndex, pageSize);
                 return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
+        }
+        [HttpPut]
+        [Authorize(Roles = "Driver")]
+        public async Task<IActionResult> FinishOrder(Guid orderId)
+        {
+            var order = await _orderService.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.Status = OrderStatus.Done.ToString();
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(new
+            {
+                message = "Finish Order Successfully"
+            });
         }
     }
 }

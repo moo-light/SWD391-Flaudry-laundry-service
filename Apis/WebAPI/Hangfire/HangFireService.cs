@@ -71,9 +71,9 @@ namespace WebAPI.Hangfire
                 {
                     Type = batchType,
                     Status = nameof(BatchStatus.Pending),
-                    DriverId = nextDriverSession.First().Id
+                    //DriverId = nextDriverSession.First().Id
                 };
-                nextDriverSession.RemoveAt(0);
+                //nextDriverSession.RemoveAt(0);
                 //iterate from 0 to batch size
                 while (j <= BatchSize * index)
                 {

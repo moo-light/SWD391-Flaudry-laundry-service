@@ -16,12 +16,16 @@ namespace WebAPI.Controllers
     public class DriverController : BaseController, IWebController<Driver>
     {
         private readonly IDriverService _driverService;
+        private readonly IBatchService _batchService;
         private readonly IClaimsService _claimService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DriverController(IDriverService driverService, IClaimsService claimService)
+        public DriverController(IDriverService driverService, IClaimsService claimService, IBatchService batchService, IUnitOfWork unitOfWork)
         {
             _driverService = driverService;
             _claimService = claimService;
+            _batchService = batchService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -139,6 +143,35 @@ namespace WebAPI.Controllers
             var result = await _driverService.GetFilterAsync(entity, pageIndex, pageSize);
             return result != null ? Ok(result) : NotFound();
         }
+        [HttpPost]
+        [Authorize(Roles = "Driver")]
+        public async Task<IActionResult> RegisterToBatch(Guid batchId)
+        {
+            Guid id = _claimService.GetCurrentUserId;
+            var exist = await ExistDriver(id);
+            if (!exist) return BadRequest();
+
+            var batch = await _batchService.GetByIdAsync(batchId);
+            if (batch == null)
+            {
+                return NotFound();
+            }
+
+            Driver driver = await _driverService.GetByIdAsync(id);
+            if (driver != null)
+            {
+                batch.DriverId = driver.Id;
+                await _unitOfWork.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    message = "Registered to batch successfully."
+                });
+            }
+
+            return BadRequest("Driver not found.");
+        }
+        
         private async Task<bool> ExistDriver(Guid id)
         {
             var driver = await _driverService.GetByIdAsync(id);

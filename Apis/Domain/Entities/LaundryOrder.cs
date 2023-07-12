@@ -14,7 +14,7 @@ public partial class LaundryOrder : BaseEntity
     public Guid? StoreId { get; set; } = null;
     public Guid? BuildingId { get; set; } = null;
     [AllowNull]
-    public string? Note { get; set; } = null;
+    public string? Note { get; set; }
     [EnumValidation(typeof(OrderStatus))]
     public string? Status { get; set; } = null;
     public virtual Customer? Customer { get; set; }
