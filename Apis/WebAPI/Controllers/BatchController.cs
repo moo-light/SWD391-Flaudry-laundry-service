@@ -11,6 +11,8 @@ using Application.ViewModels.Batchs;
 using Microsoft.IdentityModel.Tokens;
 using Application.ViewModels.Customer;
 using Application.Interfaces;
+using Domain.Enums;
+using Application.Utils;
 
 namespace WebAPI.Controllers
 {
@@ -32,7 +34,7 @@ namespace WebAPI.Controllers
             if (driverId == null && _claimsService.GetCurrentUserRole != "Driver") return Forbid("Please input DriverId");
             Guid.TryParse(driverId, out Guid driverGUID);
 
-            var result = await _batchService.AddAsync(batchRequestDTO,driverGUID == Guid.Empty? null: driverGUID);
+            var result = await _batchService.AddAsync(batchRequestDTO, driverGUID == Guid.Empty ? null : driverGUID);
             return result ? Ok(new
             {
                 message = "Add successfully"
@@ -61,6 +63,28 @@ namespace WebAPI.Controllers
             return result != null ? Ok(new
             {
                 message = "Delete Successfully"
+            }) : BadRequest();
+        }
+        [HttpPatch("{entityId:guid}")]
+        [Authorize(Roles = "Admin,Driver")]
+
+        public async Task<IActionResult> FinishBatch(Guid entityId)
+        {
+            var entity = await _batchService.GetByIdAsync(entityId);
+
+            if (_claimsService.GetCurrentUserRole == "Driver" && entity.Status.IsEnum(BatchStatus.InProgress)
+                || _claimsService.GetCurrentUserRole == "Admin")
+            {
+                entity.Status = nameof(BatchStatus.Completed);
+            }
+            else
+            {
+                return Forbid();
+            }
+            var result = _batchService.SmallUpdate(entity); 
+            return result ? Ok(new
+            {
+                message = "Batch Update Successfully"
             }) : BadRequest();
         }
         [HttpGet]

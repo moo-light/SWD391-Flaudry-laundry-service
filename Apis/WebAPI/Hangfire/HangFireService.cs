@@ -64,7 +64,8 @@ namespace WebAPI.Hangfire
             int index = 0;
             int j = 0;
             Batch? batch = null;
-            for (index = 0; index < 3 && nextDriverSession.Count>0; index++)
+            var numOfBatch = (count / 10) > 3 ? (count / 10) : 3;
+            for (index = 0; index < numOfBatch && nextDriverSession.Count > 0; index++)
             {
 
                 batch = new Batch()
@@ -83,7 +84,8 @@ namespace WebAPI.Hangfire
                         OrderInBatch orderInBatch = new()
                         {
                             BatchId = batch.Id,
-                            OrderId = pendingOrders[j].Id
+                            OrderId = pendingOrders[j].Id,
+                            Status = nameof(OrderInBatchStatus.Waiting)
                         };
                         batch.OrderInBatches.Add(orderInBatch);// add order in batch
                     }
