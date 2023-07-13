@@ -19,6 +19,10 @@ namespace Infrastructures.Mappers
                 .IncludeBase<StoreRequestDTO,Store>()
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.StoreId))
                 .ReverseMap();
+            CreateMap<StoreResponseForOrderDTO, Store>()
+                .IncludeBase<StoreRequestDTO, Store>()
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.StoreId))
+                .ReverseMap();
         }
     }
 }

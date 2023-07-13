@@ -26,10 +26,10 @@ namespace Application.Services
             return _mapper.Map<Pagination<StoreResponseDTO>>(stores);
         }
 
-        public async Task<Store?> GetByIdAsync(Guid entityId)
+        public async Task<StoreResponseDTO?> GetByIdAsync(Guid entityId)
         {
             Store? store = await _unitOfWork.StoreRepository.GetByIdAsync(entityId,x=>x.Services,x=>x.Orders,x=>x.Feedbacks);
-            return store;
+            return _mapper.Map<StoreResponseDTO>(store);
         }
         public async Task<bool> AddAsync(StoreRequestDTO store)
         {

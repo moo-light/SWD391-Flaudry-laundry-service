@@ -25,10 +25,10 @@ namespace Application.Services
             var services = await _unitOfWork.ServiceRepository.ToPagination(pageIndex, pageSize, x=>x.Store,x=>x.OrderDetails);
             return _mapper.Map<Pagination<ServiceResponseDTO>>(services);
         }
-        public async Task<Service?> GetByIdAsync(Guid entityId)
+        public async Task<ServiceResponseDTO?> GetByIdAsync(Guid entityId)
         {
             Service? service = await _unitOfWork.ServiceRepository.GetByIdAsync(entityId,x=>x.Store,x=>x.OrderDetails);
-            return service;
+            return _mapper.Map<ServiceResponseDTO>(service);
         }
         public async Task<bool> AddAsync(ServiceRequestDTO serviceRequest)
         {

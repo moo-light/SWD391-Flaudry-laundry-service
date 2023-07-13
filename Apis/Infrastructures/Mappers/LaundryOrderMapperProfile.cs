@@ -16,6 +16,10 @@ namespace Infrastructures.Mappers
             CreateMap<LaundryOrderResponseDTO, LaundryOrder>()
                 .ForMember(dest => dest.Id, src => src.MapFrom(x => x.OrderId))
                 .ReverseMap();
+            CreateMap<LaundryOrder, LaundryOrderResponseDTO>()
+                .ForMember(dest => dest.OrderId, src => src.MapFrom(x => x.Id))
+                .ForMember(dest => dest.NumberOfPackage, src => src.MapFrom(x => x.OrderDetails.Count))
+                .ReverseMap();
         }
     }
 }

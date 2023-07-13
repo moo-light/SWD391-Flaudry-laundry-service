@@ -10,7 +10,7 @@ namespace Application.Interfaces.Services
     {
         Task<bool> AddAsync(StoreRequestDTO store);
         Task<Pagination<StoreResponseDTO>> GetAllAsync(int pageIndex,int PageSize);
-        Task<Store?> GetByIdAsync(Guid entityId);
+        Task<StoreResponseDTO?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
         Task<Pagination<StoreResponseDTO>> GetFilterAsync(StoreFilteringModel entity, int pageIndex, int pageSize);
         Task<Pagination<Store>> GetCustomerListPagi(int pageIndex, int pageSize);

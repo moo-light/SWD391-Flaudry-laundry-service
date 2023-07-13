@@ -9,7 +9,7 @@ namespace Application.Interfaces.Services
 {
     public interface IServiceService
     {
-        Task<Service?> GetByIdAsync(Guid entityId);
+        Task<ServiceResponseDTO?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
         Task<Pagination<Service>> GetCustomerListPagi(int pageIndex, int pageSize);
         Task<Pagination<ServiceResponseDTO>> GetAllAsync(int pageIndex, int pageSize);
