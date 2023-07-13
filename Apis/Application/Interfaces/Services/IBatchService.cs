@@ -16,6 +16,8 @@ namespace Application.Interfaces.Services
     {
         Task<bool> AddAsync(BatchRequestDTO_V2 batchDTO, Guid? driverId);
         Task<bool> Update(Guid id, BatchRequestDTO_V2 batchDTO);
+        bool SmallUpdate(Batch batch);
+
         Task<IEnumerable<BatchResponseDTO>> GetAllAsync();
         Task<Batch?> GetByIdAsync(Guid entityId);
         Task<int> GetCountAsync();
