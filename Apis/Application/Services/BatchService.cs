@@ -139,7 +139,7 @@ namespace Application.Services
             return _mapper.Map<Pagination<BatchResponseDTO>>(pagination);
         }
 
-        public async bool SmallUpdate( Batch batch)
+        public bool SmallUpdate( Batch batch)
         {
             return _unitOfWork.BatchRepository.Update(batch);
         }

@@ -143,7 +143,7 @@ namespace WebAPI.Controllers
             var result = await _driverService.GetFilterAsync(entity, pageIndex, pageSize);
             return result != null ? Ok(result) : NotFound();
         }
-        [HttpPost]
+        [HttpGet("{batchId:guid}")]
         [Authorize(Roles = "Driver")]
         public async Task<IActionResult> RegisterToBatch(Guid batchId)
         {

@@ -91,11 +91,11 @@ namespace WebAPI.Controllers
             var result = await _orderService.GetFilterAsync(entity, pageIndex, pageSize);
                 return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
-        [HttpPut]
+        [HttpGet("{entityId:guid}")]
         [Authorize(Roles = "Driver")]
-        public async Task<IActionResult> FinishOrder(Guid orderId)
+        public async Task<IActionResult> FinishOrder(Guid entityId)
         {
-            var order = await _orderService.GetByIdAsync(orderId);
+            var order = await _orderService.GetByIdAsync(entityId);
             if (order == null)
             {
                 return NotFound();
@@ -106,6 +106,30 @@ namespace WebAPI.Controllers
             {
                 message = "Finish Order Successfully"
             });
+        }
+        [HttpGet("{entityId:guid}")]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> CancelOrder(Guid entityId)
+        {
+            var order = await _orderService.GetByIdAsync(entityId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            if (order.Status == OrderStatus.Pending.ToString())
+            {
+                order.Status = OrderStatus.Cancel.ToString();
+                await _unitOfWork.SaveChangesAsync();
+                return Ok(new
+                {
+                    message = "Cancel Order Successfully"
+                });
+            }
+            return BadRequest(new
+            {
+                message = "Cannot cancel order"
+            });
+            
         }
     }
 }

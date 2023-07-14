@@ -5,6 +5,7 @@
         Pending,
         Shipping,
         Done,
-        Washed
+        Washed,
+        Cancel
     }
 }
