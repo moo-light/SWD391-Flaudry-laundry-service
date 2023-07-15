@@ -11,6 +11,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entitiess;
+using System.IO;
 
 namespace Infrastructures.Repositories
 {
@@ -31,11 +33,16 @@ namespace Infrastructures.Repositories
             Expression<Func<Batch, bool>> dateFilter = x => x.CreationDate.IsInDateTime(entity.FromDate, entity.ToDate);
 
             var predicates = ExpressionUtils.CreateListOfExpression(driverId, status, type, dateFilter);
-
-            var seed = _dbSet.Include(x=>x.Driver).Include(x=>x.BatchOfBuildings).Include(x=>x.OrderInBatches).Include(x=>x.Driver).AsNoTracking();
+            var includes = new Expression<Func<Batch, dynamic>>[]
+            {
+                x => x.Driver,
+                x => x.OrderInBatches, // include Order that bai r
+                x => x.BatchOfBuildings
+            };
+            var seed = includes.Aggregate(_dbSet.AsNoTracking(), (set, include) => set.Include(include));
             var result = predicates.Aggregate(seed.AsEnumerable(), (a, b) => a.Where(b.Compile()));
 
-            return result;  
+            return result;
         }
     }
 }

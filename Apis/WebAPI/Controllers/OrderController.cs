@@ -43,9 +43,9 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Admin")]
         //Customer co the Update voi dieu kien la Chua duoc bo vao Batch
-        public async Task<IActionResult> UpdateAsync(Guid id,LaundryOrderRequestDTO entity)
+        public async Task<IActionResult> UpdateAsync(Guid id, LaundryOrderRequestDTO entity)
         {
-            var result = await _orderService.UpdateAsync(id,entity);
+            var result = await _orderService.UpdateAsync(id, entity);
             return result ? Ok(new
             {
                 message = "Update Successfully"
@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetListWithFilter(LaundryOrderFilteringModel? entity, int pageIndex = 0, int pageSize = 10)
         {
             var result = await _orderService.GetFilterAsync(entity, pageIndex, pageSize);
-                return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
+            return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
         [HttpGet("{entityId:guid}")]
         [Authorize(Roles = "Driver")]
@@ -101,6 +101,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
             order.Status = OrderStatus.Done.ToString();
+            order.OrderInBatches = order.OrderInBatches.Select(x => { x.Status = nameof(OrderInBatchStatus.Done); return x; }).ToList();
             await _unitOfWork.SaveChangesAsync();
             return Ok(new
             {
@@ -129,7 +130,7 @@ namespace WebAPI.Controllers
             {
                 message = "Cannot cancel order"
             });
-            
+
         }
     }
 }
