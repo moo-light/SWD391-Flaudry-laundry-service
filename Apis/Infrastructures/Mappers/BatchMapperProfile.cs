@@ -20,7 +20,8 @@ namespace Infrastructures.Mappers
             CreateMap<BatchRequestDTO_V2, Batch>().ReverseMap();
             CreateMap<Batch, BatchResponseDTO>()
                 .ForMember(dest => dest.BatchId, src => src.MapFrom(x => x.Id))
-
+                .ForMember(dest => dest.OrderInBatch, src => src.MapFrom(x => x.OrderInBatches))
+                .ForMember(dest => dest.Driver, src => src.MapFrom(x => x.Driver))
                 //.AfterMap((src, dest, context) =>
                 //{
                 //    if (dest.Driver != null)
