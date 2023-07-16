@@ -15,7 +15,7 @@ namespace Application.Utils
     public static class ExpressionUtils
     {
 
-        public static List<Expression<Func<T, bool>>> CreateListOfExpression<T>(params Expression<Func<T, bool>>[]? expressions )
+        public static List<Expression<Func<T, bool>>> CreateListOfExpression<T>(params Expression<Func<T, bool>>[]? expressions)
         {
             return expressions?.ToList() ?? new List<Expression<Func<T, bool>>>();
         }
@@ -25,8 +25,8 @@ namespace Application.Utils
             if (thisId == null || thisId == Guid.Empty) return true;
 
             if (thatId == null) return false;
-            
-            return thisId.Equals(thatId );
+
+            return thisId.Equals(thatId);
         }
         /// <summary>
         /// check if any of the list is equal thatId
@@ -44,18 +44,18 @@ namespace Application.Utils
         {
             if (@this == null || @this == string.Empty) return true;
             if (that == null) return false;
-            if (that.Contains(@this,StringComparison.OrdinalIgnoreCase)) return true;
+            if (that.Contains(@this, StringComparison.OrdinalIgnoreCase)) return true;
             return false;
         }
         public static bool EmptyOrContainedIn(this string?[]? @this, string? that)
         {
 
             if (@this == null) return true;
-            return @this.Any(x=>!x.IsNullOrEmpty() && x.EmptyOrContainedIn(that));
+            return @this.Any(x => !x.IsNullOrEmpty() && x.EmptyOrContainedIn(that));
         }
         public static bool IsInDateTime(this DateTime? dateTime, DateTime? fromDate = default, DateTime? toDate = default)
         {
-            if (dateTime == null) return false;
+            if (dateTime == null) dateTime = DateTime.MinValue;
             DateTime timeStart = (fromDate ?? DateTime.MinValue);
             DateTime timeEnd = (toDate ?? DateTime.MaxValue);
             return timeStart <= dateTime && dateTime <= timeEnd;

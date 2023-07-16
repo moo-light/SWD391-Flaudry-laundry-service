@@ -10,6 +10,7 @@ namespace Infrastructures.FluentAPIs
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(e => e.CreationDate).HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(x => x.Customer).WithMany(x => x.Feedbacks).HasForeignKey(x => x.CustomerId);
             builder.HasOne(x => x.Store).WithMany(x => x.Feedbacks).HasForeignKey(x => x.StoreId);

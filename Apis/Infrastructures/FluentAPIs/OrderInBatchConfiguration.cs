@@ -10,6 +10,7 @@ namespace Infrastructures.FluentAPIs
         {
             builder.HasKey(e => e.Id);
             builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(e => e.CreationDate).HasDefaultValueSql("GETUTCDATE()");
             // Configure the foreign keys
             builder.HasOne(oib => oib.Batch)
                    .WithMany(b => b.OrderInBatches)

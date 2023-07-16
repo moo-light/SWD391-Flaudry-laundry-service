@@ -11,8 +11,8 @@ namespace Application.ViewModels.FilterModels
     public class BaseFilterringModel
     {
         [AllowNull]
-        public DateTime? FromDate { get; set; }
+        public DateTime? FromDate { get; set; } = DateTime.MinValue;
         [AllowNull]
-        public DateTime? ToDate { get; set; }
+        public DateTime? ToDate { get; set; } = DateTime.MaxValue;
     }
 }

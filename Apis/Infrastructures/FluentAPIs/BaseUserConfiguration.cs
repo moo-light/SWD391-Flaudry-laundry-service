@@ -16,6 +16,7 @@ namespace Infrastructures.FluentAPIs
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(e => e.CreationDate).HasDefaultValueSql("GETUTCDATE()");
             builder.HasIndex(e => e.Email).IsUnique();
 
             builder.Property(e => e.Email).HasMaxLength(100);

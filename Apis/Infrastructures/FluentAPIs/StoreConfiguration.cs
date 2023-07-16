@@ -9,7 +9,8 @@ namespace Infrastructures.FluentAPIs
         public void Configure(EntityTypeBuilder<Store> builder)
         {
             builder.HasKey(e => e.Id);
-            builder.Property(e => e.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(e => e.CreationDate).HasDefaultValueSql("GETUTCDATE()");
 
             builder.Property(e => e.Name).HasMaxLength(100);
 

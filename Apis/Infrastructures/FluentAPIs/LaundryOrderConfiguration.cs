@@ -10,6 +10,7 @@ namespace Infrastructures.FluentAPIs
         {
             builder.HasKey(e => e.Id);
             builder.Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Property(e => e.CreationDate).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(d => d.Building).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.BuildingId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
