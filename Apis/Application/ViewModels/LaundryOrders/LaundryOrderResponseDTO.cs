@@ -19,6 +19,7 @@ namespace Application.ViewModels.LaundryOrders
     public class LaundryOrderResponseDTO
     {
         public Guid? OrderId { get; set; }
+        public Guid? CustomerId { get; set; }
         public virtual BuildingResponseDTO? Building { get; set; }
         public virtual StoreResponseForOrderDTO? Store { get; set; }
         public string? Note { get; set; }
