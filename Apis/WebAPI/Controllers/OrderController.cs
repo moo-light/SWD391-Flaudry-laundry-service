@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
             return result.Items.IsNullOrEmpty() ? NotFound() : Ok(result);
         }
         [HttpGet("{entityId:guid}")]
-        [Authorize(Roles = "Driver")]
+        [Authorize(Roles = "Admin,Driver")]
         public async Task<IActionResult> FinishOrder(Guid entityId)
         {
             var order = await _orderService.GetByIdAsync(entityId);
@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
             });
         }
         [HttpGet("{entityId:guid}")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Admin,Customer")]
         public async Task<IActionResult> CancelOrder(Guid entityId)
         {
             var order = await _orderService.GetByIdAsync(entityId);
