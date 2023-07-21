@@ -28,7 +28,7 @@ namespace Application.ViewModels.LaundryOrders
         public int NumberOfPackage { get; set; }
         //public virtual CustomerResponseDTO? Customer { get; set; }
         //public virtual ICollection<OrderInBatchResponseDTO> OrderInBatches { get; set; } = new List<OrderInBatchResponseDTO>();
-        //public virtual ICollection<OrderDetailResponseDTO> OrderDetails { get; set; } = new List<OrderDetailResponseDTO>();
+        public virtual ICollection<OrderDetailResponseDTO> OrderDetails { get; set; } = new List<OrderDetailResponseDTO>();
         public virtual ICollection<PaymentResponseDTO> Payments { get; set; } = new List<PaymentResponseDTO>();
     }
 }
