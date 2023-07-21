@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Domain.CustomValidations;
+using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.ViewModels.Payments
@@ -7,9 +8,9 @@ namespace Application.ViewModels.Payments
     {
         public Guid?  OrderId { get; set; }
         public decimal? Amount { get; set; }
-        [EnumDataType(typeof(PaymentMethodEnum))]
+        [EnumValidation(typeof(PaymentMethodEnum))]
         public string? PaymentMethod { get; set; }
-        [EnumDataType(typeof(PaymentStatus))]
+        [EnumValidation(typeof(PaymentStatus))]
         public string? Status { get; set; }
     }
 }

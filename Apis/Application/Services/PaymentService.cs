@@ -35,7 +35,7 @@ namespace Application.Services
 
         public async Task<Payment?> GetByIdAsync(Guid entityId)
         {
-            Payment? payment = await _unitOfWork.PaymentRepository.GetByIdAsync(entityId,x=>x.Order);
+            Payment? payment = await _unitOfWork.PaymentRepository.GetByIdAsync(entityId, x => x.Order);
             return payment;
         }
 
@@ -51,7 +51,7 @@ namespace Application.Services
 
         public async Task<Pagination<PaymentResponseDTO>> GetAllAsync(int pageIndex, int pageSize)
         {
-            var payments = await _unitOfWork.PaymentRepository.ToPagination(pageIndex, pageSize,x=>x.Order);
+            var payments = await _unitOfWork.PaymentRepository.ToPagination(pageIndex, pageSize, x => x.Order);
             return _mapper.Map<Pagination<PaymentResponseDTO>>(payments);
         }
 
@@ -72,7 +72,7 @@ namespace Application.Services
         public async Task<bool> UpdateAsync(Guid id, PaymentRequestDTO paymentRequest)
         {
             var payment = await _unitOfWork.PaymentRepository.GetByIdAsync(id);
-           payment= _mapper.Map(paymentRequest, payment);
+            payment = _mapper.Map(paymentRequest, payment);
             _unitOfWork.PaymentRepository.Update(payment);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }

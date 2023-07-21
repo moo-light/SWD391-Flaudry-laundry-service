@@ -1,4 +1,5 @@
-﻿using Domain.Entitiess;
+﻿using Domain.CustomValidations;
+using Domain.Entitiess;
 using Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Domain.Entities
     {
         public string Comment { get; set; } = string.Empty;
         public short Rating { get; set; }
-        [EnumDataType(typeof(FeedbackStatusEnums))]
+        [EnumValidation(typeof(FeedbackStatusEnums))]
         public string Status { get; set; } = string.Empty;
         public Guid? CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }

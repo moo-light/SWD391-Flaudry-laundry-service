@@ -55,6 +55,8 @@ namespace Infrastructures.Repositories
 
         public bool SoftRemove(TEntity entity)
         {
+            TEntity? ett = _dbSet.AsNoTracking().FirstOrDefault(x => x.Id == entity.Id);
+            if (ett == null) throw new InvalidOperationException($"Updating {typeof(TEntity)}:{entity.Id}  not found");
             entity.IsDeleted = true;
             entity.DeleteBy = _claimsService.GetCurrentUserId;
             _dbSet.Update(entity);
@@ -62,6 +64,8 @@ namespace Infrastructures.Repositories
         }
         public bool SoftRemoveByID(Guid entityId)
         {
+            TEntity? ett = _dbSet.AsNoTracking().FirstOrDefault(x => x.Id == entity.Id);
+            if (ett == null) throw new InvalidOperationException($"Updating {typeof(TEntity)}:{entity.Id}  not found");
             TEntity? entity = GetByIdAsync(entityId).Result;
             if (entity == null) return false;
             return SoftRemove(entity);
