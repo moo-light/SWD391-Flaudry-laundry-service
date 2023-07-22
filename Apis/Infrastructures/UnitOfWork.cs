@@ -19,6 +19,7 @@ namespace Infrastructures
         private readonly IPaymentRepository _paymentRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IOrderInBatchRepository _orderInBatchRepository;
+        private readonly IStoreManagementRepository _storeManagerRepository;
 
         public UnitOfWork(AppDbContext dbContext,
                           IOrderRepository orderRepository,
@@ -35,7 +36,8 @@ namespace Infrastructures
 ,
                           IOrderInBatchRepository orderInBatchRepository
 ,
-                          ICustomerRepository customerRepository)
+                          ICustomerRepository customerRepository,
+                          IStoreManagementRepository storeManagerRepository)
 
         {
             _dbContext = dbContext;
@@ -55,6 +57,7 @@ namespace Infrastructures
             _baseUserRepository = baseUserRepository;
             _orderInBatchRepository = orderInBatchRepository;
             _customerRepository = customerRepository;
+            _storeManagerRepository = storeManagerRepository;
         }
 
         public ICustomerRepository CustomerRepository => _customerRepository;
@@ -80,7 +83,7 @@ namespace Infrastructures
 
         public IOrderInBatchRepository OrderInBatchRepository => _orderInBatchRepository;
 
-
+        public IStoreManagementRepository StoreManagerRepository => _storeManagerRepository;
         public int SaveChange()
         {
             return _dbContext.SaveChanges();

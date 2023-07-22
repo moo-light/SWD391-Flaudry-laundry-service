@@ -9,6 +9,7 @@ using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Application.ViewModels.Stores;
 
 namespace Application.Services
 {
@@ -75,6 +76,17 @@ namespace Application.Services
             user.ExpireTokenTime = expireRefreshTokenTime;
             _unitOfWork.UserRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
+            if(user is StoreManager storeManager)
+            {
+                storeManager  = await _unitOfWork.StoreManagerRepository.
+                return new StoreLoginResponseDTO
+                {
+                    UserId = user.Id,
+                    JWT = accessToken,
+                    RefreshToken = refreshToken,
+                    StoreId = 
+                };
+            }
             return new UserLoginDTOResponse
             {
                 UserId = user.Id,

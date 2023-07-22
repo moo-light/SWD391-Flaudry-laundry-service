@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using Application.Interfaces.Services;
 using Application.ViewModels.FilterModels;
+using Application.ViewModels.StoreManagers;
 using Application.ViewModels.Stores;
 using AutoMapper;
 using Domain.Entities;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class StoreManagementService : IStoreService
+    public class StoreManagementService : IStoreManagementService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -27,20 +28,22 @@ namespace Application.Services
             _configuration = configuration;
         }
 
-        public async Task<bool> AddAsync(StoreRequestDTO store)
-        {
-            var newDriver = _mapper.Map<Store>(store);
-            if (newDriver == null) return false;
-            await _unitOfWork.StoreRepository.AddAsync(newDriver);
-            return await _unitOfWork.SaveChangesAsync() > 0;
-        }
-
-        public Task<Pagination<StoreResponseDTO>> GetAllAsync(int pageIndex, int PageSize)
+        public Task<bool> AddAsync(StoreManagerRequestDTO user)
         {
             throw new NotImplementedException();
         }
 
-        public Task<StoreResponseDTO?> GetByIdAsync(Guid entityId)
+        public Task<bool> CheckEmail(StoreManagerRegisterDTO registerObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<StoreManagerResponseDTO>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Driver?> GetByIdAsync(Guid entityId)
         {
             throw new NotImplementedException();
         }
@@ -50,12 +53,12 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<Pagination<Store>> GetCustomerListPagi(int pageIndex, int pageSize)
+        public Task<Pagination<StoreManagerResponseDTO>> GetFilterAsync(StoreFilteringModel customer, int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Pagination<StoreResponseDTO>> GetFilterAsync(StoreFilteringModel entity, int pageIndex, int pageSize)
+        public Task<bool> RegisterAsync(StoreManagerRegisterDTO storeUser)
         {
             throw new NotImplementedException();
         }
@@ -65,7 +68,7 @@ namespace Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(Guid id, StoreRequestDTO entity)
+        public Task<bool> Update(Guid id, StoreManagerRequestUpdateDTO entity)
         {
             throw new NotImplementedException();
         }

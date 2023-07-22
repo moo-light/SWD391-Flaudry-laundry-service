@@ -17,6 +17,7 @@ namespace Application.Interfaces
         public ISessionRepository SessionRepository { get; }
         public IServiceRepository ServiceRepository { get; }
         public IOrderInBatchRepository OrderInBatchRepository { get; }
+        public IStoreManagementRepository StoreManagerRepository { get; }
 
         public int SaveChange();
         public Task<int> SaveChangesAsync();

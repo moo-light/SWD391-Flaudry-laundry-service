@@ -58,6 +58,9 @@ namespace Infrastructures
 
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IServiceService, ServiceService>();
+            
+            services.AddScoped<IStoreManagementRepository, StoreManagementRepository>();
+            services.AddScoped<IStoreManagementService, StoreManagementService>();
 
             //   services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IUserService, UserService>();

@@ -27,7 +27,8 @@ namespace WebAPI.Controllers
         [AllowAnonymous]
         public async Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO loginObject)
         {
-            return await _userService.LoginAsync(loginObject);
+            UserLoginDTOResponse userLoginDTOResponse = await _userService.LoginAsync(loginObject);
+            return userLoginDTOResponse;
         }
 
         [HttpGet("{id:guid}")]

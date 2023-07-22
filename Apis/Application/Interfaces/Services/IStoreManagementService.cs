@@ -14,8 +14,7 @@ namespace Application.Interfaces.Services
 {
     public interface IStoreManagementService
     {
-        public Task<bool> RegisterAsync(StoreManagerRegisterDTO driver);
-        public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
+        public Task<bool> RegisterAsync(StoreManagerRegisterDTO storeUser);
         Task<bool> AddAsync(StoreManagerRequestDTO user);
         Task<bool> RemoveAsync(Guid entityId);
         Task<bool> Update(Guid id, StoreManagerRequestUpdateDTO entity);
@@ -23,8 +22,6 @@ namespace Application.Interfaces.Services
         Task<IEnumerable<StoreManagerResponseDTO>> GetAllAsync();
         Task<int> GetCountAsync();
         Task<bool> CheckEmail(StoreManagerRegisterDTO registerObject);
-        Task<IEnumerable<Driver>> GetFilterAsync(StoreFilteringModel driver);
-        Task<Pagination<Driver>> GetCustomerListPagi(int pageIndex, int pageSize);
-        Task<Pagination<DriverResponseDTO>> GetFilterAsync(StoreFilteringModel customer, int pageIndex, int pageSize);
+        Task<Pagination<StoreManagerResponseDTO>> GetFilterAsync(StoreFilteringModel customer, int pageIndex, int pageSize);
     }
 }
