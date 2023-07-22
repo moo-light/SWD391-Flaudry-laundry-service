@@ -91,7 +91,7 @@ namespace Application.Services
             return _mapper.Map<Pagination<LaundryOrderResponseDTO>>(pagination);
         }
 
-        public Task<Pagination<LaundryOrder>> GetCustomerListPagi(int pageIndex, int pageSize)
+        public Task<Pagination<LaundryOrderResponseDTO>> GetCustomerListPagi(int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.ViewModels.FilterModels
 {
-    public class StoreManagerFilteringModel
+    public class StoreManagerFilteringModel : UserFilteringModel
     {
     }
 }

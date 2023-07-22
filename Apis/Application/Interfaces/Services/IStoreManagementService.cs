@@ -1,4 +1,5 @@
 ﻿using Application.Commons;
+using Application.ViewModels.Drivers;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.StoreManagers;
 using Application.ViewModels.UserViewModels;
@@ -13,18 +14,17 @@ namespace Application.Interfaces.Services
 {
     public interface IStoreManagementService
     {
-        public Task<bool> CheckEmail(StoreManagerRegisterDTO userObject);
+        public Task<bool> RegisterAsync(StoreManagerRegisterDTO driver);
         public Task<UserLoginDTOResponse> LoginAsync(UserLoginDTO userObject);
-        public Task<bool> RegisterAsync(StoreManagerRegisterDTO userObject);
         Task<bool> AddAsync(StoreManagerRequestDTO user);
         Task<bool> RemoveAsync(Guid entityId);
-        Task<bool> UpdateAsync(Guid id, StoreManagerRequestUpdateDTO entity);
-        Task<StoreManager?> GetByIdAsync(Guid entityId);
+        Task<bool> Update(Guid id, StoreManagerRequestUpdateDTO entity);
+        Task<Driver?> GetByIdAsync(Guid entityId);
         Task<IEnumerable<StoreManagerResponseDTO>> GetAllAsync();
         Task<int> GetCountAsync();
-        Task<Pagination<StoreManagerResponseDTO>> GetFilterAsync(StoreManagerFilteringModel customer, int pageIndex, int pageSize);
-        UserLoginDTOResponse LoginAdmin(UserLoginDTO loginObject);
-        Task<Pagination<StoreManagerResponseDTO>> GetStoreManagerListPagi(int pageIndex, int pageSize);
-        AdminToken RefreshToken(string refreshToken);
+        Task<bool> CheckEmail(StoreManagerRegisterDTO registerObject);
+        Task<IEnumerable<Driver>> GetFilterAsync(StoreFilteringModel driver);
+        Task<Pagination<Driver>> GetCustomerListPagi(int pageIndex, int pageSize);
+        Task<Pagination<DriverResponseDTO>> GetFilterAsync(StoreFilteringModel customer, int pageIndex, int pageSize);
     }
 }

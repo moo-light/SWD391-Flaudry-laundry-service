@@ -10,7 +10,7 @@ public interface IOrderService
 {
     Task<LaundryOrder?> GetByIdAsync(Guid entityId);
     Task<int> GetCountAsync();
-    Task<Pagination<LaundryOrder>> GetCustomerListPagi(int pageIndex, int pageSize);
+    Task<Pagination<LaundryOrderResponseDTO>> GetCustomerListPagi(int pageIndex, int pageSize);
     Task<Pagination<LaundryOrderResponseDTO>> GetAllAsync(int pageIndex, int pageSize);
     Task<Pagination<LaundryOrderResponseDTO>> GetFilterAsync(LaundryOrderFilteringModel entity, int pageIndex, int pageSize);
     Task<bool> RemoveAsync(Guid entityId);

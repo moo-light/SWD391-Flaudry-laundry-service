@@ -30,7 +30,5 @@ namespace Application.ViewModels.LaundryOrders
         //public virtual ICollection<OrderInBatchResponseDTO> OrderInBatches { get; set; } = new List<OrderInBatchResponseDTO>();
         public virtual ICollection<OrderDetailResponseDTO> OrderDetails { get; set; } = new List<OrderDetailResponseDTO>();
         public virtual ICollection<PaymentResponseDTO> Payments { get; set; } = new List<PaymentResponseDTO>();
-        public DateTime? CreationDate { get; set; }
-        public DateTime? ModificationDate { get; set; }
     }
 }
