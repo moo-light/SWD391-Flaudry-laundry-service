@@ -1,6 +1,7 @@
 ﻿using Application.Commons;
 using Application.Interfaces;
 using Application.Interfaces.Services;
+using Application.ViewModels.Drivers;
 using Application.ViewModels.FilterModels;
 using Application.ViewModels.StoreManagers;
 using Application.ViewModels.Stores;
@@ -28,14 +29,23 @@ namespace Application.Services
             _configuration = configuration;
         }
 
-        public Task<bool> AddAsync(StoreManagerRequestDTO user)
+        public async Task<bool> AddAsync(StoreManagerRequestDTO user)
         {
-            throw new NotImplementedException();
+            var newStoreManager = _mapper.Map<StoreManager>(user);
+            if (newStoreManager == null) return false;
+            await _unitOfWork.StoreManagerRepository.AddAsync(newStoreManager);
+            return await _unitOfWork.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> CheckEmail(StoreManagerRegisterDTO registerObject)
+
+        public async Task<bool> CheckEmail(StoreManagerRegisterDTO driverRegisterDTO)
         {
-            throw new NotImplementedException();
+            var isExited = await _unitOfWork.UserRepository.CheckEmailExisted(driverRegisterDTO.Email);
+            if (isExited)
+            {
+                return true;
+            }
+            else return false;
         }
 
         public Task<IEnumerable<StoreManagerResponseDTO>> GetAllAsync()
