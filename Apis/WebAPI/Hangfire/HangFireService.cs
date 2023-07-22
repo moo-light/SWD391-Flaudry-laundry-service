@@ -6,13 +6,13 @@ using Domain.Enums;
 using Hangfire;
 using Microsoft.Extensions.Hosting;
 using System.Net;
+using static Application.Constants.BatchConstant;
 
 namespace WebAPI.Hangfire
 {
     public class HangFireService
     {
-        private const int BatchSize = 10;
-        private const int BatchCount = 1;
+       
         public IUnitOfWork _unitOfWork;
         private ICurrentTime _currentTime;
 
