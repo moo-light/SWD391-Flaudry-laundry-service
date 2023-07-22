@@ -30,6 +30,7 @@ namespace Infrastructures
         public DbSet<BatchOfBuilding> BatchOfBuildings { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<StoreManager> StoreManagers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

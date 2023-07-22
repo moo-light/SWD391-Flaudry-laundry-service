@@ -12,4 +12,6 @@ public partial class Store : BaseEntity
     public virtual ICollection<LaundryOrder> Orders { get; } = new List<LaundryOrder>();
     public virtual ICollection<Service> Services { get; } = new List<Service>();
     public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public Guid? StoreManagerId { get; set; }
+    public StoreManager? StoreManager { get; set; }
 }

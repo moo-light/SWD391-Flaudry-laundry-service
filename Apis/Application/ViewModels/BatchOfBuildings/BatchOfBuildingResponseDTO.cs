@@ -13,6 +13,7 @@ namespace Application.ViewModels.BatchOfBuildings
     {
         public Guid? BatchOfBuildingId { get; set; }
         public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
 
     }
 }

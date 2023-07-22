@@ -15,7 +15,7 @@ public partial class Batch : BaseEntity
     public string? Type { get; set; }
     [EnumValidation(typeof(BatchStatus))]
     public string? Status { get; set; }
-    public DateTime? Date { get; set; }
+    public string? RecieveTime { get; set; }
     public virtual Driver? Driver { get; set; }
     public virtual ICollection<BatchOfBuilding> BatchOfBuildings { get; set; } = new List<BatchOfBuilding>();
     public virtual ICollection<OrderInBatch> OrderInBatches { get; set; } = new List<OrderInBatch>();
