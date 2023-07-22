@@ -12,6 +12,7 @@ namespace WebAPI.Hangfire
     public class HangFireService
     {
         private const int BatchSize = 10;
+        private const int BatchCount = 1;
         public IUnitOfWork _unitOfWork;
         private ICurrentTime _currentTime;
 
@@ -64,13 +65,17 @@ namespace WebAPI.Hangfire
             int index = 0;
             int j = 0;
             Batch? batch = null;
-            var numOfBatch = (count / 10) > 3 ? (count / 10) : 3;
+            var numOfBatch = (count / 10) > BatchCount ? (count / 10) : BatchCount;
             for (index = 0; index < numOfBatch && nextDriverSession.Count > 0; index++)
             {
 
+                var fromTime = _currentTime.GetCurrentTime().AddHours(2);
+                var toTime = _currentTime.GetCurrentTime().AddHours(4);
                 batch = new Batch()
                 {
                     Type = batchType,
+                    FromTime = fromTime,
+                    ToTime = toTime,
                     Status = nameof(BatchStatus.Pending),
                     //DriverId = nextDriverSession.First().Id
                 };
