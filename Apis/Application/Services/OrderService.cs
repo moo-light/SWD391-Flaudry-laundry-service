@@ -45,6 +45,14 @@ namespace Application.Services
                     Status = nameof(OrderStatus.Pending)
                 });
             }
+
+            var batch =_unitOfWork.BatchRepository.GetNewestBatch();
+            batch.OrderInBatches.Add(new OrderInBatch()
+            {
+                BatchId = batch.Id,
+                Order = newOrder
+            });
+            _unitOfWork.BatchRepository.Update(batch);
             await _unitOfWork.OrderRepository.AddAsync(newOrder);
             return await _unitOfWork.SaveChangesAsync() > 0;
         }

@@ -11,5 +11,6 @@ namespace Application.Interfaces.Repositories
     public interface IBatchRepository : IGenericRepository<Batch>
     {
         IEnumerable<Batch> GetFilter(BatchFilteringModel entity);
+        Batch GetNewestBatch();
     }
 }
