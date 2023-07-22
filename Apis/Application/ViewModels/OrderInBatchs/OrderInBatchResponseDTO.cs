@@ -15,8 +15,8 @@ namespace Application.ViewModels.OrderInBatch
     public class OrderInBatchResponseDTO : OrderInBatchRequestDTO
     {
         public Guid? OrderInBatchId { get; set; }
-        public virtual ICollection<BatchResponseDTO>? Batch { get; set; } = new List<BatchResponseDTO>();
-        public virtual ICollection<LaundryOrderResponseDTO>? Order { get; set; } = new List<LaundryOrderResponseDTO>();
+        public virtual BatchResponseDTO Batch { get; set; } = new BatchResponseDTO();
+        public virtual LaundryOrderResponseDTO Order { get; set; } = new LaundryOrderResponseDTO();
         public DateTime? CreationDate { get; set; }
         public DateTime? ModificationDate { get; set; }
     }
