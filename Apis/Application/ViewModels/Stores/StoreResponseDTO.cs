@@ -15,5 +15,7 @@ namespace Application.ViewModels.Stores
         //public virtual ICollection<LaundryOrderResponseDTO>? Orders { get; set; } = null;
         public virtual ICollection<ServiceResponseDTO>? Services { get; set; } = new List<ServiceResponseDTO>();
         //public virtual ICollection<FeedbackResponseDTO>? Feedbacks { get; set; } = null;
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

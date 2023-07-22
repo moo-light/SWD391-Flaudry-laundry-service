@@ -11,5 +11,7 @@ namespace Application.ViewModels.Drivers
     {
         public Guid? DriverId { get; set; }
         //public ICollection<BatchResponseDTO> BatchResponses { get; set; } = null;
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

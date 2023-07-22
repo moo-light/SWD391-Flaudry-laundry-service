@@ -9,5 +9,7 @@ namespace Application.ViewModels.Stores
     public class StoreResponseForOrderDTO : StoreRequestDTO
     {
         public Guid? StoreId { get; set; }
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

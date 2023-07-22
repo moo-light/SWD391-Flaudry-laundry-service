@@ -31,7 +31,10 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Add(BatchRequestDTO_V2 batchRequestDTO, string? driverId = default)
         {
             if (driverId != null && _claimsService.GetCurrentUserRole != "Admin") return Forbid();
-            if (driverId == null && _claimsService.GetCurrentUserRole != "Driver") return Forbid("Please input DriverId");
+            if (driverId == null && _claimsService.GetCurrentUserRole != "Driver") return BadRequest(new
+            {
+                Message = "Please input DriverId"
+            });
             Guid.TryParse(driverId, out Guid driverGUID);
 
             var result = await _batchService.AddAsync(batchRequestDTO, driverGUID == Guid.Empty ? null : driverGUID);
@@ -81,7 +84,7 @@ namespace WebAPI.Controllers
             {
                 return Forbid();
             }
-            var result = _batchService.SmallUpdate(entity); 
+            var result = _batchService.SmallUpdate(entity);
             return result ? Ok(new
             {
                 message = "Batch Update Successfully"

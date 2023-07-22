@@ -9,5 +9,7 @@ namespace Application.ViewModels.Stores
         public decimal? PricePerKg { get; set; }
         //public virtual StoreResponseDTO? Store { get; set; }
         //public virtual ICollection<OrderDetailResponseDTO>? OrderDetails { get; set; }
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

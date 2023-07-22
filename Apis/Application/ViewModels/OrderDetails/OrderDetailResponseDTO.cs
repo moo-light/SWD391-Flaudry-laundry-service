@@ -15,5 +15,7 @@ namespace Application.ViewModels.OrderDetails
         public Guid? OrderDetailId { get; set; }
         //public virtual LaundryOrderResponseDTO? Order { get; set; } = null;// Order status = 
         //public virtual ServiceResponseDTO? Service { get; set; } = null;
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

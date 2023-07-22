@@ -13,5 +13,7 @@ namespace Application.ViewModels.Buildings
         public Guid? BuildingId { get; set; }
         //public ICollection<BatchOfBuildingResponseDTO> BatchOfBuildings { get; set; } = new List<BatchOfBuildingResponseDTO>();
         //public ICollection<LaundryOrderResponseDTO> LaundryOrders { get; set; } = new List<LaundryOrderResponseDTO>();
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace Application.ViewModels.BatchOfBuildings
     public class BatchOfBuildingResponseDTO : BatchOfBuildingRequestDTO
     {
         public Guid? BatchOfBuildingId { get; set; }
-      
+        public DateTime? CreationDate { get; set; }
+
     }
 }

@@ -16,5 +16,7 @@ namespace Application.ViewModels.OrderInBatch
         public Guid? OrderInBatchId { get; set; }
         public virtual BatchResponseDTO? Batch { get; set; } = null;
         public virtual LaundryOrderResponseDTO? Order { get; set; } = null;
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

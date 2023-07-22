@@ -10,6 +10,7 @@ namespace Application.ViewModels.Feedbacks
         public Guid? FeedbackId { get; set; }
         public virtual CustomerResponseDTO? Customer { get; set; } = null;
         public virtual StoreResponseDTO? Store { get; set; } = null;
-
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }

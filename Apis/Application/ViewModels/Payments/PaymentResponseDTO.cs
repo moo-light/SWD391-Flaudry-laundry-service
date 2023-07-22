@@ -16,5 +16,7 @@ namespace Application.ViewModels.Payments
         public Guid? PaymentId { get; set; }
         [JsonIgnore]
         public virtual LaundryOrderResponseDTO? Order { get; set; } = null;
+        public DateTime? CreationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
     }
 }
