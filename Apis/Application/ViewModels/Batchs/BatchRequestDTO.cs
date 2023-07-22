@@ -16,7 +16,8 @@ namespace Application.ViewModels.Batchs
         [EnumValidation(typeof(BatchType))]
         public string? Type { get; set; }
         [EnumValidation(typeof(BatchStatus))]
+        public DateTime? FromTime { get; set; }
+        public DateTime? ToTime { get; set; }
         public string? Status { get; set; }
-        public DateTime? Date { get; set; }
     }
 }

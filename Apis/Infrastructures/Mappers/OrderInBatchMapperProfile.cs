@@ -11,6 +11,7 @@ namespace Infrastructures.Mappers
 
             CreateMap<OrderInBatchRequestDTO, OrderInBatch>().ReverseMap();
             CreateMap<OrderInBatch, OrderInBatchResponseDTO>()
+                .IncludeBase<OrderInBatch, OrderInBatchRequestDTO>()
                 .ForMember(dest => dest.OrderInBatchId, src => src.MapFrom(x => x.Id))
                 .ForMember(dest => dest.OrderId, src => src.MapFrom(x => x.OrderId))
                 .ForMember(dest => dest.BatchId, src => src.MapFrom(x => x.BatchId))

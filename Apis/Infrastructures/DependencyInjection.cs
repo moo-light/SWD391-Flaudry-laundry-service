@@ -71,15 +71,19 @@ namespace Infrastructures
             Type[] mapperTypes = new[]
             {
                 typeof(MapperConfigurationsProfile),
+                typeof(BatchMapperProfile),
+                typeof(BuildingMapperProfile),
                 typeof(CustomerMapperProfile),
+                typeof(DriverMapperProfile),
                 typeof(FeedbackMapperProfile),
+                typeof(LaundryOrderMapperProfile),
                 typeof(OrderDetailMapperProfile),
                 typeof(OrderInBatchMapperProfile),
-                typeof(LaundryOrderMapperProfile),
                 typeof(PaymentMapperProfile),
                 typeof(ServiceMapperProfile),
                 typeof(SessionMapperProfile),
                 typeof(StoreMapperProfile),
+                typeof(StoreManagerMapperProfile),
             };
             services.AddAutoMapper(mapperTypes);
 
