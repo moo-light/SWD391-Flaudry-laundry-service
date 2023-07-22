@@ -78,6 +78,8 @@ namespace Application.Services
             await _unitOfWork.SaveChangesAsync();
             if(user is StoreManager storeManager)
             {
+                storeManager =await _unitOfWork.StoreManagerRepository.GetByIdAsync(storeManager.Id);
+                if (storeManager == null) return null;
                 return new StoreLoginResponseDTO
                 {
                     UserId = user.Id,
