@@ -52,7 +52,15 @@ namespace Infrastructures.Repositories
 
         public Batch GetNewestBatch()
         {
-            var batch = _dbContext.Batchs.Include(x => x.OrderInBatches).AsNoTracking().OrderByDescending(x => x.CreationDate).ThenByDescending(x => x.ModificationDate).FirstOrDefault();
+            var batch = _dbContext.Batchs.Include(x => x.OrderInBatches)
+                                         .AsNoTracking()
+                                         .Where(x => x.IsDeleted == false
+                                                     && x.Status == nameof(BatchStatus.Pending)
+                                                     && x.Type == nameof(BatchType.Pickup))
+                                         .Where(x => x.OrderInBatches.Count < BatchConstant.BatchSize)
+                                         .OrderByDescending(x => x.CreationDate)
+                                         .ThenByDescending(x => x.ModificationDate)
+                                         .FirstOrDefault();
             if (batch.OrderInBatches.Count >= BatchConstant.BatchSize)
             {
                 var currentTime = _timeService.GetCurrentTime();
@@ -70,7 +78,7 @@ namespace Infrastructures.Repositories
                 else if (fromTime.Hour >= 11)
                 {
                     //
-                    fromTime.AddHours(24 + 7 - currentTime.Hour );
+                    fromTime.AddHours(24 + 7 - currentTime.Hour);
                 }
                 else if (fromTime.Hour >= 5)
                 {
