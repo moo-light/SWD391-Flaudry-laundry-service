@@ -12,6 +12,7 @@ namespace Application.ViewModels.Stores
 {
     public class StoreLoginResponseDTO : UserLoginDTOResponse
     {
+
         public Guid? StoreId { get; set; }
         
     }

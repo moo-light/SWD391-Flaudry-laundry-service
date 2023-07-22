@@ -78,13 +78,12 @@ namespace Application.Services
             await _unitOfWork.SaveChangesAsync();
             if(user is StoreManager storeManager)
             {
-                storeManager  = await _unitOfWork.StoreManagerRepository.
                 return new StoreLoginResponseDTO
                 {
                     UserId = user.Id,
                     JWT = accessToken,
                     RefreshToken = refreshToken,
-                    StoreId = 
+                    StoreId = storeManager.StoreId
                 };
             }
             return new UserLoginDTOResponse
